@@ -35,7 +35,11 @@ BaselineOfPharoXBasics >> groups: spec [
 { #category : #'private - accessing' }
 BaselineOfPharoXBasics >> packages: spec [
 
-	spec package: 'Phx-Pj-Core-Traits' with: [  ]
+	spec package: 'Phx-Pj-Core-Traits' with: [  ].
+	spec package: 'Phx-Pj-Dom-Builder' with: [  ].
+	spec
+		package: 'Phx-Pj-Web-Components'
+		with: [ spec requires: #( 'Phx-Pj-Dom-Builder' ) ]
 ]
 
 { #category : #baselines }
