@@ -187,9 +187,3 @@ PhxServerWebSocketHandler >> value: aWebSocket [
 PhxServerWebSocketHandler >> webSocketInfoFor: aWebSocket [
 	^ webSocketsDict at: aWebSocket ifAbsent: [ nil ]
 ]
-
-{ #category : #private }
-PhxServerWebSocketHandler >> webSocketSessionClass [
-
-	^ PhxServerWebSocketSession
-]
