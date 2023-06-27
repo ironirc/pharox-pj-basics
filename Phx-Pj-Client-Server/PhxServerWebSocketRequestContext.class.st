@@ -1,0 +1,148 @@
+Class {
+	#name : #PhxServerWebSocketRequestContext,
+	#superclass : #Object,
+	#instVars : [
+		'handler',
+		'webSocketInfo',
+		'incomingEnvelope',
+		'jwtClaims'
+	],
+	#category : #'Phx-Pj-Client-Server-server-side'
+}
+
+{ #category : #accessing }
+PhxServerWebSocketRequestContext >> ensuredContext [
+	^ self handler ensuredContext
+]
+
+{ #category : #services }
+PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
+
+
+	[ 
+	msg respondForRequestContext: self
+	"debugString := String
+		streamContents: [ :ws | 
+			ws << 'SS-MessageHandler: received envelope with message of type '
+				<< env msg class name ].
+	aWebSocket sendMessage: debugString asJsonString." ]
+		on: Error
+		do: [ :ex | 
+			self halt. "convenient to halt here while developing"
+			self sendError: ex description.
+			ex return ]
+]
+
+{ #category : #accessing }
+PhxServerWebSocketRequestContext >> handler [
+	^ handler
+]
+
+{ #category : #accessing }
+PhxServerWebSocketRequestContext >> handler: anObject [
+	handler := anObject
+]
+
+{ #category : #services }
+PhxServerWebSocketRequestContext >> inUnitOfWorkDo: aBlock [
+
+	""
+
+	self ovhDo: [ :sess | sess inUnitOfWorkDo: aBlock ]
+]
+
+{ #category : #accessing }
+PhxServerWebSocketRequestContext >> incomingEnvelope [
+	^ incomingEnvelope
+]
+
+{ #category : #accessing }
+PhxServerWebSocketRequestContext >> incomingEnvelope: anObject [
+	incomingEnvelope := anObject
+]
+
+{ #category : #accessing }
+PhxServerWebSocketRequestContext >> jwtClaims [
+
+	^ jwtClaims
+]
+
+{ #category : #accessing }
+PhxServerWebSocketRequestContext >> jwtClaims: anObject [
+
+	jwtClaims := anObject
+]
+
+{ #category : #services }
+PhxServerWebSocketRequestContext >> ovhDo: aBlock [
+	""
+	self handler ensuredContext ovhDo: aBlock
+]
+
+{ #category : #services }
+PhxServerWebSocketRequestContext >> sendError: aString [
+
+	| msg |
+	msg := PhxSpaResponse new.
+	msg type: #error.
+	msg message: aString.
+	self sendResponseMessage: msg
+]
+
+{ #category : #services }
+PhxServerWebSocketRequestContext >> sendMessage: outgoingMessage [
+
+	self webSocketInfo
+		sendMessage: outgoingMessage
+		isResponseToIncoming: nil
+]
+
+{ #category : #services }
+PhxServerWebSocketRequestContext >> sendResponseMessage: outgoingMessage [
+
+	self webSocketInfo
+		sendMessage: outgoingMessage
+		isResponseToIncoming: self incomingEnvelope
+]
+
+{ #category : #services }
+PhxServerWebSocketRequestContext >> sendSuccess: aString [
+
+	| msg |
+	msg := PhxSpaResponse new.
+	msg type: #success.
+	msg message: aString.
+	self sendResponseMessage: msg
+]
+
+{ #category : #services }
+PhxServerWebSocketRequestContext >> sendWarning: aString [
+
+	| msg |
+	msg := PhxSpaResponse new.
+	msg type: #warning.
+	msg message: aString.
+	self sendResponseMessage: msg
+]
+
+{ #category : #services }
+PhxServerWebSocketRequestContext >> translator [
+	^ self ensuredContext translator
+]
+
+{ #category : #accessing }
+PhxServerWebSocketRequestContext >> webSocket [
+	^self webSocketInfo webSocket
+]
+
+{ #category : #accessing }
+PhxServerWebSocketRequestContext >> webSocketInfo [
+
+	^ webSocketInfo
+]
+
+{ #category : #accessing }
+PhxServerWebSocketRequestContext >> webSocketInfo: anObject [
+
+	webSocketInfo := anObject
+]
