@@ -72,6 +72,12 @@ PhxServerWebSocketSession >> initialize [
 	sentEnvelopesWaitingForResponse := OrderedCollection new. 
 ]
 
+{ #category : #testing }
+PhxServerWebSocketSession >> isConnected [
+
+	^ self webSocket ifNil: [ false ] ifNotNil: [ :ws | ws isConnected ]
+]
+
 { #category : #accessing }
 PhxServerWebSocketSession >> lastUsedAt [
 	^ lastUsedAt
