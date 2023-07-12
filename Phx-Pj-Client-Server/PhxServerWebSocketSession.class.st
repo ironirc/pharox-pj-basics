@@ -54,7 +54,7 @@ PhxServerWebSocketSession >> handleIncomingEnvelope: env fromHandler: wsh [
 					self error: 'corresponding "envelope waiting response" not found'.
 					^ self ] ] ].
 	rc := PhxServerWebSocketRequestContext new.
-	rc webSocketInfo: self.
+	rc webSocketSession: self.
 	rc handler: wsh.
 	rc incomingEnvelope: env.
 	rc jwtClaims: (self checkAccessTokenOfEnvelope: env).

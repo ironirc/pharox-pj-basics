@@ -3,9 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'handler',
-		'webSocketInfo',
 		'incomingEnvelope',
-		'jwtClaims'
+		'jwtClaims',
+		'webSocketSession'
 	],
 	#category : #'Phx-Pj-Client-Server-server-side'
 }
@@ -92,7 +92,7 @@ PhxServerWebSocketRequestContext >> sendError: aString [
 { #category : #services }
 PhxServerWebSocketRequestContext >> sendMessage: outgoingMessage [
 
-	self webSocketInfo
+	self webSocketSession
 		sendMessage: outgoingMessage
 		isResponseToIncoming: nil
 ]
@@ -100,7 +100,7 @@ PhxServerWebSocketRequestContext >> sendMessage: outgoingMessage [
 { #category : #services }
 PhxServerWebSocketRequestContext >> sendResponseMessage: outgoingMessage [
 
-	self webSocketInfo
+	self webSocketSession
 		sendMessage: outgoingMessage
 		isResponseToIncoming: self incomingEnvelope
 ]
@@ -132,17 +132,17 @@ PhxServerWebSocketRequestContext >> translator [
 
 { #category : #accessing }
 PhxServerWebSocketRequestContext >> webSocket [
-	^self webSocketInfo webSocket
+	^self webSocketSession webSocket
 ]
 
 { #category : #accessing }
-PhxServerWebSocketRequestContext >> webSocketInfo [
+PhxServerWebSocketRequestContext >> webSocketSession [
 
-	^ webSocketInfo
+	^ webSocketSession
 ]
 
 { #category : #accessing }
-PhxServerWebSocketRequestContext >> webSocketInfo: anObject [
+PhxServerWebSocketRequestContext >> webSocketSession: anObject [
 
-	webSocketInfo := anObject
+	webSocketSession := anObject
 ]

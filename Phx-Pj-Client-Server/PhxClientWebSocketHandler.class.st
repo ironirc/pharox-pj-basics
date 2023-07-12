@@ -199,12 +199,14 @@ PhxClientWebSocketHandler >> setupConnectionWithServer [
 
 { #category : #'server messaging' }
 PhxClientWebSocketHandler >> takeEnvelopeWithContinuationFromQueue: msgId [
+
 	| envWithCont |
 	envWithCont := continuations
-		detect: [ :each | each envelope msg id = msgId ]
-		ifNone: [ nil ].
-	envWithCont
-		ifNotNil: [ continuations remove: envWithCont ].
+		               detect: [ :each | each envelope msg id = msgId ]
+		               ifNone: [ nil ].
+	envWithCont ifNotNil: [
+		console log: 'removed envWithCont ' with: envWithCont.
+		continuations remove: envWithCont ].
 	^ envWithCont
 ]
 
