@@ -18,8 +18,7 @@ PhxServerWebSocketRequestContext >> ensuredContext [
 { #category : #services }
 PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
 
-
-	[ 
+	[
 	msg respondForRequestContext: self
 	"debugString := String
 		streamContents: [ :ws | 
@@ -27,9 +26,9 @@ PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
 				<< env msg class name ].
 	aWebSocket sendMessage: debugString asJsonString." ]
 		on: Error
-		do: [ :ex | 
-			self halt. "convenient to halt here while developing"
+		do: [ :ex |
 			self sendError: ex description.
+			self halt. "convenient to halt here while developing"
 			ex return ]
 ]
 

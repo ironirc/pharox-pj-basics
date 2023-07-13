@@ -75,7 +75,7 @@ PhxServerWebSocketHandler >> ensuredContext [
 PhxServerWebSocketHandler >> handleMessage: rawSocketMessage forSocket: aWebSocket [
 
 	| env webSocketSession |
-	webSocketSession := self webSocketInfoFor: aWebSocket.
+	webSocketSession := self webSocketSessionForWebSocket: aWebSocket.
 	webSocketSession ifNil: [ self error: 'unknown websocket' ].
 	env := PhxJsonReader readFromString: rawSocketMessage.
 	[webSocketSession handleIncomingEnvelope: env fromHandler: self] fork
@@ -114,6 +114,18 @@ PhxServerWebSocketHandler >> register: clientWebSocket [
 		newWsi := self sessionClass new.
 		newWsi webSocket: clientWebSocket.
 		webSocketsDict at: clientWebSocket put: newWsi ]
+]
+
+{ #category : #accessing }
+PhxServerWebSocketHandler >> replaceOldWebSocket: oldWebSocket with: newWebSocket [
+
+	webSocketsDict
+		at: oldWebSocket
+		ifPresent: [ :session | session webSocket: newWebSocket.
+			webSocketsDict at: newWebSocket put: session. 
+			
+			 ].
+	webSocketsDict removeKey: oldWebSocket ifAbsent: []
 ]
 
 { #category : #'ad hoc dev' }
@@ -159,11 +171,11 @@ PhxServerWebSocketHandler >> subscribeToSystemAnnouncer [
 
 { #category : #private }
 PhxServerWebSocketHandler >> unregister: clientWebSocket [
-	lock
-		critical: [ webSocketsDict removeKey: clientWebSocket ifAbsent: [  ].
-			Transcript
-				cr;
-				show: 'Un-Registered websocket' ]
+
+	lock critical: [ "webSocketsDict removeKey: clientWebSocket ifAbsent: [  ].""Give clients opportunity to recover the session"
+		Transcript
+			cr;
+			show: 'Un-Registered websocket' ]
 ]
 
 { #category : #'live code update broadcasting' }
@@ -184,6 +196,6 @@ PhxServerWebSocketHandler >> value: aWebSocket [
 ]
 
 { #category : #accessing }
-PhxServerWebSocketHandler >> webSocketInfoFor: aWebSocket [
+PhxServerWebSocketHandler >> webSocketSessionForWebSocket: aWebSocket [
 	^ webSocketsDict at: aWebSocket ifAbsent: [ nil ]
 ]
