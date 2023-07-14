@@ -167,12 +167,17 @@ PhxServerWebSocketSession >> sendEnvelope: anEnvelope [
 ]
 
 { #category : #accessing }
+PhxServerWebSocketSession >> sendMessage: outgoingMessage [
+	^self sendMessage: outgoingMessage isResponseToIncoming: nil 
+]
+
+{ #category : #accessing }
 PhxServerWebSocketSession >> sendMessage: outgoingMessage isResponseToIncoming: anIncomingEnvelope [
 	| outgoingEnvelope |
 	outgoingEnvelope := outgoingMessage wrapInEnvelope.
 	anIncomingEnvelope
 		ifNotNil: [ outgoingEnvelope respToMsgId: anIncomingEnvelope msg id ].
-	self sendEnvelope: outgoingEnvelope
+	^self sendEnvelope: outgoingEnvelope
 ]
 
 { #category : #accessing }
