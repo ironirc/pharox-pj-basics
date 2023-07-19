@@ -83,8 +83,10 @@ PjWebComponent >> connectedCallback [
 	(besides the normal transpiled 'pj_connectedCallback'). "
 
 	<jsAlias: 'connectedCallback'>
+	"console log:  self with:  'connected'."
 	self _privateConnected.
-	self connected
+	self connected.
+	self render. 
 ]
 
 { #category : #private }
@@ -95,7 +97,7 @@ PjWebComponent >> htmlBuilderClass [
 
 { #category : #rendering }
 PjWebComponent >> initialRenderOn: x [ 
-
+	x wipeCurrentElement . 
 	self renderOn: x
 ]
 
@@ -108,7 +110,7 @@ PjWebComponent >> initialize [
 { #category : #initialization }
 PjWebComponent >> js_constructor [
 	"The 'js_' prefix ensures that the constructor method gets transpiled without the 'pj_' prefix."
-	"The method body directly delegates to 'self constructer' (hence the pj_ prefix there)"
+	"The method body directly delegates to 'self privateConstruct' (hence the pj_ prefix there)"
 	<javascript: 'super(); this.pj_privateConstruct()'>
 ]
 
@@ -119,9 +121,11 @@ PjWebComponent >> newBuilder [
 
 { #category : #initialization }
 PjWebComponent >> privateConstruct [
+
 	self initialize.
 	self attachShadow: { ('mode' -> 'open') } asJsObject.
-	self initialRenderOn: self newBuilder
+	"self render"
+	
 ]
 
 { #category : #accessing }
@@ -133,6 +137,12 @@ PjWebComponent >> privateStateAt: aSymbol [
 PjWebComponent >> privateStateAt: aSymbol put: anObject [
 
 	_privateState at: aSymbol put: anObject
+]
+
+{ #category : #initialization }
+PjWebComponent >> render [
+
+	self initialRenderOn: self newBuilder
 ]
 
 { #category : #rendering }
