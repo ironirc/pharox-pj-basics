@@ -67,6 +67,12 @@ PhxSpaAbstractMessage >> id [
 	^ id
 ]
 
+{ #category : #accessing }
+PhxSpaAbstractMessage >> id: anObject [
+
+	id := anObject
+]
+
 { #category : #'initialize-release' }
 PhxSpaAbstractMessage >> initialize [
 	super initialize.
