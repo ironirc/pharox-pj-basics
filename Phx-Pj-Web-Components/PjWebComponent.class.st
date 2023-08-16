@@ -70,23 +70,49 @@ PjWebComponent >> _privateConnected [
 	
 ]
 
-{ #category : #'web component callbacks' }
+{ #category : #initialization }
 PjWebComponent >> connected [
 
+	self hasBeenConnected
+		ifFalse: [ self connectedForFirstTime ]
+		ifTrue: [ self connectedAgain ]
+]
 
+{ #category : #initialization }
+PjWebComponent >> connectedAgain [
+	console log: 'connectedAgain: ' with: self.
+	"self logSelfAndAll: { '#connectedAgain' }"
 ]
 
 { #category : #'web component callbacks' }
 PjWebComponent >> connectedCallback [
-
 	"jsAlias: ensures a secondary method in js with given name
 	(besides the normal transpiled 'pj_connectedCallback'). "
 
 	<jsAlias: 'connectedCallback'>
-	"console log:  self with:  'connected'."
+	console log: 'connectedCallback: ' with: self.
 	self _privateConnected.
-	self connected.
+	self connected
+]
+
+{ #category : #initialization }
+PjWebComponent >> connectedForFirstTime [
+	console log: 'connectedForFirstTime: ' with: self.
+	self hasBeenConnected: true.
 	self render. 
+	"self logSelfAndAll: { '#connectedForFirstTime' }"
+]
+
+{ #category : #accessing }
+PjWebComponent >> hasBeenConnected [
+
+	^ (self psAt: #hasBeenConnected) == true
+]
+
+{ #category : #accessing }
+PjWebComponent >> hasBeenConnected: aBoolean [
+
+	self psAt: #hasBeenConnected put: aBoolean
 ]
 
 { #category : #private }
@@ -97,6 +123,7 @@ PjWebComponent >> htmlBuilderClass [
 
 { #category : #rendering }
 PjWebComponent >> initialRenderOn: x [ 
+	console log: 'initialRenderOn:' with: self. 
 	x wipeCurrentElement . 
 	self renderOn: x
 ]
@@ -104,7 +131,8 @@ PjWebComponent >> initialRenderOn: x [
 { #category : #initialization }
 PjWebComponent >> initialize [
 
-	_privateState ifNil: [ _privateState := Object new ]
+	_privateState ifNil: [ _privateState := Object new ].
+
 ]
 
 { #category : #initialization }
@@ -137,6 +165,18 @@ PjWebComponent >> privateStateAt: aSymbol [
 PjWebComponent >> privateStateAt: aSymbol put: anObject [
 
 	_privateState at: aSymbol put: anObject
+]
+
+{ #category : #accessing }
+PjWebComponent >> psAt: aSymbol [
+
+	^ _privateState at: aSymbol
+]
+
+{ #category : #accessing }
+PjWebComponent >> psAt: aSymbol put: aValue [
+
+	^ _privateState at: aSymbol put: aValue
 ]
 
 { #category : #initialization }
