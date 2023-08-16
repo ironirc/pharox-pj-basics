@@ -385,6 +385,11 @@ DomBuilderTrait >> onMouseEnter: aBlock [
 ]
 
 { #category : #'native event listeners' }
+DomBuilderTrait >> onMouseLeave: aBlock [
+	self currentElement addEventListener: #mouseleave block: aBlock
+]
+
+{ #category : #'native event listeners' }
 DomBuilderTrait >> onMouseMove: aBlock [
 	self currentElement addEventListener: #mousemove block: aBlock
 ]
