@@ -10,6 +10,12 @@ Class {
 	#category : #'Phx-Pj-Client-Server-server-side'
 }
 
+{ #category : #services }
+PhxServerWebSocketRequestContext >> doWithMainGlorpSession: aBlock [
+	""
+	self handler ensuredContext doWithMainGlorpSession: aBlock
+]
+
 { #category : #accessing }
 PhxServerWebSocketRequestContext >> ensuredContext [
 	^ self handler ensuredContext
@@ -47,7 +53,7 @@ PhxServerWebSocketRequestContext >> inUnitOfWorkDo: aBlock [
 
 	""
 
-	self ovhDo: [ :sess | sess inUnitOfWorkDo: aBlock ]
+	self doWithMainGlorpSession: [ :sess | sess inUnitOfWorkDo: aBlock ]
 ]
 
 { #category : #accessing }
@@ -70,12 +76,6 @@ PhxServerWebSocketRequestContext >> jwtClaims [
 PhxServerWebSocketRequestContext >> jwtClaims: anObject [
 
 	jwtClaims := anObject
-]
-
-{ #category : #services }
-PhxServerWebSocketRequestContext >> ovhDo: aBlock [
-	""
-	self handler ensuredContext ovhDo: aBlock
 ]
 
 { #category : #services }
