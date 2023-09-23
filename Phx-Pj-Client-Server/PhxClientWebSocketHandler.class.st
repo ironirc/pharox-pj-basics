@@ -46,7 +46,7 @@ PhxClientWebSocketHandler >> onWebSocketClose: event [
 			'onWebSocketClose:'.
 			event }.
 	"self shouldAutoReconnect ifTrue: ["
-	global
+	globalThis 
 		setTimeout: [ 
 			self logSelfAndAll: { 
 					'onWebSocketClose:'.
@@ -160,16 +160,18 @@ PhxClientWebSocketHandler >> sendMessageToServer: aMessage onResponseDo: aBlock 
 { #category : #'server messaging' }
 PhxClientWebSocketHandler >> sendStringThroughWebsocket: aString [
 
-	webSocket readyState == global WebSocket OPEN ifFalse: [ 
-		self logSelfAndAll: { 
+	webSocket readyState == globalThis WebSocket OPEN ifFalse: [
+		self logSelfAndAll: {
 				'sendStringThroughWebsocket:'.
 				aString.
 				'SOCKET NOT OPEN' }.
 		^ self ].
-"	self logSelfAndAll: { 
+	"	self logSelfAndAll: { 
 			'sendStringThroughWebsocket:'.
 			aString }."
-	self logAll: { 'send'. aString  }.
+	self logAll: {
+			'send'.
+			aString }.
 	webSocket send: aString
 ]
 

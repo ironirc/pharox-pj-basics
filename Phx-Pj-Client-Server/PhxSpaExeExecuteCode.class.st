@@ -25,6 +25,7 @@ PhxSpaExeExecuteCode >> code: anObject [
 
 { #category : #private }
 PhxSpaExeExecuteCode >> executeInResponseContext: rc [
-"	console log:  'Exe: ' , self code."
-	global eval: self code
+	"	console log:  'Exe: ' , self code."
+
+	globalThis eval: self code
 ]
