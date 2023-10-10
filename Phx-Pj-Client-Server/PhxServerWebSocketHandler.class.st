@@ -108,7 +108,7 @@ PhxServerWebSocketHandler >> register: clientWebSocket [
 
 	Transcript
 		cr;
-		show: 'Registering websocket'.
+		show: 'Registering websocket ' , self hash printString.
 	lock critical: [
 		| newWsi |
 		newWsi := self sessionClass new.
@@ -197,5 +197,7 @@ PhxServerWebSocketHandler >> value: aWebSocket [
 
 { #category : #accessing }
 PhxServerWebSocketHandler >> webSocketSessionForWebSocket: aWebSocket [
+
+	('WebSocketHandler ' , self hash printString) crTrace.
 	^ webSocketsDict at: aWebSocket ifAbsent: [ nil ]
 ]

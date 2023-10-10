@@ -9,13 +9,30 @@ PhxPjServer class >> registerApplication: app [
 
 	| d |
 	d := ZnServer default delegate.
-	d map: app httpPath ", '/index.html'" to: [ :request :response | 
-		response entity: (ZnEntity html: app htmlPageWithInitialScript) ].
-	d map: app httpPath , '.js' to: [ :request :response | 
+	d map: app httpPath to: [ :request :response |
+		response entity: (ZnEntity html: app htmlPageWithInitialScript) ]. ", '/index.html'"
+	d map: app httpPath , '.js' to: [ :request :response |
 		response entity: (ZnEntity text: app initialScript) ].
 	d map: app webSocketPath to: (ZnWebSocketDelegate
 			 map: app webSocketPath
-			 to: app newServerWebSocketHandler)
+			 to: (app newServerWebSocketHandlerForConfigDict: nil))
+]
+
+{ #category : #initialization }
+PhxPjServer class >> registerApplication: appClass withConfigDict: dict [
+
+	| deleg httpPath |
+	deleg := ZnServer default delegate.
+	httpPath := '/' , (dict getPath: #( httpPath )).
+	deleg map: httpPath to: [ :request :response |
+		response entity: (ZnEntity html: appClass htmlPageWithInitialScript) ].
+	deleg map: httpPath , '.js' to: [ :request :response |
+		response entity: (ZnEntity text: appClass initialScript) ].
+	deleg map: httpPath , '-ws' to: (ZnWebSocketDelegate
+			 map: (dict getPath: #( httpPath ))
+			 to: (appClass newServerWebSocketHandlerForConfigDict: dict)).
+	deleg map: httpPath , '.config' to: [ :request :response |
+		response entity: (ZnEntity text: dict asJsonString) ]
 ]
 
 { #category : #initialization }
