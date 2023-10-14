@@ -65,9 +65,11 @@ PhxServerWebSocketHandler >> context: anObject [
 PhxServerWebSocketHandler >> ensuredContext [
 
 	"is an PhxAppContext"
+	"context has been set while registering app endpoints. Do not (re-)create them here!!!"
 
-	(self context isNil or: [ self context isAlive not ]) ifTrue: [ 
-		self context: self applicationClass newAppContext ].
+	"(self context isNil or: [ self context isAlive not ]) ifTrue: [ 
+		self context: self applicationClass newAppContext ]."
+	self context ensureSoundAndAlive. 
 	^ self context
 ]
 
