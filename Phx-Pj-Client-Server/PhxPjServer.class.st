@@ -29,7 +29,7 @@ PhxPjServer class >> registerApplication: appClass withConfigDict: dict [
 	deleg map: httpPath , '.js' to: [ :request :response |
 		response entity: (ZnEntity text: appClass initialScript) ].
 	deleg map: httpPath , '-ws' to: (ZnWebSocketDelegate
-			 map: (dict getPath: #( httpPath ))
+			 map: (httpPath , '-ws')
 			 to: (appClass newServerWebSocketHandlerForConfigDict: dict)).
 	deleg map: httpPath , '.config' to: [ :request :response |
 		response entity: (ZnEntity text: dict asJsonString) ]
