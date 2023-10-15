@@ -33,6 +33,7 @@ PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
 	aWebSocket sendMessage: debugString asJsonString." ]
 		on: Error
 		do: [ :ex |
+			('handleIncomingMessage: error => ' , ex description) crTrace. 
 			self sendError: ex description.
 			self halt. "convenient to halt here while developing"
 			ex return ]

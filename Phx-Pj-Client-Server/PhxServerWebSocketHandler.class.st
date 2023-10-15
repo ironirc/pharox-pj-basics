@@ -3,7 +3,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'applicationClass',
-		'sessionClass',
 		'lock',
 		'webSocketsDict',
 		'context'
@@ -113,7 +112,8 @@ PhxServerWebSocketHandler >> register: clientWebSocket [
 		show: 'Registering websocket ' , self hash printString.
 	lock critical: [
 		| newWsi |
-		newWsi := self sessionClass new.
+		newWsi := PhxServerWebSocketSession new.
+		newWsi context: self context.
 		newWsi webSocket: clientWebSocket.
 		webSocketsDict at: clientWebSocket put: newWsi ]
 ]
@@ -147,18 +147,6 @@ PhxServerWebSocketHandler >> sendEnvelope: anEnvelope viaSocket: aWebSocket [
 	aWebSocket sendMessage: anEnvelope asPhxJsonString
 ]
 
-{ #category : #accessing }
-PhxServerWebSocketHandler >> sessionClass [
-
-	^ sessionClass ifNil: [ PhxServerWebSocketSession ]
-]
-
-{ #category : #accessing }
-PhxServerWebSocketHandler >> sessionClass: anObject [
-
-	sessionClass := anObject
-]
-
 { #category : #'live code update broadcasting' }
 PhxServerWebSocketHandler >> subscribeToSystemAnnouncer [
 	<script>
@@ -189,12 +177,15 @@ PhxServerWebSocketHandler >> unsubscribeFromSystemAnnouncer [
 
 { #category : #accessing }
 PhxServerWebSocketHandler >> value: aWebSocket [
-	[ self register: aWebSocket.
-	aWebSocket
-		runWith:
-			[ :aMessage | self handleMessage: aMessage forSocket: aWebSocket ] ]
+
+	[
+	self register: aWebSocket.
+	aWebSocket runWith: [ :aMessage |
+		self handleMessage: aMessage forSocket: aWebSocket ] ]
 		on: Error
-		do: [ self unregister: aWebSocket ]
+		do: [ :ex |
+			('Websocket error: ' , ex messageText) crTrace.
+			self unregister: aWebSocket ]
 ]
 
 { #category : #accessing }

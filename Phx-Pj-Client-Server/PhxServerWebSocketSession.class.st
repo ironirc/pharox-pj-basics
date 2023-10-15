@@ -8,14 +8,18 @@ Class {
 		'webSocket',
 		'properties',
 		'monitor',
-		'sentEnvelopesWaitingForResponse'
+		'sentEnvelopesWaitingForResponse',
+		'context'
 	],
 	#category : #'Phx-Pj-Client-Server-server-side'
 }
 
 { #category : #accessing }
 PhxServerWebSocketSession >> checkAccessToken: jwtString [
-	^#()
+
+	^ self context
+		  ifNil: [ #(  ) ]
+		  ifNotNil: [ :ctx | ctx checkAccessToken: jwtString ]
 ]
 
 { #category : #accessing }
@@ -25,6 +29,18 @@ PhxServerWebSocketSession >> checkAccessTokenOfEnvelope: env [
 		do: [ :ex | 
 			self
 				error: 'Your access token seems to be invalid (' , ex messageText , ')' ]
+]
+
+{ #category : #accessing }
+PhxServerWebSocketSession >> context [
+
+	^ context
+]
+
+{ #category : #accessing }
+PhxServerWebSocketSession >> context: anObject [
+
+	context := anObject
 ]
 
 { #category : #public }
