@@ -47,9 +47,9 @@ PhxSpaAbstractMessage >> expectsResponse [
 	^ true
 ]
 
-{ #category : #private }
+{ #category : #unused }
 PhxSpaAbstractMessage >> getAccessTokenUnverified: jwtString [
-	
+	"no senders"	
 
 	<pharoJsSkip>
 	| jwt claims |
