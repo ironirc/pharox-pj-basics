@@ -67,6 +67,11 @@ PhxServerWebSocketRequestContext >> incomingEnvelope: anObject [
 	incomingEnvelope := anObject
 ]
 
+{ #category : #testing }
+PhxServerWebSocketRequestContext >> isProduction [
+	^self  ensuredContext environmentTag = 'production'.
+]
+
 { #category : #accessing }
 PhxServerWebSocketRequestContext >> jwtClaims [
 
