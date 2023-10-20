@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #accessing }
+PhxClientWebSocketRequestContext >> client [
+
+	^self wsHandler client
+]
+
+{ #category : #accessing }
 PhxClientWebSocketRequestContext >> msg [
 	
 	^ self receivedEnvelope msg
