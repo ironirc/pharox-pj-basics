@@ -124,9 +124,18 @@ PhxServerWebSocketSession >> propertyAt: key ifAbsent: ifAbsentBlock [
 ]
 
 { #category : #accessing }
+PhxServerWebSocketSession >> propertyAt: key ifAbsentPut: aBlock [
+
+	^ self properties
+		  at: key
+		  ifAbsent: [ self propertyAt: key put: aBlock value ]
+]
+
+{ #category : #accessing }
 PhxServerWebSocketSession >> propertyAt: key put: object [
 
-	self properties at: key put: object
+	self properties at: key put: object.
+	^object
 ]
 
 { #category : #'ad hoc dev' }
