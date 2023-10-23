@@ -5,10 +5,18 @@ Class {
 }
 
 { #category : #initialization }
+PhxPjServer class >> handleApiRequest: request [
+
+	PhxJsonReader readFromString: request contents asString.
+	^SygSpaHeartBeatMsg new asPhxJsonString
+	
+]
+
+{ #category : #initialization }
 PhxPjServer class >> registerApplication: appClass withConfigDict: dict [
 
 	| port deleg httpPath |
-	port := dict getPath: #(port).
+	port := dict getPath: #( port ).
 	deleg := (self startServerOn: port) delegate.
 	httpPath := '/' , (dict getPath: #( httpPath )).
 	deleg map: httpPath to: [ :request :response |
@@ -16,10 +24,19 @@ PhxPjServer class >> registerApplication: appClass withConfigDict: dict [
 	deleg map: httpPath , '.js' to: [ :request :response |
 		response entity: (ZnEntity text: appClass initialScript) ].
 	deleg map: httpPath , '-ws' to: (ZnWebSocketDelegate
-			 map: (httpPath , '-ws')
+			 map: httpPath , '-ws'
 			 to: (appClass newServerWebSocketHandlerForConfigDict: dict)).
+	deleg map: httpPath , '-api' to: [ :request :response |
+		"new connectionless end-point.
+			-to avoid overhead of too many websocket-connections
+			-to enable balancing between servers.
+			-no state kept on server
+			-yet use the same message infrastructure as is used with websockets
+			-All calls are posts."
+		response entity: (ZnEntity text: (self handleApiRequest: request))].
 	deleg map: httpPath , '.config' to: [ :request :response |
-		response entity: (ZnEntity text: (self translateDictForClient: dict) asJsonString) ]
+		response entity:
+			(ZnEntity text: (self translateDictForClient: dict) asJsonString) ]
 ]
 
 { #category : #initialization }
