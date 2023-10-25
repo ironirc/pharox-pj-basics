@@ -7,8 +7,8 @@ Class {
 { #category : #initialization }
 PhxPjServer class >> handleApiRequest: request [
 
-	PhxJsonReader readFromString: request contents asString.
-	^SygSpaHeartBeatMsg new asPhxJsonString
+	"PhxJsonReader readFromString: request contents asString.
+	^SygSpaHeartBeatMsg new asPhxJsonString"
 	
 ]
 
