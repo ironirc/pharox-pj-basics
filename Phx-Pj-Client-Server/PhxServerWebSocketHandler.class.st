@@ -28,7 +28,7 @@ PhxServerWebSocketHandler >> boadcastMessage: msg [
 		broadcastEnvelopeToAllRegisteredWebsockets: msg wrapInEnvelope
 ]
 
-{ #category : #private }
+{ #category : #actions }
 PhxServerWebSocketHandler >> broadcastEnvelopeToAllRegisteredWebsockets: anEnvelope [
 
 	webSocketsDict valuesDo: [ :wsi | 
@@ -38,7 +38,7 @@ PhxServerWebSocketHandler >> broadcastEnvelopeToAllRegisteredWebsockets: anEnvel
 				do: [ :ex | ex return ] ] ]
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 PhxServerWebSocketHandler >> closeAllWebsockets [
 	webSocketsDict keys copy
 		do: [ :each | 
@@ -104,7 +104,7 @@ PhxServerWebSocketHandler >> isSubscribedToSystemAnnouncer [
 	^ SystemAnnouncer uniqueInstance hasSubscriber: self
 ]
 
-{ #category : #private }
+{ #category : #actions }
 PhxServerWebSocketHandler >> register: clientWebSocket [
 
 	Transcript
@@ -118,7 +118,7 @@ PhxServerWebSocketHandler >> register: clientWebSocket [
 		webSocketsDict at: clientWebSocket put: newWsi ]
 ]
 
-{ #category : #accessing }
+{ #category : #'obsolete - unused' }
 PhxServerWebSocketHandler >> replaceOldWebSocket: oldWebSocket with: newWebSocket [
 
 	webSocketsDict
@@ -159,7 +159,7 @@ PhxServerWebSocketHandler >> subscribeToSystemAnnouncer [
 		to: self 
 ]
 
-{ #category : #private }
+{ #category : #actions }
 PhxServerWebSocketHandler >> unregister: clientWebSocket [
 
 	lock critical: [ "webSocketsDict removeKey: clientWebSocket ifAbsent: [  ].""Give clients opportunity to recover the session"
