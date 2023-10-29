@@ -76,7 +76,9 @@ PhxServerWebSocketSession >> handleIncomingEnvelope: env fromHandler: wsh [
 	rc jwtClaims: (self checkAccessTokenOfEnvelope: env).
 	monitor critical: [
 		wsh context ifNotNil: [ :c | c prepareForNewRequest ]. "where to put this?"
-		rc handleIncomingMessage: env msg ]
+		rc handleIncomingMessage: env msg.
+		"('PhxServerWebSocketSession>>#handleIncomingEnvelope:fromHandler: - Post handleIncomingMessage: '
+		 , env msg class name) crTrace" ]
 ]
 
 { #category : #'initialize-release' }
@@ -169,7 +171,7 @@ PhxServerWebSocketSession >> sendEnvelope: anEnvelope [
 	self webSocket isConnected ifFalse: [ 
 		^ self error: 'websocket not connected' ].
 
-	anEnvelope msg expectsResponse
+	anEnvelope msg expectsResponseFromClient
 		ifTrue: [ 
 			| sentEnv |
 			sentEnv := PhxEnvelopeWaitingForResponse new.

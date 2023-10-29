@@ -14,6 +14,12 @@ Class {
 	#category : #'Phx-Pj-Client-Server-client-side'
 }
 
+{ #category : #constants }
+PhxClientWebSocketHandler class >> defaultTimeoutMs [  
+
+	^20000
+]
+
 { #category : #accessing }
 PhxClientWebSocketHandler >> client [
 
@@ -30,6 +36,33 @@ PhxClientWebSocketHandler >> client: anObject [
 PhxClientWebSocketHandler >> clientId [
 
 	^ self client ifNotNil: [ :c | c class clientId ]
+]
+
+{ #category : #'server messaging' }
+PhxClientWebSocketHandler >> enqueueEnvelope: env onResponseDo: contBlock [
+
+	| cont |
+	cont := PhxEnvelopeWithContinuation
+		        envelope: env
+		        continuationBlock: contBlock.
+	continuations add: cont
+]
+
+{ #category : #accessing }
+PhxClientWebSocketHandler >> handleReceivedEnvelope: rcvdEnvelope [
+
+	| envWithCont rc |
+	envWithCont := self takeEnvelopeWithContinuationFromQueue:
+		               rcvdEnvelope respToMsgId.
+	rc := PhxClientWebSocketRequestContext new.
+	rc receivedEnvelope: rcvdEnvelope.
+	rc wsHandler: self.
+	envWithCont ifNotNil: [
+		rc sentEnvelope: envWithCont envelope.
+		"a prior sent envelope, being answered"
+		envWithCont executeFor: rc ].
+	"moreover, give the message a chance to execute something (special cases)"
+	rcvdEnvelope msg executeInResponseContext: rc
 ]
 
 { #category : #'initialize-release' }
@@ -68,26 +101,15 @@ PhxClientWebSocketHandler >> onWebSocketError: event [
 { #category : #accessing }
 PhxClientWebSocketHandler >> onWebSocketMessage: event [
 
-	| env envWithCont rc |
-	self logAll: { 
+	| rcvdEnvelope |
+	self logAll: {
 			'receive'.
 			event data }.
-	env := PhxJsonReader readFromString: event data.
+	rcvdEnvelope := PhxJsonReader readFromString: event data.
 	"	self logSelfAndAll: { 
 			'onWebSocketMessage:'.
 			env }."
-
-	envWithCont := self takeEnvelopeWithContinuationFromQueue:
-		               env respToMsgId.
-	rc := PhxClientWebSocketRequestContext new.
-	rc receivedEnvelope: env.
-	rc wsHandler: self.
-	envWithCont ifNotNil: [ 
-		rc sentEnvelope: envWithCont envelope.
-		envWithCont continuationBlock ifNotNil: [ :cb | "a prior sent envelope, being answered" 
-			cb value: rc ] ].
-	"moreover, any incoming message gets a chance to do something"
-	env msg executeInResponseContext: rc
+	self handleReceivedEnvelope: rcvdEnvelope
 ]
 
 { #category : #'server messaging' }
@@ -110,51 +132,39 @@ PhxClientWebSocketHandler >> promiseAccessToken [
 { #category : #'server messaging' }
 PhxClientWebSocketHandler >> promiseResponseFor: aMessage [
 
-	^ self promise: [ :resolve :reject | 
+	^ self
+		  promiseResponseFor: aMessage
+		  timeout: (self timeoutMs ifNil: [ self class defaultTimeoutMs ])
+]
+
+{ #category : #'server messaging' }
+PhxClientWebSocketHandler >> promiseResponseFor: aMessage timeout: ms [
+
+	^ self promiseAccessToken then: [ :aJwt |
 		  self
-			  sendMessageToServer: aMessage
-			  onResponseDo: [ :rc | 
-				  self logAll: { 
-						  'onResponseDo:'.
-						  rc }.
-				  resolve value: rc
-				  "TODO 2022-08-25 detect error of the call, and reject?" ]
-			  isResponseToIncomingEnvelope: nil ]
+			  promise: [ :resolve :reject |
+				  | env |
+				  env := aMessage wrapInEnvelope.
+				  env senderId: self clientId.
+				  env jwt: aJwt.
+				  self
+					  enqueueEnvelope: env
+					  onResponseDo: [ :respCtx | resolve value: respCtx ].
+				  self sendStringThroughWebsocket: env asPhxJsonString ]
+			  withinMs: ms ]
 ]
 
 { #category : #'server messaging' }
-PhxClientWebSocketHandler >> sendMessageToServer: aMessage [
+PhxClientWebSocketHandler >> sendMessageToServer: aMessage inResponseToEnvelope: incomingEnvelope [
+	"incomingEnvelope seldom needed. It would be the envelope of a request that came from server"
 
-	self
-		sendMessageToServer: aMessage
-		onResponseDo: nil
-		isResponseToIncomingEnvelope: nil
-]
-
-{ #category : #'server messaging' }
-PhxClientWebSocketHandler >> sendMessageToServer: aMessage onResponseDo: aBlock isResponseToIncomingEnvelope: incomingEnvelope [
-
-	| env |
 	self promiseAccessToken then: [ :aJwt |
+		| env |
 		env := aMessage wrapInEnvelope.
-		incomingEnvelope ifNotNil: [
-			env respToMsgId: incomingEnvelope msg id ].
 		env senderId: self clientId.
 		env jwt: aJwt.
-
-
-		aBlock ifNotNil: [
-			continuations add:
-				(PhxEnvelopeWithContinuation
-					 envelope: env
-					 continuationBlock: aBlock) ].
-		"self logSelfAndAll: {
-				'sendMessageToServer:'.
-				aMessage.
-				'expectsResponse:'.
-				aBlock notNil.
-				'isResponseTo:'.
-				(incomingEnvelope ifNotNil: [ incomingEnvelope msg id ]) }."
+		incomingEnvelope ifNotNil: [
+			env respToMsgId: incomingEnvelope msg id ].
 		self sendStringThroughWebsocket: env asPhxJsonString ]
 ]
 
@@ -211,6 +221,18 @@ PhxClientWebSocketHandler >> takeEnvelopeWithContinuationFromQueue: msgId [
 		console log: 'removed envWithCont ' with: envWithCont.
 		continuations remove: envWithCont ].
 	^ envWithCont
+]
+
+{ #category : #accessing }
+PhxClientWebSocketHandler >> timeoutMs [
+
+	^ timeoutMs
+]
+
+{ #category : #accessing }
+PhxClientWebSocketHandler >> timeoutMs: anObject [
+
+	timeoutMs := anObject
 ]
 
 { #category : #accessing }

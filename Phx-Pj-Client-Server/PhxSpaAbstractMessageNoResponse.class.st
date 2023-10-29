@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #testing }
-PhxSpaAbstractMessageNoResponse >> expectsResponse [ 
+PhxSpaAbstractMessageNoResponse >> expectsResponseFromClient [ 
 	^false
 ]

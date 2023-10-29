@@ -33,11 +33,11 @@ PhxClientWebSocketRequestContext >> receivedEnvelope: anObject [
 
 { #category : #accessing }
 PhxClientWebSocketRequestContext >> sendResponseMessage: outgoingMessage [
+	"answer a request initiated by the server"
 
 	self wsHandler
 		sendMessageToServer: outgoingMessage
-		onResponseDo: nil
-		isResponseToIncomingEnvelope: self receivedEnvelope
+		inResponseToEnvelope: self receivedEnvelope
 ]
 
 { #category : #accessing }

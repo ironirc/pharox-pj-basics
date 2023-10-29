@@ -191,6 +191,6 @@ PhxServerWebSocketHandler >> value: aWebSocket [
 { #category : #accessing }
 PhxServerWebSocketHandler >> webSocketSessionForWebSocket: aWebSocket [
 
-	('WebSocketHandler ' , self hash printString) crTrace.
+	"('WebSocketHandler ' , self hash printString) crTrace."
 	^ webSocketsDict at: aWebSocket ifAbsent: [ nil ]
 ]

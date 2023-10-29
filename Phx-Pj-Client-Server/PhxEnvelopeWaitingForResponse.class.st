@@ -5,7 +5,7 @@ Class {
 		'sentEnvelope',
 		'responseEnvelope'
 	],
-	#category : #'Phx-Pj-Client-Server-shared'
+	#category : #'Phx-Pj-Client-Server-server-side'
 }
 
 { #category : #'as yet unclassified' }

@@ -43,7 +43,7 @@ PhxSpaAbstractMessage >> executeInResponseContext: rc [
 ]
 
 { #category : #testing }
-PhxSpaAbstractMessage >> expectsResponse [
+PhxSpaAbstractMessage >> expectsResponseFromClient [
 	^ true
 ]
 
@@ -82,6 +82,11 @@ PhxSpaAbstractMessage >> initialize [
 { #category : #'initialize-release' }
 PhxSpaAbstractMessage >> initializeId [
 	id := PhxSpaAbstractMessage nextMessageId 
+]
+
+{ #category : #testing }
+PhxSpaAbstractMessage >> isError [
+	^false
 ]
 
 { #category : #private }

@@ -23,9 +23,10 @@ PhxServerWebSocketRequestContext >> ensuredContext [
 
 { #category : #services }
 PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
-
+	('Received ' , msg class name ) crTrace. 
 	[
-	msg respondForRequestContext: self
+	msg respondForRequestContext: self.
+	"('PhxServerWebSocketRequestContext>>#handleIncomingMessage: - Post respondForRequestContext: ' , msg class name) crTrace."
 	"debugString := String
 		streamContents: [ :ws | 
 			ws << 'SS-MessageHandler: received envelope with message of type '

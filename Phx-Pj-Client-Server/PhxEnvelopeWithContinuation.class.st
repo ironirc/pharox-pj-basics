@@ -5,15 +5,16 @@ Class {
 		'envelope',
 		'continuationBlock'
 	],
-	#category : #'Phx-Pj-Client-Server-shared'
+	#category : #'Phx-Pj-Client-Server-client-side'
 }
 
 { #category : #'instance creation' }
 PhxEnvelopeWithContinuation class >> envelope: anEnvelope continuationBlock: aBlock [
+
 	^ self new
-		envelope: anEnvelope;
-		continuationBlock: aBlock;
-		yourself
+		  envelope: anEnvelope;
+		  continuationBlock: aBlock;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -34,4 +35,10 @@ PhxEnvelopeWithContinuation >> envelope [
 { #category : #accessing }
 PhxEnvelopeWithContinuation >> envelope: anObject [
 	envelope := anObject
+]
+
+{ #category : #'as yet unclassified' }
+PhxEnvelopeWithContinuation >> executeFor: aReqCtx [
+
+	continuationBlock ifNotNil: [ :cb | cb value: aReqCtx ]
 ]
