@@ -8,7 +8,8 @@ Class {
 		'continuations',
 		'webSocketUrl',
 		'tokenProvider',
-		'client'
+		'client',
+		'timeoutMs'
 	],
 	#category : #'Phx-Pj-Client-Server-client-side'
 }
