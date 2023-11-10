@@ -102,13 +102,13 @@ PhxClientWebSocketHandler >> onWebSocketError: event [
 PhxClientWebSocketHandler >> onWebSocketMessage: event [
 
 	| rcvdEnvelope |
-	self logAll: {
+	"self logAll: {
 			'receive'.
-			event data }.
+			event data }."
 	rcvdEnvelope := PhxJsonReader readFromString: event data.
-	"	self logSelfAndAll: { 
-			'onWebSocketMessage:'.
-			env }."
+		self logAll: { 
+			'received env:'.
+			rcvdEnvelope msg }.
 	self handleReceivedEnvelope: rcvdEnvelope
 ]
 
@@ -150,6 +150,9 @@ PhxClientWebSocketHandler >> promiseResponseFor: aMessage timeout: ms [
 				  self
 					  enqueueEnvelope: env
 					  onResponseDo: [ :respCtx | resolve value: respCtx ].
+				  self logAll: {
+						  'sent'.
+						  env msg }.
 				  self sendStringThroughWebsocket: env asPhxJsonString ]
 			  withinMs: ms ]
 ]
@@ -165,6 +168,9 @@ PhxClientWebSocketHandler >> sendMessageToServer: aMessage inResponseToEnvelope:
 		env jwt: aJwt.
 		incomingEnvelope ifNotNil: [
 			env respToMsgId: incomingEnvelope msg id ].
+		self logAll: {
+				'sent'.
+				env msg }.
 		self sendStringThroughWebsocket: env asPhxJsonString ]
 ]
 
@@ -180,9 +186,9 @@ PhxClientWebSocketHandler >> sendStringThroughWebsocket: aString [
 	"	self logSelfAndAll: { 
 			'sendStringThroughWebsocket:'.
 			aString }."
-	self logAll: {
+"	self logAll: {
 			'send'.
-			aString }.
+			aString }."
 	webSocket send: aString
 ]
 
@@ -217,9 +223,9 @@ PhxClientWebSocketHandler >> takeEnvelopeWithContinuationFromQueue: msgId [
 	envWithCont := continuations
 		               detect: [ :each | each envelope msg id = msgId ]
 		               ifNone: [ nil ].
-	envWithCont ifNotNil: [
+	"envWithCont ifNotNil: [
 		console log: 'removed envWithCont ' with: envWithCont.
-		continuations remove: envWithCont ].
+		continuations remove: envWithCont ]."
 	^ envWithCont
 ]
 
