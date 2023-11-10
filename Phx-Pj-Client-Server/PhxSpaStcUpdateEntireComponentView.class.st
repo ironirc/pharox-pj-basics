@@ -8,5 +8,7 @@ Class {
 PhxSpaStcUpdateEntireComponentView >> executeInResponseContext: rc [
 
 	rc client allChildrenDo: [ :c | c isVueDirty: true ].
-	rc client root forceRebuild  
+	rc client root forceRebuild.
+"	console log: 'initializeAllCss' on: 	rc client root class."
+	PhxC23Component initializeAllCss
 ]
