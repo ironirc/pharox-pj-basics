@@ -1,6 +1,6 @@
 Class {
 	#name : #PhxSpaResponse,
-	#superclass : #PhxSpaAbstractMessageNoResponse,
+	#superclass : #PhxSpaAbstractMessage,
 	#instVars : [
 		'isSuccess',
 		'type',
@@ -8,6 +8,11 @@ Class {
 	],
 	#category : #'Phx-Pj-Client-Server-shared'
 }
+
+{ #category : #testing }
+PhxSpaResponse >> expectsResponseFromClient [ 
+	^false
+]
 
 { #category : #'initialize-release' }
 PhxSpaResponse >> initialize [

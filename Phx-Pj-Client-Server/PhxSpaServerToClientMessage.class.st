@@ -1,5 +1,5 @@
 Class {
 	#name : #PhxSpaServerToClientMessage,
-	#superclass : #PhxSpaAbstractMessageNoResponse,
+	#superclass : #PhxSpaResponse,
 	#category : #'Phx-Pj-Client-Server-shared'
 }

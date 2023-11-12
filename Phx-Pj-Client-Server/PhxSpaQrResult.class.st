@@ -8,6 +8,12 @@ Class {
 	#category : #'Phx-Pj-Client-Server-shared'
 }
 
+{ #category : #'initialize-release' }
+PhxSpaQrResult >> initialize [
+	super initialize. 
+	isSuccess := true
+]
+
 { #category : #accessing }
 PhxSpaQrResult >> rawQueryTime [
 	^ rawQueryTime

@@ -1,9 +1,6 @@
 Class {
 	#name : #PhxSpaStcRaiseErrorToast,
 	#superclass : #PhxSpaServerToClientMessage,
-	#instVars : [
-		'message'
-	],
 	#category : #'Phx-Pj-Client-Server-shared'
 }
 
