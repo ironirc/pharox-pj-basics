@@ -27,9 +27,15 @@ PhxPjPromiseTrait >> promise: aBlock [
 { #category : #promises }
 PhxPjPromiseTrait >> promise: aBlock withinMs: ms [
 
-	^ self promiseRace: {
-			  (self promise: aBlock).
-			  (self promiseTimeoutAfterMs: ms) }
+	^ self promise: [ :res :rej |
+		  | timeoutId |
+		  timeoutId := PhxPjTimer  afterMilliseconds: ms do: [
+			               rej value:
+				               (Error new messageText:
+					                'Timeout after ' + ms printString + ' ms') ].
+		  (self promise: aBlock) then: [ :result |
+			  PhxPjTimer clearTimeoutWithHandle: timeoutId.
+			  res value: result ] ]
 ]
 
 { #category : #promises }
@@ -51,9 +57,4 @@ PhxPjPromiseTrait >> promiseReject: aValue [
 { #category : #promises }
 PhxPjPromiseTrait >> promiseResolve: aValue [
 	<javascript: 'return Promise.resolve(aValue)'>
-]
-
-{ #category : #promises }
-PhxPjPromiseTrait >> promiseTimeoutAfterMs: ms [
-	<javascript: 'return new Promise((resolve, reject) => setTimeout(() => reject(new Error("Timeout")), ms))'>
 ]
