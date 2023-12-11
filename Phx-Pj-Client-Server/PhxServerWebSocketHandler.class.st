@@ -82,7 +82,7 @@ PhxServerWebSocketHandler >> handleMessage: rawSocketMessage forSocket: aWebSock
 		       on: Error
 		       do: [ :ex |
 			       | msg |
-			       msg := PhxSpaStcRaiseErrorToast new.  "probably better to just send a sort of error message instead of specifically raising a toast?"
+			       msg := PhxSpaStcRaiseErrorToast new.  "probably better to just send an error message instead of specifically raising a toast?"
 			       msg message:
 				       'Server error while reading envelope: '
 				       , ex messageText doubleQuoted.
