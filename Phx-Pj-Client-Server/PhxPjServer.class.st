@@ -36,7 +36,7 @@ PhxPjServer class >> registerApplication: appClass withConfigDict: dict [
 		response entity: (ZnEntity text: (self handleApiRequest: request))].
 	deleg map: httpPath , '.config' to: [ :request :response |
 		response entity:
-			(ZnEntity text: (self translateDictForClient: dict) asJsonString) ]
+			(ZnEntity text: (self translateDictForClient: dict) asJSON) ]
 ]
 
 { #category : #initialization }
