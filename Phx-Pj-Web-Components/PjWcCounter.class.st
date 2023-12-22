@@ -16,7 +16,7 @@ PjWcCounter class >> tagName [
 
 { #category : #initialization }
 PjWcCounter >> initialize [
-
+	super initialize. 
 	count := 0
 ]
 

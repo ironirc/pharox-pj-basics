@@ -43,6 +43,7 @@ PjWebComponent class >> isAbstract [
 PjWebComponent class >> jsInstantiate: aClass [
 
 	<javascript: 'return new aClass'>
+	self error: 'can''t be instantiated in Smalltalk, only in JS'
 ]
 
 { #category : #'as yet unclassified' }
@@ -130,30 +131,15 @@ PjWebComponent >> initialRenderOn: x [
 
 { #category : #initialization }
 PjWebComponent >> initialize [
-
 	_privateState ifNil: [ _privateState := Object new ].
+	self attachShadow: { ('mode' -> 'open') } asJsObject.
 
-]
 
-{ #category : #initialization }
-PjWebComponent >> js_constructor [
-	"The 'js_' prefix ensures that the constructor method gets transpiled without the 'pj_' prefix."
-	"The method body directly delegates to 'self privateConstruct' (hence the pj_ prefix there)"
-	<javascript: 'super(); this.pj_privateConstruct()'>
 ]
 
 { #category : #private }
 PjWebComponent >> newBuilder [
 	^ self htmlBuilderClass newOnElement: self shadowRoot
-]
-
-{ #category : #initialization }
-PjWebComponent >> privateConstruct [
-
-	self initialize.
-	self attachShadow: { ('mode' -> 'open') } asJsObject.
-	"self render"
-	
 ]
 
 { #category : #accessing }
