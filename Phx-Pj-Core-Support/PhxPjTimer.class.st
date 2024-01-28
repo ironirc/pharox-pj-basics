@@ -7,7 +7,7 @@ Class {
 { #category : #'as yet unclassified' }
 PhxPjTimer class >> afterEveryMilliseconds: ms do: aBlock [
 	<javascript:
-		'setInterval(aBlock,ms)'>
+		'return setInterval(aBlock,ms)'>
 	
 ]
 
@@ -15,6 +15,13 @@ PhxPjTimer class >> afterEveryMilliseconds: ms do: aBlock [
 PhxPjTimer class >> afterMilliseconds: ms do: aBlock [
 	<javascript:
 		'return setTimeout(aBlock,ms)'>
+	
+]
+
+{ #category : #'as yet unclassified' }
+PhxPjTimer class >> clearInterval: id [
+	<javascript:
+		'clearInterval(id)'>
 	
 ]
 
