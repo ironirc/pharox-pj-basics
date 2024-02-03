@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #testing }
+PhxPjConsole class >> log: arg [
+
+	<javascript: 'console.log(arg)'>
+]
+
+{ #category : #testing }
 PhxPjConsole class >> logAll: args [
 
 	<javascript: 'console.log(...args)'>

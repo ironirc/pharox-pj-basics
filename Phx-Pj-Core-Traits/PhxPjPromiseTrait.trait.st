@@ -20,6 +20,13 @@ PhxPjPromiseTrait classSide >> promiseResolve: aValue [
 ]
 
 { #category : #promises }
+PhxPjPromiseTrait >> isPromise: anObject [
+
+	<javascript: 'return obj === Promise.resolve(anObject);'>
+	
+]
+
+{ #category : #promises }
 PhxPjPromiseTrait >> promise: aBlock [
 	<javascript: 'return new Promise(aBlock)'>
 ]
