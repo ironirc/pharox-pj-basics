@@ -49,3 +49,11 @@ PhxPubSubTrait >> onEvent: anEventTypeOrString do: aHandler for: aSubscriber [
 			'subcription:'.
 			newSub }"
 ]
+
+{ #category : #'pub-sub' }
+PhxPubSubTrait >> reEmitAllEventsOn: anObject [
+
+	psSubscriptions add: (PhxPubSubSubscriptionPassAll new
+			 object: anObject;
+			 yourself)
+]
