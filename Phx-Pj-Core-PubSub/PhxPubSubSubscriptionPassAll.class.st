@@ -15,7 +15,7 @@ PhxPubSubSubscriptionPassAll >> canHandleEvent: anEventOrString [
 { #category : #events }
 PhxPubSubSubscriptionPassAll >> handleEvent: anEventOrString [
 
-	self object emit: anEventOrString
+	self object emitEvent: anEventOrString
 ]
 
 { #category : #accessing }
