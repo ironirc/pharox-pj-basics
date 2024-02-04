@@ -41,6 +41,7 @@ BaselineOfPharoXBasics >> packages: spec [
 	spec package: 'Phx-Pj-Core-PubSub'  with: [ spec requires: #( 'PharoJS') ].
 	spec package: 'Phx-Pj-Web-Components' with: [ spec requires: #( 'Phx-Pj-Dom-Builder' ) ].
 	spec package: 'Phx-Pj-Client-Server'  with: [ spec requires: #( 'PharoJS' 'Phx-Pj-Core-PubSub' 'Phx-Pj-Core-Traits') ].
+	spec package: 'Phx-Pj-Testing-Framework'  with: [ spec requires: #( 'PharoJS' 'Phx-Pj-Core-PubSub' 'Phx-Pj-Core-Traits') ].
 
 
 ]
