@@ -6,7 +6,7 @@ Trait {
 	#category : #'Phx-Pj-Core-PubSub'
 }
 
-{ #category : #'pub-sub' }
+{ #category : #'pub-sub traits' }
 PhxPubSubTrait >> emitEvent: anEventOrString [
 
 	"self logAll: { 
@@ -18,17 +18,17 @@ PhxPubSubTrait >> emitEvent: anEventOrString [
 	psSubscriptions do: [ :sub | sub handleEvent: anEventOrString ]
 ]
 
-{ #category : #'pub-sub' }
+{ #category : #'pub-sub traits' }
 PhxPubSubTrait >> initializePubSubTrait [
 	psSubscriptions := OrderedCollection new.
 ]
 
-{ #category : #'pub-sub' }
+{ #category : #'pub-sub traits' }
 PhxPubSubTrait >> onEvent: anEventOrEventType do: aHandler [
 	self onEvent: anEventOrEventType do: aHandler for: nil
 ]
 
-{ #category : #'pub-sub' }
+{ #category : #'pub-sub traits' }
 PhxPubSubTrait >> onEvent: anEventTypeOrString do: aHandler for: aSubscriber [
 
 	| newSub |
@@ -50,7 +50,7 @@ PhxPubSubTrait >> onEvent: anEventTypeOrString do: aHandler for: aSubscriber [
 			newSub }"
 ]
 
-{ #category : #'pub-sub' }
+{ #category : #'pub-sub traits' }
 PhxPubSubTrait >> reEmitAllEventsOn: anObject [
 
 	psSubscriptions add: (PhxPubSubSubscriptionPassAll new
