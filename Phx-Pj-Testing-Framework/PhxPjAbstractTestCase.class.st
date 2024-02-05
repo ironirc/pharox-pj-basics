@@ -81,6 +81,12 @@ PhxPjAbstractTestCase >> should: aBlock raise: anExceptionalEvent [
 	self fail: 'expected exception: ' , anExceptionalEvent name
 ]
 
+{ #category : #asserting }
+PhxPjAbstractTestCase >> shouldRaiseError: aBlock [
+
+	self should: aBlock raise: Error
+]
+
 { #category : #initialize }
 PhxPjAbstractTestCase >> tearDown [
 
