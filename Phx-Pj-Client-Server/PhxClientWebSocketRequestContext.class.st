@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'sentEnvelope',
 		'receivedEnvelope',
-		'wsHandler'
+		'wsHandler',
+		'roundTripInMs'
 	],
 	#category : #'Phx-Pj-Client-Server-client-side'
 }
@@ -29,6 +30,18 @@ PhxClientWebSocketRequestContext >> receivedEnvelope [
 { #category : #accessing }
 PhxClientWebSocketRequestContext >> receivedEnvelope: anObject [
 	receivedEnvelope := anObject
+]
+
+{ #category : #accessing }
+PhxClientWebSocketRequestContext >> roundTripInMs [
+
+	^ roundTripInMs
+]
+
+{ #category : #accessing }
+PhxClientWebSocketRequestContext >> roundTripInMs: anObject [
+
+	roundTripInMs := anObject
 ]
 
 { #category : #accessing }

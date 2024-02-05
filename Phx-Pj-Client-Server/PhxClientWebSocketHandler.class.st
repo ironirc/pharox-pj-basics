@@ -45,17 +45,21 @@ PhxClientWebSocketHandler >> enqueueEnvelope: env onResponseDo: contBlock [
 	cont := PhxEnvelopeWithContinuation
 		        envelope: env
 		        continuationBlock: contBlock.
+	cont sentAtMsTimestamp: globalThis performance now. 
 	continuations add: cont
 ]
 
 { #category : #accessing }
-PhxClientWebSocketHandler >> handleReceivedEnvelope: rcvdEnvelope [
+PhxClientWebSocketHandler >> handleReceivedEnvelope: rcvdEnvelope msTimestamp: msTimestamp [
 
 	| envWithCont rc |
 	envWithCont := self takeEnvelopeWithContinuationFromQueue:
 		               rcvdEnvelope respToMsgId.
+
 	rc := PhxClientWebSocketRequestContext new.
 	rc receivedEnvelope: rcvdEnvelope.
+	rc roundTripInMs:
+		msTimestamp - envWithCont sentAtMsTimestamp.
 	rc wsHandler: self.
 	envWithCont ifNotNil: [
 		rc sentEnvelope: envWithCont envelope.
@@ -101,15 +105,16 @@ PhxClientWebSocketHandler >> onWebSocketError: event [
 { #category : #accessing }
 PhxClientWebSocketHandler >> onWebSocketMessage: event [
 
-	| rcvdEnvelope |
+	| rcvdEnvelope msTimestamp |
 	"self logAll: {
 			'receive'.
 			event data }."
+	msTimestamp := globalThis performance now. 
 	rcvdEnvelope := PhxJsonReader readFromString: event data.
-		self logAll: { 
+	self logAll: {
 			'received env:'.
 			rcvdEnvelope msg }.
-	self handleReceivedEnvelope: rcvdEnvelope
+	self handleReceivedEnvelope: rcvdEnvelope msTimestamp: msTimestamp
 ]
 
 { #category : #'server messaging' }

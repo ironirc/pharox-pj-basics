@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'envelope',
-		'continuationBlock'
+		'continuationBlock',
+		'sentAtMsTimestamp'
 	],
 	#category : #'Phx-Pj-Client-Server-client-side'
 }
@@ -41,4 +42,16 @@ PhxEnvelopeWithContinuation >> envelope: anObject [
 PhxEnvelopeWithContinuation >> executeFor: aReqCtx [
 
 	continuationBlock ifNotNil: [ :cb | cb value: aReqCtx ]
+]
+
+{ #category : #accessing }
+PhxEnvelopeWithContinuation >> sentAtMsTimestamp [
+
+	^ sentAtMsTimestamp
+]
+
+{ #category : #accessing }
+PhxEnvelopeWithContinuation >> sentAtMsTimestamp: anObject [
+
+	sentAtMsTimestamp := anObject
 ]
