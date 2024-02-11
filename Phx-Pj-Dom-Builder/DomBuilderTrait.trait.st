@@ -173,6 +173,11 @@ DomBuilderTrait >> a: aBlockOrString [
 ]
 
 { #category : #element }
+DomBuilderTrait >> audio: aBlockOrString [
+	self tag: 'audio' with: aBlockOrString
+]
+
+{ #category : #element }
 DomBuilderTrait >> br [
 	self _html: '<br>'
 ]
@@ -461,6 +466,11 @@ DomBuilderTrait >> slot: aBlockOrString [
 { #category : #element }
 DomBuilderTrait >> small: aBlockOrString [
 	self tag: 'small' with: aBlockOrString
+]
+
+{ #category : #element }
+DomBuilderTrait >> source: aBlockOrString [
+	self tag: 'source' with: aBlockOrString
 ]
 
 { #category : #element }
