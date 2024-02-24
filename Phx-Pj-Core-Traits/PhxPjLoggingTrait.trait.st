@@ -18,17 +18,6 @@ PhxPjLoggingTrait >> log: anObject [
 ]
 
 { #category : #'logging traits' }
-PhxPjLoggingTrait >> log: label timeToRun: aBlock [
-
-	| start |
-	start := self now.
-	aBlock value.
-	self logAll: {
-			label.
-			(self now - start) }
-]
-
-{ #category : #'logging traits' }
 PhxPjLoggingTrait >> logAll: args [
 
 	<javascript: 'console.log(...args)'>
@@ -53,4 +42,15 @@ PhxPjLoggingTrait >> profile: aBlock labeled: aLabel [
 	self console profile: aLabel.
 	aBlock value.
 	self console profileEnd: aLabel
+]
+
+{ #category : #'logging traits' }
+PhxPjLoggingTrait >> timeToRun: aBlock labeled: label [
+
+	| start |
+	start := self now.
+	aBlock value.
+	self logAll: {
+			label.
+			(self now - start) }
 ]

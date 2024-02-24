@@ -5,6 +5,15 @@ Class {
 }
 
 { #category : #tests }
+PhxPjTestTestingFrameworkBasics >> testAsyncError [
+
+	^ self promise: [ :resolve :reject |
+		  PhxPjTimer
+			  afterMilliseconds: 10
+			  do: [ reject value: 'deliberatly rejected the promise' ] ]
+]
+
+{ #category : #tests }
 PhxPjTestTestingFrameworkBasics >> testAsyncTest [
 
 	^ self promise: [ :resolve :reject |
@@ -15,7 +24,7 @@ PhxPjTestTestingFrameworkBasics >> testAsyncTest [
 
 { #category : #tests }
 PhxPjTestTestingFrameworkBasics >> testAsyncTestTimeout [
-	"timeout for this specific method is set to "
+	"timeout for this specific method is set to 10ms (see timeoutMsForMethod:)"
 
 	^ self promise: [ :resolve :reject |
 		  PhxPjTimer afterMilliseconds: 100 do: [

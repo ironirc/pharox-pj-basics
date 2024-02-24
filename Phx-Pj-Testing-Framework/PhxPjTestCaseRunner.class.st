@@ -4,8 +4,7 @@ Class {
 	#traits : 'PhxPjPromiseTrait + PhxPubSubTrait',
 	#classTraits : 'PhxPjPromiseTrait classTrait + PhxPubSubTrait classTrait',
 	#instVars : [
-		'testCaseClass',
-		'context'
+		'testCaseClass'
 	],
 	#category : #'Phx-Pj-Testing-Framework'
 }
@@ -27,10 +26,22 @@ PhxPjTestCaseRunner >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
+PhxPjTestCaseRunner >> methodNamesOfTestsToBeRun [
+
+	| results |
+	"self testCaseClass == PhxPjTestTestingFrameworkBasics ifFalse: [
+		^ #() ]."
+
+	results := self testCaseClass new methodNamesOfTests.
+	"results := results select: [ :e | e = 'testAsyncError' ]."
+	^ results
+]
+
+{ #category : #'as yet unclassified' }
 PhxPjTestCaseRunner >> promiseRun [
 
 	^ (PhxPjAsyncIterator
-		   on: self testCaseClass new methodNamesOfTests readStream
+		   on: self methodNamesOfTestsToBeRun readStream
 		   do: [ :methodName |
 			   | runner |
 			   runner := PhxPjTestMethodRunner

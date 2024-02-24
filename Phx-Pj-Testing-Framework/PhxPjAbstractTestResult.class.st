@@ -49,7 +49,11 @@ PhxPjAbstractTestResult >> renderOn: eb [
 		self cssOn: eb.
 		self renderClassAndMethodNameOn: eb.
 		eb << ' (' << (self timeToRun js_toFixed: 1) << 'ms) '.
-		self renderDetailsOn: eb ]
+		self renderDetailsOn: eb.
+		"eb << ' '	. 
+		eb button: [
+			eb onClick: [ self testCaseClass new perform: self methodName ].
+			eb << 'run' ]" ]
 ]
 
 { #category : #accessing }

@@ -1,8 +1,8 @@
 Class {
 	#name : #PhxPjTestMethodRunner,
 	#superclass : #PjDomController,
-	#traits : 'PhxPjPromiseTrait + PhxPubSubTrait',
-	#classTraits : 'PhxPjPromiseTrait classTrait + PhxPubSubTrait classTrait',
+	#traits : 'PhxPjPromiseTrait + PhxPubSubTrait + PhxPjLoggingTrait',
+	#classTraits : 'PhxPjPromiseTrait classTrait + PhxPubSubTrait classTrait + PhxPjLoggingTrait classTrait',
 	#instVars : [
 		'methodName',
 		'testCaseRunner',
@@ -85,30 +85,20 @@ PhxPjTestMethodRunner >> promiseTearDown [
 PhxPjTestMethodRunner >> runSafely [
 
 	self setStartTime.
-	^ [
-	  self setup_run_tearDown catch: [ :ex |
+	^ self setup_run_tearDown catch: [ :ex |
 		  self emitEvent: (PhxPjTestResultError new
 				   testCaseClass: self testCaseClass;
 				   methodName: self methodName;
 				   timeToRun: self timeSinceStart;
 				   originalError: ex;
 				   yourself).
-		  isError := true ] ]
-		  on: Error
-		  do: [ :ex |
-			  self emitEvent: (PhxPjTestResultError new
-					   testCaseClass: self testCaseClass;
-					   methodName: self methodName;
-					   timeToRun: self timeSinceStart;
-					   originalError: ex;
-					   yourself) ]
+		  isError := true ]
 ]
 
 { #category : #private }
 PhxPjTestMethodRunner >> runUnprotected [
 
-
-	^ testCase perform: self methodName
+	^ self promiseResolve: (testCase perform: self methodName)
 ]
 
 { #category : #private }
@@ -130,9 +120,9 @@ PhxPjTestMethodRunner >> setup_run_tearDown [
 		self emitEvent: ev ].
 	^ self
 		  promise: [ :resolve :reject |
-			  (self promiseSetup then: [ self runUnprotected ])
-				  finally: [ self promiseTearDown ];
-				  finally: [ resolve value ] ]
+			  ((self promiseSetup then: [
+				    self runUnprotected then: [ resolve value ] ]) catch: [ :ex |
+				   reject value: ex ]) finally: [ self promiseTearDown ] ]
 		  withinMs: self timeoutMs
 ]
 

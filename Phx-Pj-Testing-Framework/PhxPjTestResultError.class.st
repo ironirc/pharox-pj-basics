@@ -28,5 +28,7 @@ PhxPjTestResultError >> originalError: anObject [
 { #category : #accessing }
 PhxPjTestResultError >> renderDetailsOn: eb [
 
-	eb << self originalError description
+	self originalError isString
+		ifTrue: [ eb << self originalError ]
+		ifFalse: [ eb << self originalError description ]
 ]

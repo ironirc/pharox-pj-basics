@@ -20,13 +20,6 @@ PhxPjPromiseTrait classSide >> promiseResolve: aValue [
 ]
 
 { #category : #'promise traits' }
-PhxPjPromiseTrait >> isPromise: anObject [
-
-	<javascript: 'return obj === Promise.resolve(anObject);'>
-	
-]
-
-{ #category : #'promise traits' }
 PhxPjPromiseTrait >> promise: aBlock [
 	<javascript: 'return new Promise(aBlock)'>
 ]
@@ -34,15 +27,15 @@ PhxPjPromiseTrait >> promise: aBlock [
 { #category : #'promise traits' }
 PhxPjPromiseTrait >> promise: aBlock withinMs: ms [
 
-	^ self promise: [ :res :rej |
+	^ self promise: [ :resolve :reject |
 		  | timeoutId |
-		  timeoutId := PhxPjTimer  afterMilliseconds: ms do: [
-			               rej value:
+		  timeoutId := PhxPjTimer afterMilliseconds: ms do: [
+			               reject value:
 				               (Error new messageText:
 					                'Timeout after ' + ms printString + ' ms') ].
-		  (self promise: aBlock) then: [ :result |
-			  PhxPjTimer clearTimeoutWithHandle: timeoutId.
-			  res value: result ] ]
+		  (((self promise: aBlock) then: [ :result | resolve value: result ])
+			   catch: [ :ex | reject value: ex ]) finally: [
+			  PhxPjTimer clearTimeoutWithHandle: timeoutId ] ]
 ]
 
 { #category : #'promise traits' }
