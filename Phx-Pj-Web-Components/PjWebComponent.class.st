@@ -104,6 +104,12 @@ PjWebComponent >> connectedForFirstTime [
 	"self logSelfAndAll: { '#connectedForFirstTime' }"
 ]
 
+{ #category : #private }
+PjWebComponent >> domBuilderClass [
+
+	^ PjDomBuilder
+]
+
 { #category : #accessing }
 PjWebComponent >> hasBeenConnected [
 
@@ -114,12 +120,6 @@ PjWebComponent >> hasBeenConnected [
 PjWebComponent >> hasBeenConnected: aBoolean [
 
 	self psAt: #hasBeenConnected put: aBoolean
-]
-
-{ #category : #private }
-PjWebComponent >> htmlBuilderClass [
-
-	^ PjDomBuilder
 ]
 
 { #category : #rendering }
@@ -139,7 +139,7 @@ PjWebComponent >> initialize [
 
 { #category : #private }
 PjWebComponent >> newBuilder [
-	^ self htmlBuilderClass newOnElement: self shadowRoot
+	^ self domBuilderClass newOnElement: self shadowRoot
 ]
 
 { #category : #accessing }
