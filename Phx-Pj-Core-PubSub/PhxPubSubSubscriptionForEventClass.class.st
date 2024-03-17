@@ -24,3 +24,18 @@ PhxPubSubSubscriptionForEventClass >> eventClass: anObject [
 
 	eventClass := anObject
 ]
+
+{ #category : #accessing }
+PhxPubSubSubscriptionForEventClass >> handleEvent: anEvent with: nilArg [
+
+	nilArg ifNotNil: [
+		self error: 'no argument expected when the event is een object' ].
+	(self canHandleEvent: anEvent) ifFalse: [ ^ self ].
+	"PhxSpaConsole logAll: { 
+			self class name.
+			'handleEvent:'.
+			anEvent.
+			'handler:'.
+			handler }."
+	handler value: anEvent "apparently the handler block can have 0 arguments? side effect of PharoJs? (iow no need to use #cull:)"
+]

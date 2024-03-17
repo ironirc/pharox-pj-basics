@@ -86,6 +86,7 @@ PhxPjTestMethodRunner >> runSafely [
 
 	self setStartTime.
 	^ self setup_run_tearDown catch: [ :ex |
+		console trace. 
 		  self emitEvent: (PhxPjTestResultError new
 				   testCaseClass: self testCaseClass;
 				   methodName: self methodName;

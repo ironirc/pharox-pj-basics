@@ -18,6 +18,12 @@ PhxPubSubSubscriptionPassAll >> handleEvent: anEventOrString [
 	self object emitEvent: anEventOrString
 ]
 
+{ #category : #events }
+PhxPubSubSubscriptionPassAll >> handleEvent: anEventOrString with: anArgument [
+
+	self object emitEvent: anEventOrString with: anArgument
+]
+
 { #category : #accessing }
 PhxPubSubSubscriptionPassAll >> object [
 

@@ -9,13 +9,19 @@ Trait {
 { #category : #'pub-sub traits' }
 PhxPubSubTrait >> emitEvent: anEventOrString [
 
+	self emitEvent: anEventOrString with: nil
+]
+
+{ #category : #'pub-sub traits' }
+PhxPubSubTrait >> emitEvent: anEventOrString with: argument [
+
 	"self logAll: { 
 			self class name.
 			'emitEvent:'.
 			anEventOrString.
-			('to ' , psSubscriptions size , ' potential subscriptions') }.
-"
-	psSubscriptions do: [ :sub | sub handleEvent: anEventOrString ]
+			('to ' , psSubscriptions size , ' potential subscriptions') }."
+
+	psSubscriptions do: [ :sub | sub handleEvent: anEventOrString with: argument ]
 ]
 
 { #category : #'pub-sub traits' }

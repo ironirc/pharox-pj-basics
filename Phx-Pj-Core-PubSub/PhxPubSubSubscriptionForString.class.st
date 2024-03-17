@@ -21,6 +21,19 @@ PhxPubSubSubscriptionForString >> canHandleEvent: anEventOrString [
 ]
 
 { #category : #accessing }
+PhxPubSubSubscriptionForString >> handleEvent: anEvent with: anArgument [
+
+	(self canHandleEvent: anEvent) ifFalse: [ ^ self ].
+	"PhxSpaConsole logAll: { 
+			self class name.
+			'handleEvent:'.
+			anEvent.
+			'handler:'.
+			handler }."
+	handler value: anArgument "apparently the handler block can have 0 arguments? side effect of PharoJs? (iow no need to use #cull:)"
+]
+
+{ #category : #accessing }
 PhxPubSubSubscriptionForString >> string [
 
 	^ string
