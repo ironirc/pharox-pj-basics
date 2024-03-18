@@ -335,6 +335,12 @@ DomBuilderTrait >> onClick: aBlock [
 ]
 
 { #category : #'native event listeners' }
+DomBuilderTrait >> onClick_capturePhase: aBlock [ 
+	"no senders yet"
+	self currentElement addEventListener: #click block: aBlock with: true
+]
+
+{ #category : #'native event listeners' }
 DomBuilderTrait >> onContextMenu: aBlock [
 	self currentElement addEventListener: #contextmenu block: aBlock
 ]
