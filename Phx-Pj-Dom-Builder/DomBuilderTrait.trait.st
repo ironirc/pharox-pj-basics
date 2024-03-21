@@ -228,6 +228,11 @@ DomBuilderTrait >> div: aBlockOrString [
 ]
 
 { #category : #element }
+DomBuilderTrait >> fieldSet: aBlockOrString [
+	self tag: 'fieldset' with: aBlockOrString
+]
+
+{ #category : #element }
 DomBuilderTrait >> form: aBlockOrString [
 	self tag: 'form' with: aBlockOrString
 ]
@@ -302,6 +307,11 @@ DomBuilderTrait >> input: aString [
 { #category : #element }
 DomBuilderTrait >> label: aString [
 	self tag: 'label' with: aString
+]
+
+{ #category : #element }
+DomBuilderTrait >> legend: aBlockOrString [
+	self tag: 'legend' with: aBlockOrString
 ]
 
 { #category : #element }
