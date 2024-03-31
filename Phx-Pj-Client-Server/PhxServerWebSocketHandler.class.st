@@ -73,23 +73,37 @@ PhxServerWebSocketHandler >> ensuredContext [
 ]
 
 { #category : #accessing }
+PhxServerWebSocketHandler >> handleErrorsWhile: aBlock forWebSocketSession: webSocketSession incomingEnvelope: incomingEnvelope [
+
+	aBlock
+		on: Error
+		do: [ :ex |
+			| msg |
+			msg := PhxSpaStcRaiseErrorToast new. "probably better to just send an error message instead of specifically raising a toast?"
+			msg message:
+				'Server error while reading envelope: '
+				, ex messageText doubleQuoted.
+			webSocketSession sendEnvelope: msg wrapInEnvelope inResponseToIncoming: incomingEnvelope.
+			self ]
+]
+
+{ #category : #accessing }
 PhxServerWebSocketHandler >> handleMessage: rawSocketMessage forSocket: aWebSocket [
 
 	| env webSocketSession |
 	webSocketSession := self webSocketSessionForWebSocket: aWebSocket.
 	webSocketSession ifNil: [ self error: 'unknown websocket' ].
-	env := [ PhxJsonReader readFromString: rawSocketMessage ]
-		       on: Error
-		       do: [ :ex |
-			       | msg |
-			       msg := PhxSpaStcRaiseErrorToast new.  "probably better to just send an error message instead of specifically raising a toast?"
-			       msg message:
-				       'Server error while reading envelope: '
-				       , ex messageText doubleQuoted.
-			       webSocketSession sendEnvelope: msg wrapInEnvelope.
-			       ^ self ].
-	[ webSocketSession handleIncomingEnvelope: env fromHandler: self ]
-		fork
+	self
+		handleErrorsWhile: [
+		env := PhxJsonReader readFromString: rawSocketMessage ]
+		forWebSocketSession: webSocketSession
+		incomingEnvelope: env.
+	[
+	self
+		handleErrorsWhile: [
+		webSocketSession handleIncomingEnvelope: env fromHandler: self ]
+		forWebSocketSession: webSocketSession
+		incomingEnvelope: env ] fork
 ]
 
 { #category : #'live code update broadcasting' }

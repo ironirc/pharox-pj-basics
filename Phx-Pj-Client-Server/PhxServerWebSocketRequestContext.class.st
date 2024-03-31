@@ -100,7 +100,7 @@ PhxServerWebSocketRequestContext >> sendMessage: outgoingMessage [
 
 	self webSocketSession
 		sendMessage: outgoingMessage
-		isResponseToIncoming: nil
+		inResponseToIncoming: nil
 ]
 
 { #category : #services }
@@ -108,7 +108,7 @@ PhxServerWebSocketRequestContext >> sendResponseMessage: outgoingMessage [
 
 	self webSocketSession
 		sendMessage: outgoingMessage
-		isResponseToIncoming: self incomingEnvelope
+		inResponseToIncoming: self incomingEnvelope
 ]
 
 { #category : #services }

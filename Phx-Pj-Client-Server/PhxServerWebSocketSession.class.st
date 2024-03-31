@@ -194,17 +194,24 @@ PhxServerWebSocketSession >> sendEnvelope: anEnvelope [
 ]
 
 { #category : #accessing }
-PhxServerWebSocketSession >> sendMessage: outgoingMessage [
-	^self sendMessage: outgoingMessage isResponseToIncoming: nil 
+PhxServerWebSocketSession >> sendEnvelope: outgoingEnvelope inResponseToIncoming: anIncomingEnvelope [
+
+	anIncomingEnvelope ifNotNil: [
+		outgoingEnvelope respToMsgId: anIncomingEnvelope msg id ].
+	^ self sendEnvelope: outgoingEnvelope
 ]
 
 { #category : #accessing }
-PhxServerWebSocketSession >> sendMessage: outgoingMessage isResponseToIncoming: anIncomingEnvelope [
-	| outgoingEnvelope |
-	outgoingEnvelope := outgoingMessage wrapInEnvelope.
-	anIncomingEnvelope
-		ifNotNil: [ outgoingEnvelope respToMsgId: anIncomingEnvelope msg id ].
-	^self sendEnvelope: outgoingEnvelope
+PhxServerWebSocketSession >> sendMessage: outgoingMessage [
+	^self sendMessage: outgoingMessage inResponseToIncoming: nil 
+]
+
+{ #category : #accessing }
+PhxServerWebSocketSession >> sendMessage: outgoingMessage inResponseToIncoming: anIncomingEnvelope [
+
+	^ self
+		  sendEnvelope: outgoingMessage wrapInEnvelope
+		  inResponseToIncoming: anIncomingEnvelope
 ]
 
 { #category : #accessing }
