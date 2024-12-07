@@ -53,5 +53,17 @@ BaselineOfPharoXBasics >> postload: aLoader package: aPackageSpec [
 
 { #category : #'private - accessing' }
 BaselineOfPharoXBasics >> prerequisites: spec [
-	spec baseline: 'PharoJS' with: [ spec repository: 'github://PharoJS/PharoJS:pharo11' ].
+
+	"spec
+		baseline: 'PharoJS'
+		with: [ spec repository: 'github://PharoJS/PharoJS:pharo11' ]."
+
+	spec for: #( 'pharo11.x' ) do: [
+		spec
+			baseline: 'PharoJS'
+			with: [ spec repository: 'github://PharoJS/PharoJS:pharo11' ] ].
+	spec for: #( 'pharo12.x' ) do: [
+		spec
+			baseline: 'PharoJS'
+			with: [ spec repository: 'github://PharoJS/PharoJS:pharo12' ] ]
 ]
