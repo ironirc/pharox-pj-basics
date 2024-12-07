@@ -56,7 +56,7 @@ BaselineOfPharoXBasics >> prerequisites: spec [
 
 	spec
 		baseline: 'PharoJS'
-		with: [ spec repository: 'github://PharoJS/PharoJS:pharo11' ].
+		with: [ spec repository: 'github://PharoJS/PharoJS:pharo12' ].
 
 
 ]
