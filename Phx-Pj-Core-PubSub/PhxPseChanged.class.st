@@ -1,29 +1,30 @@
 Class {
-	#name : #PhxPseChanged,
-	#superclass : #PhxPubSubEvent,
+	#name : 'PhxPseChanged',
+	#superclass : 'PhxPubSubEvent',
 	#instVars : [
 		'newValue',
 		'oldValue'
 	],
-	#category : #'Phx-Pj-Core-PubSub'
+	#category : 'Phx-Pj-Core-PubSub',
+	#package : 'Phx-Pj-Core-PubSub'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPseChanged >> newValue [
 	^ newValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPseChanged >> newValue: anObject [
 	newValue := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPseChanged >> oldValue [
 	^ oldValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPseChanged >> oldValue: anObject [
 	oldValue := anObject
 ]

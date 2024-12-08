@@ -1,1 +1,1 @@
-Package { #name : #'Phx-Pj-Core-PubSub' }
+Package { #name : 'Phx-Pj-Core-PubSub' }

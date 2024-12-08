@@ -1,10 +1,11 @@
 Class {
-	#name : #PhxPubSubEvent,
-	#superclass : #Object,
-	#category : #'Phx-Pj-Core-PubSub'
+	#name : 'PhxPubSubEvent',
+	#superclass : 'Object',
+	#category : 'Phx-Pj-Core-PubSub',
+	#package : 'Phx-Pj-Core-PubSub'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhxPubSubEvent class >> asPhxPubSubSubscription [
 
 	^ PhxPubSubSubscriptionForEventClass new

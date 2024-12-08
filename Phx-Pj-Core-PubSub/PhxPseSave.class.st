@@ -1,5 +1,6 @@
 Class {
-	#name : #PhxPseSave,
-	#superclass : #PhxPubSubEvent,
-	#category : #'Phx-Pj-Core-PubSub'
+	#name : 'PhxPseSave',
+	#superclass : 'PhxPubSubEvent',
+	#category : 'Phx-Pj-Core-PubSub',
+	#package : 'Phx-Pj-Core-PubSub'
 }

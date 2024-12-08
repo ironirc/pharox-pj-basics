@@ -1,31 +1,32 @@
 Class {
-	#name : #PhxPubSubSubscriptionForEventClass,
-	#superclass : #PhxPubSubSubscription,
+	#name : 'PhxPubSubSubscriptionForEventClass',
+	#superclass : 'PhxPubSubSubscription',
 	#instVars : [
 		'eventClass'
 	],
-	#category : #'Phx-Pj-Core-PubSub'
+	#category : 'Phx-Pj-Core-PubSub',
+	#package : 'Phx-Pj-Core-PubSub'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPubSubSubscriptionForEventClass >> canHandleEvent: anEventOrString [
 
 	^ anEventOrString class = self eventClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPubSubSubscriptionForEventClass >> eventClass [
 
 	^ eventClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPubSubSubscriptionForEventClass >> eventClass: anObject [
 
 	eventClass := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPubSubSubscriptionForEventClass >> handleEvent: anEvent with: nilArg [
 
 	nilArg ifNotNil: [

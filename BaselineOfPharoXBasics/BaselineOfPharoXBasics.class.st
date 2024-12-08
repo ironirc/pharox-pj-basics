@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfPharoXBasics,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfPharoXBasics
+	#name : 'BaselineOfPharoXBasics',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfPharoXBasics',
+	#package : 'BaselineOfPharoXBasics'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfPharoXBasics >> baseline: spec [
 	<baseline>
 
@@ -19,7 +20,7 @@ BaselineOfPharoXBasics >> baseline: spec [
 	]
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 BaselineOfPharoXBasics >> compatibility: spec [
 
 	"Define a 'Compatibility' group that can be used as a dependency later to overcome differences in Pharo releases"
@@ -27,18 +28,19 @@ BaselineOfPharoXBasics >> compatibility: spec [
 	
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 BaselineOfPharoXBasics >> groups: spec [
 
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 BaselineOfPharoXBasics >> packages: spec [
 
 	spec package: 'Phx-Pj-Core-Traits' with: [  spec requires: #( 'PharoJS')  ].
 	spec package: 'Phx-Pj-Core-Support' with: [ spec requires: #( 'PharoJS') ].
 	spec package: 'Phx-Pj-Dom-Builder' with: [ spec requires: #( 'PharoJS')   ].
-	spec package: 'Phx-Pj-Core-PubSub'  with: [ spec requires: #( 'PharoJS') ].
+	spec package: 'Phx-Pj-Core-PubSub'  with: [ spec requires: #( 'PharoJS' ) ].
+	spec package: 'Phx-Pj-Core-PubSub-Testing'  with: [ spec requires: #( 'Phx-Pj-Testing-Framework' 'Phx-Pj-Core-PubSub') ].
 	spec package: 'Phx-Pj-Web-Components' with: [ spec requires: #( 'Phx-Pj-Dom-Builder' ) ].
 	spec package: 'Phx-Pj-Client-Server'  with: [ spec requires: #( 'PharoJS' 'Phx-Pj-Core-PubSub' 'Phx-Pj-Core-Traits') ].
 	spec package: 'Phx-Pj-Testing-Framework'  with: [ spec requires: #( 'PharoJS' 'Phx-Pj-Core-PubSub' 'Phx-Pj-Core-Traits') ].
@@ -46,12 +48,12 @@ BaselineOfPharoXBasics >> packages: spec [
 
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfPharoXBasics >> postload: aLoader package: aPackageSpec [
 	
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 BaselineOfPharoXBasics >> prerequisites: spec [
 
 	spec

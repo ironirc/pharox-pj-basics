@@ -1,13 +1,14 @@
 Class {
-	#name : #PhxPubSubSubscriptionForString,
-	#superclass : #PhxPubSubSubscription,
+	#name : 'PhxPubSubSubscriptionForString',
+	#superclass : 'PhxPubSubSubscription',
 	#instVars : [
 		'string'
 	],
-	#category : #'Phx-Pj-Core-PubSub'
+	#category : 'Phx-Pj-Core-PubSub',
+	#package : 'Phx-Pj-Core-PubSub'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPubSubSubscriptionForString >> canHandleEvent: anEventOrString [
 
 	"PhxSpaConsole logAll: { 
@@ -20,7 +21,7 @@ PhxPubSubSubscriptionForString >> canHandleEvent: anEventOrString [
 	^ anEventOrString asJsObject = self string asJsObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPubSubSubscriptionForString >> handleEvent: anEvent with: anArgument [
 
 	(self canHandleEvent: anEvent) ifFalse: [ ^ self ].
@@ -33,13 +34,13 @@ PhxPubSubSubscriptionForString >> handleEvent: anEvent with: anArgument [
 	handler value: anArgument "apparently the handler block can have 0 arguments? side effect of PharoJs? (iow no need to use #cull:)"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPubSubSubscriptionForString >> string [
 
 	^ string
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPubSubSubscriptionForString >> string: anObject [
 	string := anObject
 ]

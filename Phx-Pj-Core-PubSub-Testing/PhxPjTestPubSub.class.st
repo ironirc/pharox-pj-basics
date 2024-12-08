@@ -1,16 +1,17 @@
 Class {
-	#name : #PhxPjTestPubSub,
-	#superclass : #PhxPjAbstractTestCase,
-	#category : #'Phx-Pj-Core-PubSub-testing-client-side'
+	#name : 'PhxPjTestPubSub',
+	#superclass : 'PhxPjAbstractTestCase',
+	#category : 'Phx-Pj-Core-PubSub-Testing',
+	#package : 'Phx-Pj-Core-PubSub-Testing'
 }
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PhxPjTestPubSub >> setup [
 
 	super setup
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PhxPjTestPubSub >> tearDown [
 
 	super tearDown.
@@ -18,7 +19,7 @@ PhxPjTestPubSub >> tearDown [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestPubSub >> testEmitEvent_Emit0Arg_Accept0Arg [
 
 	| em1 result |
@@ -28,7 +29,7 @@ PhxPjTestPubSub >> testEmitEvent_Emit0Arg_Accept0Arg [
 	self assert: result equals: #success
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestPubSub >> testEmitEvent_Emit0Arg_Accept1Arg [
 
 	| em1 result |
@@ -38,7 +39,7 @@ PhxPjTestPubSub >> testEmitEvent_Emit0Arg_Accept1Arg [
 	self assert: result class equals: PhxPseChanged
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestPubSub >> testEmitEvent_Emit1Arg [
 
 	| em1 result |
@@ -48,7 +49,7 @@ PhxPjTestPubSub >> testEmitEvent_Emit1Arg [
 		em1 emitEvent: PhxPseChanged new with: #argThatCausesError ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestPubSub >> testEmitString_Emit0Arg_Accept0Arg [
 
 	| em1 result |
@@ -58,7 +59,7 @@ PhxPjTestPubSub >> testEmitString_Emit0Arg_Accept0Arg [
 	self assert: result equals: #success
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestPubSub >> testEmitString_Emit0Arg_Accept1Arg [
 
 	| em1 result |
@@ -68,7 +69,7 @@ PhxPjTestPubSub >> testEmitString_Emit0Arg_Accept1Arg [
 	self assert: result equals: nil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestPubSub >> testEmitString_Emit1Arg_Accept0Arg [
 
 	| em1 result |
@@ -78,7 +79,7 @@ PhxPjTestPubSub >> testEmitString_Emit1Arg_Accept0Arg [
 	self assert: result equals: #success
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestPubSub >> testEmitString_Emit1Arg_Accept1Arg [
 
 	| em1 result |
