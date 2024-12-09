@@ -36,8 +36,9 @@ BaselineOfPharoXBasics >> groups: spec [
 { #category : 'private - accessing' }
 BaselineOfPharoXBasics >> packages: spec [
 
-	spec package: 'Phx-Pj-Core-Traits' with: [  spec requires: #( 'PharoJS')  ].
-	spec package: 'Phx-Pj-Core-Support' with: [ spec requires: #( 'PharoJS') ].
+	spec package: 'Phx-Pj-Core' with: [  spec requires: #( 'PharoJS')  ].
+	spec package: 'Phx-Pj-Core-Traits' with: [  spec requires: #( 'PharoJS' 'Phx-Pj-Core')  ].
+	spec package: 'Phx-Pj-Core-Support' with: [ spec requires: #( 'PharoJS' 'Phx-Pj-Core-Traits' 'Phx-Pj-Core') ].
 	spec package: 'Phx-Pj-Dom-Builder' with: [ spec requires: #( 'PharoJS')   ].
 	spec package: 'Phx-Pj-Core-PubSub'  with: [ spec requires: #( 'PharoJS' ) ].
 	spec package: 'Phx-Pj-Core-PubSub-Testing'  with: [ spec requires: #( 'Phx-Pj-Testing-Framework' 'Phx-Pj-Core-PubSub') ].

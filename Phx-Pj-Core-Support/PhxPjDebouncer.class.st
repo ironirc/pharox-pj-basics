@@ -1,14 +1,15 @@
 Class {
-	#name : #PhxPjDebouncer,
-	#superclass : #PjDomController,
+	#name : 'PhxPjDebouncer',
+	#superclass : 'PjDomController',
 	#instVars : [
 		'ms',
 		'handle'
 	],
-	#category : #'Phx-Pj-Core-Support'
+	#category : 'Phx-Pj-Core-Support',
+	#package : 'Phx-Pj-Core-Support'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjDebouncer class >> ms: ms [
 
 	^ self new
@@ -16,20 +17,20 @@ PhxPjDebouncer class >> ms: ms [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjDebouncer >> do: aBlock [
 
 	handle ifNotNil: [ PhxPjTimer clearInterval: handle ].
 	handle := PhxPjTimer afterMilliseconds: self ms do: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjDebouncer >> ms [
 
 	^ ms
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjDebouncer >> ms: anObject [
 
 	ms := anObject
