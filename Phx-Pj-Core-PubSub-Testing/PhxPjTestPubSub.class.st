@@ -23,7 +23,7 @@ PhxPjTestPubSub >> tearDown [
 PhxPjTestPubSub >> testEmitEvent_Emit0Arg_Accept0Arg [
 
 	| em1 result |
-	em1 := PhxPjPubSubObjectForTesting new.
+	em1 := PhxPjPubSubObjectForTests new.
 	em1 onEvent: PhxPseChanged do: [ result := #success ].
 	em1 emitEvent: PhxPseChanged new.
 	self assert: result equals: #success
@@ -33,7 +33,7 @@ PhxPjTestPubSub >> testEmitEvent_Emit0Arg_Accept0Arg [
 PhxPjTestPubSub >> testEmitEvent_Emit0Arg_Accept1Arg [
 
 	| em1 result |
-	em1 := PhxPjPubSubObjectForTesting new.
+	em1 := PhxPjPubSubObjectForTests new.
 	em1 onEvent: PhxPseChanged do: [ :arg | result := arg ].
 	em1 emitEvent: PhxPseChanged new.
 	self assert: result class equals: PhxPseChanged
@@ -43,7 +43,7 @@ PhxPjTestPubSub >> testEmitEvent_Emit0Arg_Accept1Arg [
 PhxPjTestPubSub >> testEmitEvent_Emit1Arg [
 
 	| em1 result |
-	em1 := PhxPjPubSubObjectForTesting new.
+	em1 := PhxPjPubSubObjectForTests new.
 	em1 onEvent: PhxPseChanged do: [ result := #success ].
 	self shouldRaiseError: [
 		em1 emitEvent: PhxPseChanged new with: #argThatCausesError ]
@@ -53,7 +53,7 @@ PhxPjTestPubSub >> testEmitEvent_Emit1Arg [
 PhxPjTestPubSub >> testEmitString_Emit0Arg_Accept0Arg [
 
 	| em1 result |
-	em1 := PhxPjPubSubObjectForTesting new.
+	em1 := PhxPjPubSubObjectForTests new.
 	em1 onEvent: 'hello' do: [ result := #success ].
 	em1 emitEvent: 'hello'.
 	self assert: result equals: #success
@@ -63,7 +63,7 @@ PhxPjTestPubSub >> testEmitString_Emit0Arg_Accept0Arg [
 PhxPjTestPubSub >> testEmitString_Emit0Arg_Accept1Arg [
 
 	| em1 result |
-	em1 := PhxPjPubSubObjectForTesting new.
+	em1 := PhxPjPubSubObjectForTests new.
 	em1 onEvent: 'hello' do: [:arg |  result := arg ].
 	em1 emitEvent: 'hello'.
 	self assert: result equals: nil
@@ -73,7 +73,7 @@ PhxPjTestPubSub >> testEmitString_Emit0Arg_Accept1Arg [
 PhxPjTestPubSub >> testEmitString_Emit1Arg_Accept0Arg [
 
 	| em1 result |
-	em1 := PhxPjPubSubObjectForTesting new.
+	em1 := PhxPjPubSubObjectForTests new.
 	em1 onEvent: 'hello' do: [ result := #success ].
 	em1 emitEvent: 'hello' with: #arg.
 	self assert: result equals: #success
@@ -83,7 +83,7 @@ PhxPjTestPubSub >> testEmitString_Emit1Arg_Accept0Arg [
 PhxPjTestPubSub >> testEmitString_Emit1Arg_Accept1Arg [
 
 	| em1 result |
-	em1 := PhxPjPubSubObjectForTesting new.
+	em1 := PhxPjPubSubObjectForTests new.
 	em1 onEvent: 'hello' do: [:arg |  result := arg ].
 	em1 emitEvent: 'hello' with: #arg.
 	self assert: result equals: #arg
