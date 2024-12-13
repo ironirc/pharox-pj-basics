@@ -1,38 +1,40 @@
 Class {
-	#name : #PhxEnvelopeWaitingForResponse,
-	#superclass : #Object,
+	#name : 'PhxEnvelopeWaitingForResponse',
+	#superclass : 'Object',
 	#instVars : [
 		'sentEnvelope',
 		'responseEnvelope'
 	],
-	#category : #'Phx-Pj-Client-Server-server-side'
+	#category : 'Phx-Pj-Client-Server-server-side',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'server-side'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PhxEnvelopeWaitingForResponse >> awaitingMessageId [
 
 	^ sentEnvelope msg id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelopeWaitingForResponse >> responseEnvelope [
 
 	^ responseEnvelope
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelopeWaitingForResponse >> responseEnvelope: anObject [
 
 	responseEnvelope := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelopeWaitingForResponse >> sentEnvelope [
 
 	^ sentEnvelope
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelopeWaitingForResponse >> sentEnvelope: anObject [
 
 	sentEnvelope := anObject

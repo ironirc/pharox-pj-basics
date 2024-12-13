@@ -1,10 +1,12 @@
 Class {
-	#name : #PhxPjServer,
-	#superclass : #Object,
-	#category : #'Phx-Pj-Client-Server-server-side'
+	#name : 'PhxPjServer',
+	#superclass : 'Object',
+	#category : 'Phx-Pj-Client-Server-server-side',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'server-side'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhxPjServer class >> startServerOn: port [
 	"apps now register themselves"
 	| newServer newDelegate |

@@ -1,27 +1,29 @@
 Class {
-	#name : #PhxServerWebSocketRequestContext,
-	#superclass : #Object,
+	#name : 'PhxServerWebSocketRequestContext',
+	#superclass : 'Object',
 	#instVars : [
 		'handler',
 		'incomingEnvelope',
 		'jwtClaims',
 		'webSocketSession'
 	],
-	#category : #'Phx-Pj-Client-Server-server-side'
+	#category : 'Phx-Pj-Client-Server-server-side',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'server-side'
 }
 
-{ #category : #services }
+{ #category : 'services' }
 PhxServerWebSocketRequestContext >> doWithMainGlorpSession: aBlock [
 	""
 	self handler ensuredContext doWithMainGlorpSession: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketRequestContext >> ensuredContext [
 	^ self handler ensuredContext
 ]
 
-{ #category : #services }
+{ #category : 'services' }
 PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
 	('Received ' , msg class name ) crTrace. 
 	[
@@ -40,17 +42,17 @@ PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
 			ex return ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketRequestContext >> handler [
 	^ handler
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketRequestContext >> handler: anObject [
 	handler := anObject
 ]
 
-{ #category : #services }
+{ #category : 'services' }
 PhxServerWebSocketRequestContext >> inUnitOfWorkDo: aBlock [
 
 	""
@@ -58,34 +60,34 @@ PhxServerWebSocketRequestContext >> inUnitOfWorkDo: aBlock [
 	self doWithMainGlorpSession: [ :sess | sess inUnitOfWorkDo: aBlock ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketRequestContext >> incomingEnvelope [
 	^ incomingEnvelope
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketRequestContext >> incomingEnvelope: anObject [
 	incomingEnvelope := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhxServerWebSocketRequestContext >> isProduction [
 	^self  ensuredContext environmentTag = 'production'.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketRequestContext >> jwtClaims [
 
 	^ jwtClaims
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketRequestContext >> jwtClaims: anObject [
 
 	jwtClaims := anObject
 ]
 
-{ #category : #services }
+{ #category : 'services' }
 PhxServerWebSocketRequestContext >> sendError: aString [
 
 	| msg |
@@ -95,7 +97,7 @@ PhxServerWebSocketRequestContext >> sendError: aString [
 	self sendResponseMessage: msg
 ]
 
-{ #category : #services }
+{ #category : 'services' }
 PhxServerWebSocketRequestContext >> sendMessage: outgoingMessage [
 
 	self webSocketSession
@@ -103,7 +105,7 @@ PhxServerWebSocketRequestContext >> sendMessage: outgoingMessage [
 		inResponseToIncoming: nil
 ]
 
-{ #category : #services }
+{ #category : 'services' }
 PhxServerWebSocketRequestContext >> sendResponseMessage: outgoingMessage [
 
 	self webSocketSession
@@ -111,7 +113,7 @@ PhxServerWebSocketRequestContext >> sendResponseMessage: outgoingMessage [
 		inResponseToIncoming: self incomingEnvelope
 ]
 
-{ #category : #services }
+{ #category : 'services' }
 PhxServerWebSocketRequestContext >> sendSuccess: aString [
 
 	| msg |
@@ -121,7 +123,7 @@ PhxServerWebSocketRequestContext >> sendSuccess: aString [
 	self sendResponseMessage: msg
 ]
 
-{ #category : #services }
+{ #category : 'services' }
 PhxServerWebSocketRequestContext >> sendWarning: aString [
 
 	| msg |
@@ -131,23 +133,23 @@ PhxServerWebSocketRequestContext >> sendWarning: aString [
 	self sendResponseMessage: msg
 ]
 
-{ #category : #services }
+{ #category : 'services' }
 PhxServerWebSocketRequestContext >> translator [
 	^ self ensuredContext translator
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketRequestContext >> webSocket [
 	^self webSocketSession webSocket
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketRequestContext >> webSocketSession [
 
 	^ webSocketSession
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketRequestContext >> webSocketSession: anObject [
 
 	webSocketSession := anObject
