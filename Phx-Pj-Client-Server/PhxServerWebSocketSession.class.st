@@ -62,10 +62,6 @@ PhxServerWebSocketSession >> handleIncomingEnvelope: env fromHandler: wsh [
 				ifFound: [ :sentEnv |
 					sentEnv responseEnvelope: env.
 					sentEnvelopesWaitingForResponse remove: sentEnv.
-					"('Envelope awaiting reponse '
-					 , sentEnv awaitingMessageId displayString , ' handled ('
-					 , sentEnvelopesWaitingForResponse size displayString
-					 , ' left waiting)') crTrace."
 					monitor signal.
 					^ self ]
 				ifNone: [
@@ -76,11 +72,8 @@ PhxServerWebSocketSession >> handleIncomingEnvelope: env fromHandler: wsh [
 	rc handler: wsh.
 	rc incomingEnvelope: env.
 	rc jwtClaims: (self checkAccessTokenOfEnvelope: env).
-	monitor critical: [
-		wsh context ifNotNil: [ :c | c prepareForNewRequest ]. "where to put this?"
-		rc handleIncomingMessage: env msg.
-		"('PhxServerWebSocketSession>>#handleIncomingEnvelope:fromHandler: - Post handleIncomingMessage: '
-		 , env msg class name) crTrace" ]
+	wsh context ifNotNil: [ :c | c prepareForNewRequest ].
+	rc handleIncomingMessage: env msg
 ]
 
 { #category : 'initialize-release' }
@@ -195,7 +188,7 @@ PhxServerWebSocketSession >> sendEnvelope: anEnvelope [
 	^ nil
 ]
 
-{ #category : 'accessing' }
+{ #category : 'public' }
 PhxServerWebSocketSession >> sendEnvelope: outgoingEnvelope inResponseToIncoming: anIncomingEnvelope [
 
 	anIncomingEnvelope ifNotNil: [
@@ -203,12 +196,12 @@ PhxServerWebSocketSession >> sendEnvelope: outgoingEnvelope inResponseToIncoming
 	^ self sendEnvelope: outgoingEnvelope
 ]
 
-{ #category : 'accessing' }
+{ #category : 'public' }
 PhxServerWebSocketSession >> sendMessage: outgoingMessage [
 	^self sendMessage: outgoingMessage inResponseToIncoming: nil 
 ]
 
-{ #category : 'accessing' }
+{ #category : 'public' }
 PhxServerWebSocketSession >> sendMessage: outgoingMessage inResponseToIncoming: anIncomingEnvelope [
 
 	^ self
