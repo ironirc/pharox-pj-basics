@@ -163,24 +163,24 @@ PhxServerWebSocketSession >> reportToTranscript [
 PhxServerWebSocketSession >> sendEnvelope: anEnvelope [
 
 	anEnvelope senderId: 'server'. "might need refining"
-	self webSocket isConnected ifFalse: [ 
+	self webSocket isConnected ifFalse: [
 		^ self error: 'websocket not connected' ].
 
 	anEnvelope msg expectsResponseFromClient
-		ifTrue: [ 
+		ifTrue: [
 			| sentEnv |
 			sentEnv := PhxEnvelopeWaitingForResponse new.
 			sentEnv sentEnvelope: anEnvelope.
 			sentEnvelopesWaitingForResponse add: sentEnv.
-			["('Sending ' , anEnvelope msg class name ) crTrace. "
-			self webSocket sendMessage: anEnvelope asPhxJsonString] fork.
-		"'waiting for response...' crTrace. "
-			monitor critical: [ 
+			[ "('Sending ' , anEnvelope msg class name ) crTrace. "
+			self webSocket sendMessage: anEnvelope asPhxJsonString ] fork.
+			"'waiting for response...' crTrace. "
+			monitor critical: [
 				monitor
 					waitUntil: [ sentEnv responseEnvelope notNil ]
-					maxMilliseconds: 2000 ].
+					maxMilliseconds: 500 "check every 1000 ms. Does not raise time out error (still to be implemented)!!!" ].
 			sentEnv responseEnvelope
-				ifNil: [ 
+				ifNil: [
 					self error: 'timeout while waiting for response'.
 					^ nil ]
 				ifNotNil: [ :recvdEnv | ^ recvdEnv ] ]
