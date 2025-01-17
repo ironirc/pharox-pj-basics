@@ -1,15 +1,16 @@
 Class {
-	#name : #PhxPjTestCaseRunner,
-	#superclass : #PjDomController,
+	#name : 'PhxPjTestCaseRunner',
+	#superclass : 'PjDomController',
 	#traits : 'PhxPjPromiseTrait + PhxPubSubTrait',
 	#classTraits : 'PhxPjPromiseTrait classTrait + PhxPubSubTrait classTrait',
 	#instVars : [
 		'testCaseClass'
 	],
-	#category : #'Phx-Pj-Testing-Framework'
+	#category : 'Phx-Pj-Testing-Framework',
+	#package : 'Phx-Pj-Testing-Framework'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhxPjTestCaseRunner class >> newOnClass: aClass [
 
 	^ self new
@@ -17,7 +18,7 @@ PhxPjTestCaseRunner class >> newOnClass: aClass [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhxPjTestCaseRunner >> initialize [
 
 	super initialize.
@@ -25,7 +26,7 @@ PhxPjTestCaseRunner >> initialize [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PhxPjTestCaseRunner >> methodNamesOfTestsToBeRun [
 
 	| results |
@@ -37,7 +38,7 @@ PhxPjTestCaseRunner >> methodNamesOfTestsToBeRun [
 	^ results
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PhxPjTestCaseRunner >> promiseRun [
 
 	^ (PhxPjAsyncIterator
@@ -51,13 +52,13 @@ PhxPjTestCaseRunner >> promiseRun [
 			   runner promiseRun ]) then: [  ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjTestCaseRunner >> testCaseClass [
 
 	^ testCaseClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjTestCaseRunner >> testCaseClass: anObject [
 
 	testCaseClass := anObject

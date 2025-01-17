@@ -1,1 +1,1 @@
-Package { #name : #'Phx-Pj-Testing-Framework' }
+Package { #name : 'Phx-Pj-Testing-Framework' }

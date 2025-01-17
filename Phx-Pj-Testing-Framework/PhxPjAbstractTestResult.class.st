@@ -1,6 +1,6 @@
 Class {
-	#name : #PhxPjAbstractTestResult,
-	#superclass : #PhxPubSubEvent,
+	#name : 'PhxPjAbstractTestResult',
+	#superclass : 'PhxPubSubEvent',
 	#traits : 'PhxPjPromiseTrait',
 	#classTraits : 'PhxPjPromiseTrait classTrait',
 	#instVars : [
@@ -8,41 +8,52 @@ Class {
 		'methodName',
 		'timeToRun'
 	],
-	#category : #'Phx-Pj-Testing-Framework'
+	#category : 'Phx-Pj-Testing-Framework',
+	#package : 'Phx-Pj-Testing-Framework'
 }
 
-{ #category : #rendering }
+{ #category : 'printing' }
+PhxPjAbstractTestResult >> asText [
+
+	^ String streamContents: [ :ws |
+		  ws << self className << ' - ' << self methodName << ' ('
+		  << (self timeToRun js_toFixed: 1) << 'ms) '.
+		  ws cr.
+		  ws << 's' ]
+]
+
+{ #category : 'rendering' }
 PhxPjAbstractTestResult >> cssOn: eb [
 
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjAbstractTestResult >> methodName [
 
 	^ methodName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjAbstractTestResult >> methodName: anObject [
 
 	methodName := anObject
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 PhxPjAbstractTestResult >> renderClassAndMethodNameOn: x [
 	"<< self testCaseClass name << '>>' "
 
 	^ x << self methodName
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 PhxPjAbstractTestResult >> renderDetailsOn: eb [
 
 	
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 PhxPjAbstractTestResult >> renderOn: eb [
 
 	eb div: [
@@ -56,25 +67,25 @@ PhxPjAbstractTestResult >> renderOn: eb [
 			eb << 'run' ]" ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjAbstractTestResult >> testCaseClass [
 
 	^ testCaseClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjAbstractTestResult >> testCaseClass: anObject [
 
 	testCaseClass := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjAbstractTestResult >> timeToRun [
 
 	^ timeToRun
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjAbstractTestResult >> timeToRun: anObject [
 
 	timeToRun := anObject

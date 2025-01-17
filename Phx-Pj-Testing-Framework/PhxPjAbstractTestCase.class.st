@@ -1,18 +1,19 @@
 Class {
-	#name : #PhxPjAbstractTestCase,
-	#superclass : #PjDomController,
+	#name : 'PhxPjAbstractTestCase',
+	#superclass : 'PjDomController',
 	#traits : 'PhxPjPromiseTrait + PhxPubSubTrait + PhxPjLoggingTrait',
 	#classTraits : 'PhxPjPromiseTrait classTrait + PhxPubSubTrait classTrait + PhxPjLoggingTrait classTrait',
-	#category : #'Phx-Pj-Testing-Framework'
+	#category : 'Phx-Pj-Testing-Framework',
+	#package : 'Phx-Pj-Testing-Framework'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 PhxPjAbstractTestCase class >> timeoutMs [
 
 	^ 3000
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PhxPjAbstractTestCase >> assert: aBooleanOrBlock description: aDescription [
 
 	aBooleanOrBlock value ifFalse: [
@@ -21,7 +22,7 @@ PhxPjAbstractTestCase >> assert: aBooleanOrBlock description: aDescription [
 				 yourself) ]
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PhxPjAbstractTestCase >> assert: actual equals: expected [
 
 	actual = expected ifFalse: [
@@ -30,12 +31,12 @@ PhxPjAbstractTestCase >> assert: actual equals: expected [
 				 << actual printString ]) ]
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PhxPjAbstractTestCase >> fail: aDescription [
 	self assert: false description: aDescription
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 PhxPjAbstractTestCase >> initialize [
 
 	super initialize.
@@ -43,7 +44,7 @@ PhxPjAbstractTestCase >> initialize [
 	
 ]
 
-{ #category : #'accessing method names' }
+{ #category : 'accessing method names' }
 PhxPjAbstractTestCase >> methodNames [
 
 	^ Array streamContents: [ :ws |
@@ -52,13 +53,13 @@ PhxPjAbstractTestCase >> methodNames [
 				  ws nextPut: (e copyFrom: 4 to: e size) ] ] ]
 ]
 
-{ #category : #'accessing method names' }
+{ #category : 'accessing method names' }
 PhxPjAbstractTestCase >> methodNamesOfTests [
 
 	^ self methodNames select: [ :name | name beginsWith: 'test' ]
 ]
 
-{ #category : #'accessing method names' }
+{ #category : 'accessing method names' }
 PhxPjAbstractTestCase >> methodNamesRaw [
 
 	^ (Object js_getOwnPropertyNames: (Object js_getPrototypeOf: self))
@@ -66,13 +67,13 @@ PhxPjAbstractTestCase >> methodNamesRaw [
 	
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 PhxPjAbstractTestCase >> setup [
 
 	
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PhxPjAbstractTestCase >> should: aBlock raise: anExceptionalEvent [
 
 	aBlock
@@ -81,19 +82,19 @@ PhxPjAbstractTestCase >> should: aBlock raise: anExceptionalEvent [
 	self fail: 'expected exception: ' , anExceptionalEvent name
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PhxPjAbstractTestCase >> shouldRaiseError: aBlock [
 
 	self should: aBlock raise: Error
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 PhxPjAbstractTestCase >> tearDown [
 
 	
 ]
 
-{ #category : #'accessing derived' }
+{ #category : 'accessing derived' }
 PhxPjAbstractTestCase >> timeoutMsForMethod: aMethodName [
 	^self class timeoutMs
 

@@ -1,10 +1,11 @@
 Class {
-	#name : #PhxPjTestDynamicVariable,
-	#superclass : #PhxPjAbstractTestCase,
-	#category : #'Phx-Pj-Testing-Framework'
+	#name : 'PhxPjTestDynamicVariable',
+	#superclass : 'PhxPjAbstractTestCase',
+	#category : 'Phx-Pj-Testing-Framework',
+	#package : 'Phx-Pj-Testing-Framework'
 }
 
-{ #category : #tests }
+{ #category : 'as yet unclassified' }
 PhxPjTestDynamicVariable >> testDynamicVariable [
 
 	self assert: PhxPjDynamicVariable value equals: nil.
