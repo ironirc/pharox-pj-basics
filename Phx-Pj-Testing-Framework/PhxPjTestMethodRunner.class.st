@@ -60,6 +60,12 @@ PhxPjTestMethodRunner >> now [
 { #category : 'public' }
 PhxPjTestMethodRunner >> promiseRun [
 
+	| event |
+	event := PhxPjTestStartedOnMethod new.
+	event testCaseClass: self testCaseClass.
+	event methodName: methodName.
+	self emitEvent: event.
+
 	^ self runSafely finally: [
 		  isFailure | isError ifFalse: [
 			  self emitEvent: (PhxPjTestResultSuccess new
@@ -87,7 +93,7 @@ PhxPjTestMethodRunner >> runSafely [
 
 	self setStartTime.
 	^ self setup_run_tearDown catch: [ :ex |
-		console trace. 
+		"console trace. "
 		  self emitEvent: (PhxPjTestResultError new
 				   testCaseClass: self testCaseClass;
 				   methodName: self methodName;

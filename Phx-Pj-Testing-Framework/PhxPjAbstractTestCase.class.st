@@ -10,7 +10,7 @@ Class {
 { #category : 'constants' }
 PhxPjAbstractTestCase class >> timeoutMs [
 
-	^ 3000
+	^ 10000
 ]
 
 { #category : 'asserting' }

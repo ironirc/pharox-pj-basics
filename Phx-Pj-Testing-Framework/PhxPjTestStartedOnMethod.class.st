@@ -1,17 +1,16 @@
 Class {
-	#name : 'PhxPjAbstractTestResult',
+	#name : 'PhxPjTestStartedOnMethod',
 	#superclass : 'PhxPjAbstractTestEvent',
 	#instVars : [
 		'testCaseClass',
-		'methodName',
-		'timeToRun'
+		'methodName'
 	],
 	#category : 'Phx-Pj-Testing-Framework',
 	#package : 'Phx-Pj-Testing-Framework'
 }
 
 { #category : 'printing' }
-PhxPjAbstractTestResult >> asText [
+PhxPjTestStartedOnMethod >> asText [
 
 	^ String streamContents: [ :ws |
 		  ws << self className << ' - ' << self methodName << ' ('
@@ -21,38 +20,38 @@ PhxPjAbstractTestResult >> asText [
 ]
 
 { #category : 'rendering' }
-PhxPjAbstractTestResult >> cssOn: eb [
+PhxPjTestStartedOnMethod >> cssOn: eb [
 
 	
 ]
 
 { #category : 'accessing' }
-PhxPjAbstractTestResult >> methodName [
+PhxPjTestStartedOnMethod >> methodName [
 
 	^ methodName
 ]
 
 { #category : 'accessing' }
-PhxPjAbstractTestResult >> methodName: anObject [
+PhxPjTestStartedOnMethod >> methodName: anObject [
 
 	methodName := anObject
 ]
 
 { #category : 'rendering' }
-PhxPjAbstractTestResult >> renderClassAndMethodNameOn: x [
+PhxPjTestStartedOnMethod >> renderClassAndMethodNameOn: x [
 	"<< self testCaseClass name << '>>' "
 
 	^ x << self methodName
 ]
 
 { #category : 'rendering' }
-PhxPjAbstractTestResult >> renderDetailsOn: eb [
+PhxPjTestStartedOnMethod >> renderDetailsOn: eb [
 
 	
 ]
 
 { #category : 'rendering' }
-PhxPjAbstractTestResult >> renderOn: eb [
+PhxPjTestStartedOnMethod >> renderOn: eb [
 
 	eb div: [
 		self cssOn: eb.
@@ -66,25 +65,13 @@ PhxPjAbstractTestResult >> renderOn: eb [
 ]
 
 { #category : 'accessing' }
-PhxPjAbstractTestResult >> testCaseClass [
+PhxPjTestStartedOnMethod >> testCaseClass [
 
 	^ testCaseClass
 ]
 
 { #category : 'accessing' }
-PhxPjAbstractTestResult >> testCaseClass: anObject [
+PhxPjTestStartedOnMethod >> testCaseClass: anObject [
 
 	testCaseClass := anObject
-]
-
-{ #category : 'as yet unclassified' }
-PhxPjAbstractTestResult >> timeToRun [
-
-	^ timeToRun
-]
-
-{ #category : 'as yet unclassified' }
-PhxPjAbstractTestResult >> timeToRun: anObject [
-
-	timeToRun := anObject
 ]
