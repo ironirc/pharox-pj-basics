@@ -4,18 +4,18 @@ Trait {
 	#package : 'Phx-Pj-Core-Traits'
 }
 
-{ #category : 'services' }
+{ #category : 'promise traits' }
 PhxPjPromiseTrait classSide >> promise: aBlock [
 	<javascript: 'return new Promise(aBlock)'>
 ]
 
-{ #category : 'services' }
+{ #category : 'promise traits' }
 PhxPjPromiseTrait classSide >> promiseAll: anArray [
 	<javascript: 'return Promise.all(anArray)'>
 
 ]
 
-{ #category : 'services' }
+{ #category : 'promise traits' }
 PhxPjPromiseTrait classSide >> promiseResolve: aValue [
 	<javascript: 'return Promise.resolve(aValue)'>
 ]
