@@ -78,6 +78,12 @@ PhxClientWebSocketHandler >> initialize [
 	self initializePubSubTrait
 ]
 
+{ #category : 'logging traits' }
+PhxClientWebSocketHandler >> logSelfAndAll: args [
+
+	false ifTrue: [ self logAll: { self } , args ]
+]
+
 { #category : 'server messaging' }
 PhxClientWebSocketHandler >> onWebSocketClose: event [
 
