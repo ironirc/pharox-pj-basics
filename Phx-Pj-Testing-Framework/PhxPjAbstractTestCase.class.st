@@ -25,10 +25,15 @@ PhxPjAbstractTestCase >> assert: aBooleanOrBlock description: aDescription [
 { #category : 'asserting' }
 PhxPjAbstractTestCase >> assert: actual equals: expected [
 
-	actual = expected ifFalse: [
-		self fail: (String streamContents: [ :ws |
-				 ws << 'expected: ' << expected printString << ' instead got: '
-				 << actual printString ]) ]
+	actual = expected
+		"ifTrue: [
+			self log: (String streamContents: [ :ws |
+					 ws << 'Asserted expected: ' << expected printString
+					 << ' equals: ' << actual printString ]) ]"
+		ifFalse: [
+			self fail: (String streamContents: [ :ws |
+					 ws << 'expected: ' << expected printString << ' instead got: '
+					 << actual printString ]) ]
 ]
 
 { #category : 'asserting' }
