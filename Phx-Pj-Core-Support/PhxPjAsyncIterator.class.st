@@ -20,6 +20,20 @@ PhxPjAsyncIterator class >> on: collectionOrStream do: aBlock [
 		promiseDoAll
 ]
 
+{ #category : 'convenience' }
+PhxPjAsyncIterator class >> reduce: collectionOrStream [
+
+	^ self reduce: collectionOrStream with: nil
+]
+
+{ #category : 'convenience' }
+PhxPjAsyncIterator class >> reduce: collectionOrStream with: arg [
+
+	^ self new
+		  readStream: collectionOrStream readStream;
+		  reduceWith: arg
+]
+
 { #category : 'accessing' }
 PhxPjAsyncIterator >> block [
 
@@ -52,4 +66,14 @@ PhxPjAsyncIterator >> readStream [
 PhxPjAsyncIterator >> readStream: anObject [
 
 	readStream := anObject
+]
+
+{ #category : 'private' }
+PhxPjAsyncIterator >> reduceWith: accum [
+
+	^ readStream atEnd
+		  ifTrue: [ self promiseResolve: accum ]
+		  ifFalse: [
+			  (self promiseResolve: (readStream next cull: accum)) then: [
+				  :result | self reduceWith: result ] ]
 ]
