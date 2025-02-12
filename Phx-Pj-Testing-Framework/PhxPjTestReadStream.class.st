@@ -5,7 +5,7 @@ Class {
 	#package : 'Phx-Pj-Testing-Framework'
 }
 
-{ #category : 'tests' }
+{ #category : 'as yet unclassified' }
 PhxPjTestReadStream >> testReadStream [
 
 	| rs |
