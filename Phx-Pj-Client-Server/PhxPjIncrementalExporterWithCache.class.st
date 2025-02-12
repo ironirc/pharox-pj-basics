@@ -36,6 +36,12 @@ PhxPjIncrementalExporterWithCache >> exporter [
 	^ exporter
 ]
 
+{ #category : 'private' }
+PhxPjIncrementalExporterWithCache >> exporter: anExporter [
+
+	exporter := anExporter
+]
+
 { #category : 'public' }
 PhxPjIncrementalExporterWithCache >> initialScript [
 
