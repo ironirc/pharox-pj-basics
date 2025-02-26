@@ -218,12 +218,38 @@ PhxPjTest_ObjectBuilder >> test_complex_object2 [
 						        [ x favouriteFood: 'pizza' ] };
 				        hobbies: { 'reading'. 'painting' } ];
 		        onNewsMessageDo: [ :message | 'Sending Alice a news message: ' , message ] jsFunc ] jsObj.
-	self prettyPrintObject: obj2. 
+	"self prettyPrintObject: obj2. "
 	"compare and test"
 	self assert: (JSON stringify: obj1) equals: (JSON stringify: obj2).
 	msg := 'War is over.'.
 	self assert: ((obj1 at: 'onNewsMessageDo') value: msg) equals: 'Sending Alice a news message: ' , msg.
 	self assert: ((obj1 at: 'onNewsMessageDo') value: msg) equals: ((obj2 at: 'onNewsMessageDo') value: msg)
+]
+
+{ #category : 'as yet unclassified' }
+PhxPjTest_ObjectBuilder >> test_complex_object_without_builder_with_plain_object [
+
+	| obj1 obj2 |
+	"PharoJs native way => asJsObject"
+	obj1 := { ('config' -> {
+		         ('type' -> 'hollow').
+		         ('callback' -> [ :arg | 'CB-Result: ' , (arg / 2) asString ]).
+		         ('prefs' -> {
+			          { ('color' -> 'blue') }.
+			          { ('size' -> 'xl') } }).
+		         ('sizes' -> { 1. 2. 3 }) }) } asJsObject.
+	obj2 := Object new at: 'config' put: (Object new
+			 at: 'type' put: 'hollow';
+			 at: 'callback' put: [ :arg | 'CB-Result: ' , (arg / 2) asString ];
+			 at: 'prefs' put: {
+					 (Object new at: 'color' put: 'blue').
+					 (Object new at: 'size' put: 'xl') };
+			 at: 'sizes' put: { 1. 2. 3 }).
+
+	"compare and test"
+	self assert: (JSON stringify: obj1) equals: (JSON stringify: obj2).
+	self assert: ((obj1 config at: 'callback') value: 42) equals: 'CB-Result: 21'.
+	self assert: ((obj1 config at: 'callback') value: 42) equals: ((obj2 config at: 'callback') value: 42)
 ]
 
 { #category : 'tests low level related' }
@@ -274,4 +300,19 @@ PhxPjTest_ObjectBuilder >> test_markAsFunction [
 		description: 'should be a marked as function'.
 	obj := [ :x | x func: [ :arg | arg * 2 ] jsFunc ] jsObj.
 	self assert: ((obj at: 'func') value: 7) equals: 14
+]
+
+{ #category : 'as yet unclassified' }
+PhxPjTest_ObjectBuilder >> test_unintended_pickup_of_collection_do [
+
+	| obj coll |
+	coll := { 'a'. 'b' }.
+	"PROBLEMATIC => result of `coll do:` is the original collection. 
+	This result (the collection) gets through the builder, instead of the outer object.
+	To force it to work, in the end nil needs to be returned."
+	obj := [ :x |
+	       coll do: [ :each |
+		       x at: each put: each ].
+	       nil ] jsObj.
+	self assert: (obj at: 'a') equals: 'a'
 ]
