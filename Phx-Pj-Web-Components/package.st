@@ -1,1 +1,1 @@
-Package { #name : #'Phx-Pj-Web-Components' }
+Package { #name : 'Phx-Pj-Web-Components' }

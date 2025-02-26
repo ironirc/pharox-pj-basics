@@ -1,10 +1,11 @@
 Class {
-	#name : #PjWebComponentTests,
-	#superclass : #PjBridgeTestCase,
-	#category : #'Phx-Pj-Web-Components'
+	#name : 'PjWebComponentTests',
+	#superclass : 'PjBridgeTestCase',
+	#category : 'Phx-Pj-Web-Components',
+	#package : 'Phx-Pj-Web-Components'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PjWebComponentTests >> test1 [
 
 	self assert: [ PjWcCounter tagName ] evaluatesTo: 'pj-counter'.

@@ -1,26 +1,27 @@
 Class {
-	#name : #PjWcCounter,
-	#superclass : #PjWebComponent,
+	#name : 'PjWcCounter',
+	#superclass : 'PjWebComponent',
 	#instVars : [
 		'count',
 		'countElement'
 	],
-	#category : #'Phx-Pj-Web-Components'
+	#category : 'Phx-Pj-Web-Components',
+	#package : 'Phx-Pj-Web-Components'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PjWcCounter class >> tagName [
 
 	^ 'pj-counter'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PjWcCounter >> initialize [
 	super initialize. 
 	count := 0
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PjWcCounter >> renderOn: x [
 
 	x tag: 'style' with: '* {color:blue;}'.
