@@ -5,6 +5,23 @@ Class {
 	#package : 'Phx-Pj-Testing-Framework'
 }
 
+{ #category : 'as yet unclassified' }
+PhxPjTest_ObjectBuilder >> brol [
+
+	{
+		(#person -> {
+			 (#fullName -> 'Alice Smith').
+			 (#shoeSize -> 38).
+			 (#isFunny -> true).
+			 (#dateOfBirth -> '1990-05-15').
+
+			 (#prefs -> {
+				  { (#shirtColor -> 'blue') }.
+				  { (#favouriteFood -> 'pizza') } }).
+			 (#hobbies -> { 'reading'. 'painting' }) }).
+		(#onNewsMessageDo -> [ :message | 'Sending Alice a news message: ' , message ]) } asJsObject
+]
+
 { #category : 'tests' }
 PhxPjTest_ObjectBuilder >> prettyPrintObject: obj [
 
