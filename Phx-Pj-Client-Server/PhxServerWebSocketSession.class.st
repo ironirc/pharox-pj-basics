@@ -54,7 +54,7 @@ PhxServerWebSocketSession >> handleIncomingEnvelope: env fromHandler: wsh [
 		ifNil: [ self sessionId: env senderId ]
 		ifNotNil: [ :sid |
 			sid = env senderId ifFalse: [
-				self error: 'illegal to change session id on PhxWebsocketInfo' ] ].
+				self error: 'illegal to change session id on a PhxServerWebSocketSession' ] ].
 	env respToMsgId ifNotNil: [ :id |
 		monitor critical: [
 			sentEnvelopesWaitingForResponse
@@ -216,7 +216,8 @@ PhxServerWebSocketSession >> sessionId [
 
 { #category : 'accessing' }
 PhxServerWebSocketSession >> sessionId: anObject [
-"until now filled with senderId = clientId "
+	"until now filled with senderId = clientId "
+
 	sessionId := anObject
 ]
 

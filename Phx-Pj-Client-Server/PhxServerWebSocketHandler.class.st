@@ -3,9 +3,9 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'applicationClass',
-		'lock',
-		'webSocketsDict',
-		'context'
+		'context',
+		'webSocketSessionsDict',
+		'mutex'
 	],
 	#category : 'Phx-Pj-Client-Server-server-side',
 	#package : 'Phx-Pj-Client-Server',
@@ -33,7 +33,7 @@ PhxServerWebSocketHandler >> boadcastMessage: msg [
 { #category : 'actions' }
 PhxServerWebSocketHandler >> broadcastEnvelopeToAllRegisteredWebsockets: anEnvelope [
 
-	webSocketsDict valuesDo: [ :wsi | 
+	webSocketSessionsDict valuesDo: [ :wsi | 
 		wsi webSocket isConnected ifTrue: [ 
 			[ wsi sendEnvelope: anEnvelope ]
 				on: Error
@@ -42,7 +42,7 @@ PhxServerWebSocketHandler >> broadcastEnvelopeToAllRegisteredWebsockets: anEnvel
 
 { #category : 'actions' }
 PhxServerWebSocketHandler >> closeAllWebsockets [
-	webSocketsDict keys copy
+	webSocketSessionsDict keys copy
 		do: [ :each | 
 			[ self unregister: each.
 			each close ]
@@ -52,7 +52,7 @@ PhxServerWebSocketHandler >> closeAllWebsockets [
 
 { #category : 'accessing' }
 PhxServerWebSocketHandler >> context [
-	"is an PhxAppContext"
+	"something like SygContext"
 
 	^ context
 ]
@@ -120,8 +120,8 @@ PhxServerWebSocketHandler >> handleSystemAnnouncement: ann [
 { #category : 'initialize-release' }
 PhxServerWebSocketHandler >> initialize [
 
-	webSocketsDict := IdentityDictionary new.
-	lock := Mutex new.
+	webSocketSessionsDict := IdentityDictionary new.
+	mutex := Mutex new.
 
 ]
 
@@ -137,30 +137,18 @@ PhxServerWebSocketHandler >> register: clientWebSocket [
 	Transcript
 		cr;
 		show: 'Registering websocket ' , self hash printString.
-	lock critical: [
-		| newWsi |
-		newWsi := PhxServerWebSocketSession new.
-		newWsi context: self context.
-		newWsi webSocket: clientWebSocket.
-		webSocketsDict at: clientWebSocket put: newWsi ]
-]
-
-{ #category : 'obsolete - unused' }
-PhxServerWebSocketHandler >> replaceOldWebSocket: oldWebSocket with: newWebSocket [
-
-	webSocketsDict
-		at: oldWebSocket
-		ifPresent: [ :session | session webSocket: newWebSocket.
-			webSocketsDict at: newWebSocket put: session. 
-			
-			 ].
-	webSocketsDict removeKey: oldWebSocket ifAbsent: []
+	mutex critical: [
+			| newWsSession |
+			newWsSession := PhxServerWebSocketSession new.
+			newWsSession context: self context.
+			newWsSession webSocket: clientWebSocket.
+			webSocketSessionsDict at: clientWebSocket put: newWsSession ]
 ]
 
 { #category : 'ad hoc dev' }
 PhxServerWebSocketHandler >> reportWebSocketsToTranscript [
 	Transcript cr.
-	webSocketsDict values
+	webSocketSessionsDict values
 		do: [ :inf | 
 			inf
 				ifNil: [ Transcript show: 'Websocket without info?' ]
@@ -189,7 +177,7 @@ PhxServerWebSocketHandler >> subscribeToSystemAnnouncer [
 { #category : 'actions' }
 PhxServerWebSocketHandler >> unregister: clientWebSocket [
 
-	lock critical: [ "webSocketsDict removeKey: clientWebSocket ifAbsent: [  ].""Give clients opportunity to recover the session"
+	mutex critical: [ "webSocketsDict removeKey: clientWebSocket ifAbsent: [  ].""Give clients opportunity to recover the session"
 		Transcript
 			cr;
 			show: 'Un-Registered websocket' ]
@@ -202,9 +190,9 @@ PhxServerWebSocketHandler >> unsubscribeFromSystemAnnouncer [
 
 ]
 
-{ #category : 'accessing' }
+{ #category : 'zinc' }
 PhxServerWebSocketHandler >> value: aWebSocket [
-
+	"Called by Zinc during connection upgrade to Websocket"
 	[
 	self register: aWebSocket.
 	aWebSocket runWith: [ :aMessage |
@@ -217,7 +205,7 @@ PhxServerWebSocketHandler >> value: aWebSocket [
 
 { #category : 'accessing' }
 PhxServerWebSocketHandler >> webSocketSessionForWebSocket: aWebSocket [
-
 	"('WebSocketHandler ' , self hash printString) crTrace."
-	^ webSocketsDict at: aWebSocket ifAbsent: [ nil ]
+
+	^ webSocketSessionsDict at: aWebSocket ifAbsent: [ nil ]
 ]

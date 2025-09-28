@@ -14,7 +14,7 @@ Class {
 
 { #category : 'services' }
 PhxServerWebSocketRequestContext >> doWithMainGlorpSession: aBlock [
-	""
+
 	self handler ensuredContext doWithMainGlorpSession: aBlock
 ]
 
@@ -55,8 +55,6 @@ PhxServerWebSocketRequestContext >> handler: anObject [
 { #category : 'services' }
 PhxServerWebSocketRequestContext >> inUnitOfWorkDo: aBlock [
 
-	""
-
 	self doWithMainGlorpSession: [ :sess | sess inUnitOfWorkDo: aBlock ]
 ]
 
@@ -72,7 +70,8 @@ PhxServerWebSocketRequestContext >> incomingEnvelope: anObject [
 
 { #category : 'testing' }
 PhxServerWebSocketRequestContext >> isProduction [
-	^self  ensuredContext environmentTag = 'production'.
+
+	^ self ensuredContext environmentTag = 'production'
 ]
 
 { #category : 'accessing' }
