@@ -250,23 +250,36 @@ PhxPjTest_ObjectBuilder >> test_complex_object_without_builder_with_plain_object
 	"PharoJs native way => asJsObject"
 	obj1 := { ('config' -> {
 		         ('type' -> 'hollow').
-		         ('callback' -> [ :arg | 'CB-Result: ' , (arg / 2) asString ]).
+		         ('callback'
+		          -> [ :arg | 'CB-Result: ' , (arg / 2) asString ]).
 		         ('prefs' -> {
 			          { ('color' -> 'blue') }.
 			          { ('size' -> 'xl') } }).
 		         ('sizes' -> { 1. 2. 3 }) }) } asJsObject.
-	obj2 := Object new at: 'config' put: (Object new
-			 at: 'type' put: 'hollow';
-			 at: 'callback' put: [ :arg | 'CB-Result: ' , (arg / 2) asString ];
-			 at: 'prefs' put: {
-					 (Object new at: 'color' put: 'blue').
-					 (Object new at: 'size' put: 'xl') };
-			 at: 'sizes' put: { 1. 2. 3 }).
+	obj2 := Object new
+		        at: 'config' put: (Object new
+				         at: 'type' put: 'hollow';
+				         at: 'callback'
+				         put: [ :arg | 'CB-Result: ' , (arg / 2) asString ];
+				         at: 'prefs' put: {
+						         (Object new
+							          at: 'color' put: 'blue';
+							          yourself).
+						         (Object new
+							          at: 'size' put: 'xl';
+							          yourself) };
+				         at: 'sizes' put: { 1. 2. 3 };
+				         yourself);
+		        yourself.
 
 	"compare and test"
 	self assert: (JSON stringify: obj1) equals: (JSON stringify: obj2).
-	self assert: ((obj1 config at: 'callback') value: 42) equals: 'CB-Result: 21'.
-	self assert: ((obj1 config at: 'callback') value: 42) equals: ((obj2 config at: 'callback') value: 42)
+	self
+		assert: ((obj1 config at: 'callback') value: 42)
+		equals: 'CB-Result: 21'.
+	self
+		assert: ((obj1 config at: 'callback') value: 42)
+		equals: ((obj2 config at: 'callback') value: 42)
 ]
 
 { #category : 'tests low level related' }
