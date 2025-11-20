@@ -20,7 +20,7 @@ PhxPubSubTrait >> emitEvent: anEventOrString with: argument [
 			self class name.
 			'emitEvent:'.
 			anEventOrString.
-			('to ' , psSubscriptions size , ' potential subscriptions') }."
+			('to ' , psSubscriptions size , ' subscriptions') }."
 
 	psSubscriptions do: [ :sub | sub handleEvent: anEventOrString with: argument ]
 ]
