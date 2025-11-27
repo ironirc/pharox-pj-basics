@@ -32,3 +32,10 @@ PhxPjTimer class >> clearTimeoutWithHandle: timeoutHandle [
 		'clearTimeout(timeoutHandle)'>
 	
 ]
+
+{ #category : 'as yet unclassified' }
+PhxPjTimer class >> nextTickDo: aBlock [
+	<javascript:
+		'return setTimeout(aBlock,0)'>
+	
+]
