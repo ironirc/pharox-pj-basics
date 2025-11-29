@@ -1,12 +1,13 @@
 Class {
-	#name : #PjDomBuilder,
-	#superclass : #PjDomController,
+	#name : 'PjDomBuilder',
+	#superclass : 'PjDomController',
 	#traits : 'DomBuilderTrait',
 	#classTraits : 'DomBuilderTrait classTrait',
-	#category : #'Phx-Pj-Dom-Builder'
+	#category : 'Phx-Pj-Dom-Builder',
+	#package : 'Phx-Pj-Dom-Builder'
 }
 
-{ #category : #text }
+{ #category : 'text' }
 PjDomBuilder >> createTextNode: aString [
 
 	^document createTextNode: aString
