@@ -1,10 +1,11 @@
 Class {
-	#name : #PhxBrowserPersistentClientId,
-	#superclass : #PjDomController,
-	#category : #'Phx-Pj-Core-Support'
+	#name : 'PhxBrowserPersistentClientId',
+	#superclass : 'PjDomController',
+	#category : 'Phx-Pj-Core-Support',
+	#package : 'Phx-Pj-Core-Support'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxBrowserPersistentClientId class >> value [
 	(localStorage getItem: 'clientId') ifNil: [ 
 		localStorage

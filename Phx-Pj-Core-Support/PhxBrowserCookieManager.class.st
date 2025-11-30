@@ -1,10 +1,11 @@
 Class {
-	#name : #PhxBrowserCookieManager,
-	#superclass : #PjDomController,
-	#category : #'Phx-Pj-Core-Support'
+	#name : 'PhxBrowserCookieManager',
+	#superclass : 'PjDomController',
+	#category : 'Phx-Pj-Core-Support',
+	#package : 'Phx-Pj-Core-Support'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PhxBrowserCookieManager class >> getCookie: cname [
 
 	<javascript: 'var name = cname + "=";
@@ -22,7 +23,7 @@ PhxBrowserCookieManager class >> getCookie: cname [
 	self error: 'only possible on browser'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PhxBrowserCookieManager class >> setCookie: cookieName value: cvalue expiryMs: expiryMs [
 	<javascript:
 		'var d = new Date();

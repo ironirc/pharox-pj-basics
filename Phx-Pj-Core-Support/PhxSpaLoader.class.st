@@ -1,25 +1,26 @@
 Class {
-	#name : #PhxSpaLoader,
-	#superclass : #PjDomController,
+	#name : 'PhxSpaLoader',
+	#superclass : 'PjDomController',
 	#traits : 'PhxPjPromiseTrait',
 	#classTraits : 'PhxPjPromiseTrait classTrait',
 	#classVars : [
 		'cache'
 	],
-	#category : #'Phx-Pj-Core-Support'
+	#category : 'Phx-Pj-Core-Support',
+	#package : 'Phx-Pj-Core-Support'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaLoader class >> cache [
 	^ cache ifNil: [ cache := Dictionary new ]
 ]
 
-{ #category : #'initialize - release' }
+{ #category : 'initialize - release' }
 PhxSpaLoader class >> import: url [
 	<javascript: 'return import(url)'>
 ]
 
-{ #category : #'initialize - release' }
+{ #category : 'initialize - release' }
 PhxSpaLoader class >> promiseLoadLinkedCss: aUrl [
 	| p |
 	(self cache at: aUrl ifAbsent: [  ])
@@ -44,7 +45,7 @@ PhxSpaLoader class >> promiseLoadLinkedCss: aUrl [
 	^ p
 ]
 
-{ #category : #'initialize - release' }
+{ #category : 'initialize - release' }
 PhxSpaLoader class >> promiseLoadScript: aUrl [
 	| p |
 	(self cache at: aUrl ifAbsent: [  ])
