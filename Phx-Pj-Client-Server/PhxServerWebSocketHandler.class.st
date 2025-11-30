@@ -42,10 +42,12 @@ PhxServerWebSocketHandler >> broadcastEnvelopeToAllRegisteredWebsockets: anEnvel
 
 { #category : 'actions' }
 PhxServerWebSocketHandler >> closeAllWebsockets [
-	webSocketSessionsDict keys copy
-		do: [ :each | 
-			[ self unregister: each.
-			each close ]
+
+	webSocketSessionsDict ifNil: [ ^ self ].
+	webSocketSessionsDict keys copy do: [ :each |
+			[
+				self unregister: each.
+				each close ]
 				on: Error
 				do: [ :ex | ex return ] ]
 ]
