@@ -160,7 +160,7 @@ PhxServerWebSocketHandler >> reportWebSocketsToTranscript [
 
 { #category : 'accessing' }
 PhxServerWebSocketHandler >> sendEnvelope: anEnvelope viaSocket: aWebSocket [
-	anEnvelope senderId: self id.
+	anEnvelope senderId: 'server'.
 	aWebSocket sendMessage: anEnvelope asPhxJsonString
 ]
 
