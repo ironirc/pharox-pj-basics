@@ -1,6 +1,6 @@
 Class {
-	#name : #PhxServerWebSocketSession,
-	#superclass : #Object,
+	#name : 'PhxServerWebSocketSession',
+	#superclass : 'Object',
 	#instVars : [
 		'sessionId',
 		'startedAt',
@@ -11,10 +11,12 @@ Class {
 		'sentEnvelopesWaitingForResponse',
 		'context'
 	],
-	#category : #'Phx-Pj-Client-Server-server-side'
+	#category : 'Phx-Pj-Client-Server-server-side',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'server-side'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> checkAccessToken: jwtString [
 
 	^ self context
@@ -22,7 +24,7 @@ PhxServerWebSocketSession >> checkAccessToken: jwtString [
 		  ifNotNil: [ :ctx | ctx checkAccessToken: jwtString ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> checkAccessTokenOfEnvelope: env [
 	^[ self checkAccessToken: env jwt ]
 		on: Error
@@ -31,19 +33,19 @@ PhxServerWebSocketSession >> checkAccessTokenOfEnvelope: env [
 				error: 'Your access token seems to be invalid (' , ex messageText , ')' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> context [
 
 	^ context
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> context: anObject [
 
 	context := anObject
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PhxServerWebSocketSession >> handleIncomingEnvelope: env fromHandler: wsh [
 
 	| rc |
@@ -52,7 +54,7 @@ PhxServerWebSocketSession >> handleIncomingEnvelope: env fromHandler: wsh [
 		ifNil: [ self sessionId: env senderId ]
 		ifNotNil: [ :sid |
 			sid = env senderId ifFalse: [
-				self error: 'illegal to change session id on PhxWebsocketInfo' ] ].
+				self error: 'illegal to change session id on a PhxServerWebSocketSession' ] ].
 	env respToMsgId ifNotNil: [ :id |
 		monitor critical: [
 			sentEnvelopesWaitingForResponse
@@ -60,10 +62,6 @@ PhxServerWebSocketSession >> handleIncomingEnvelope: env fromHandler: wsh [
 				ifFound: [ :sentEnv |
 					sentEnv responseEnvelope: env.
 					sentEnvelopesWaitingForResponse remove: sentEnv.
-					"('Envelope awaiting reponse '
-					 , sentEnv awaitingMessageId displayString , ' handled ('
-					 , sentEnvelopesWaitingForResponse size displayString
-					 , ' left waiting)') crTrace."
 					monitor signal.
 					^ self ]
 				ifNone: [
@@ -74,14 +72,11 @@ PhxServerWebSocketSession >> handleIncomingEnvelope: env fromHandler: wsh [
 	rc handler: wsh.
 	rc incomingEnvelope: env.
 	rc jwtClaims: (self checkAccessTokenOfEnvelope: env).
-	monitor critical: [
-		wsh context ifNotNil: [ :c | c prepareForNewRequest ]. "where to put this?"
-		rc handleIncomingMessage: env msg.
-		"('PhxServerWebSocketSession>>#handleIncomingEnvelope:fromHandler: - Post handleIncomingMessage: '
-		 , env msg class name) crTrace" ]
+	wsh context ifNotNil: [ :c | c prepareForNewRequest ].
+	rc handleIncomingMessage: env msg
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PhxServerWebSocketSession >> initialize [
 
 	super initialize.
@@ -90,42 +85,42 @@ PhxServerWebSocketSession >> initialize [
 	sentEnvelopesWaitingForResponse := OrderedCollection new. 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhxServerWebSocketSession >> isConnected [
 
 	^ self webSocket ifNil: [ false ] ifNotNil: [ :ws | ws isConnected ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> lastUsedAt [
 	^ lastUsedAt
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> lastUsedAt: anObject [
 	lastUsedAt := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> properties [
 
 	properties ifNil: [ properties := Dictionary new ].
 	^ properties
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> propertyAt: key [
 
 	^self properties at: key
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> propertyAt: key ifAbsent: ifAbsentBlock [
 
 	^self properties at: key ifAbsent: ifAbsentBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> propertyAt: key ifAbsentPut: aBlock [
 
 	^ self properties
@@ -133,14 +128,14 @@ PhxServerWebSocketSession >> propertyAt: key ifAbsentPut: aBlock [
 		  ifAbsent: [ self propertyAt: key put: aBlock value ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> propertyAt: key put: object [
 
 	self properties at: key put: object.
 	^object
 ]
 
-{ #category : #'ad hoc dev' }
+{ #category : 'ad hoc dev' }
 PhxServerWebSocketSession >> reportToTranscript [
 	Transcript
 		show:
@@ -164,28 +159,28 @@ PhxServerWebSocketSession >> reportToTranscript [
 								ifNotNil: [ self webSocket isConnected asString ]) ])
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> sendEnvelope: anEnvelope [
 
 	anEnvelope senderId: 'server'. "might need refining"
-	self webSocket isConnected ifFalse: [ 
+	self webSocket isConnected ifFalse: [
 		^ self error: 'websocket not connected' ].
 
 	anEnvelope msg expectsResponseFromClient
-		ifTrue: [ 
+		ifTrue: [
 			| sentEnv |
 			sentEnv := PhxEnvelopeWaitingForResponse new.
 			sentEnv sentEnvelope: anEnvelope.
 			sentEnvelopesWaitingForResponse add: sentEnv.
-			["('Sending ' , anEnvelope msg class name ) crTrace. "
-			self webSocket sendMessage: anEnvelope asPhxJsonString] fork.
-		"'waiting for response...' crTrace. "
-			monitor critical: [ 
+			[ "('Sending ' , anEnvelope msg class name ) crTrace. "
+			self webSocket sendMessage: anEnvelope asPhxJsonString ] fork.
+			"'waiting for response...' crTrace. "
+			monitor critical: [
 				monitor
 					waitUntil: [ sentEnv responseEnvelope notNil ]
-					maxMilliseconds: 2000 ].
+					maxMilliseconds: 500 "check every 1000 ms. Does not raise time out error (still to be implemented)!!!" ].
 			sentEnv responseEnvelope
-				ifNil: [ 
+				ifNil: [
 					self error: 'timeout while waiting for response'.
 					^ nil ]
 				ifNotNil: [ :recvdEnv | ^ recvdEnv ] ]
@@ -193,7 +188,7 @@ PhxServerWebSocketSession >> sendEnvelope: anEnvelope [
 	^ nil
 ]
 
-{ #category : #accessing }
+{ #category : 'public' }
 PhxServerWebSocketSession >> sendEnvelope: outgoingEnvelope inResponseToIncoming: anIncomingEnvelope [
 
 	anIncomingEnvelope ifNotNil: [
@@ -201,12 +196,12 @@ PhxServerWebSocketSession >> sendEnvelope: outgoingEnvelope inResponseToIncoming
 	^ self sendEnvelope: outgoingEnvelope
 ]
 
-{ #category : #accessing }
+{ #category : 'public' }
 PhxServerWebSocketSession >> sendMessage: outgoingMessage [
 	^self sendMessage: outgoingMessage inResponseToIncoming: nil 
 ]
 
-{ #category : #accessing }
+{ #category : 'public' }
 PhxServerWebSocketSession >> sendMessage: outgoingMessage inResponseToIncoming: anIncomingEnvelope [
 
 	^ self
@@ -214,38 +209,39 @@ PhxServerWebSocketSession >> sendMessage: outgoingMessage inResponseToIncoming: 
 		  inResponseToIncoming: anIncomingEnvelope
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> sessionId [
 	^ sessionId
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> sessionId: anObject [
-"until now filled with senderId = clientId "
+	"until now filled with senderId = clientId "
+
 	sessionId := anObject
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PhxServerWebSocketSession >> setLastUsedToNow [
 	lastUsedAt := DateAndTime now asUTC
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> startedAt [
 	^ startedAt
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> startedAt: anObject [
 	startedAt := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> webSocket [
 	^ webSocket
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketSession >> webSocket: anObject [
 	webSocket := anObject
 ]

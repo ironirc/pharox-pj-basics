@@ -1,16 +1,17 @@
 Class {
-	#name : #PhxPjRandom,
-	#superclass : #PjDomController,
-	#category : #'Phx-Pj-Core-Support'
+	#name : 'PhxPjRandom',
+	#superclass : 'PjDomController',
+	#category : 'Phx-Pj-Core-Support',
+	#package : 'Phx-Pj-Core-Support'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhxPjRandom class >> randomBetweenZeroAnd: aNumber [
 
 	^ (Math floor: Math random * aNumber) + 1
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhxPjRandom class >> randomStringFromCharPool: charPool size: size [
 
 	| poolSize |
@@ -22,7 +23,7 @@ PhxPjRandom class >> randomStringFromCharPool: charPool size: size [
 			  ws << (charPool at: rndIdx) ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhxPjRandom class >> randomStringSize10 [ 
 	^self randomStringFromCharPool: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' size: 10
 ]

@@ -1,19 +1,20 @@
 Class {
-	#name : #DomTextNode,
-	#superclass : #Object,
+	#name : 'DomTextNode',
+	#superclass : 'Object',
 	#instVars : [
 		'text'
 	],
-	#category : #'Phx-Pj-Dom-Builder'
+	#category : 'Phx-Pj-Dom-Builder',
+	#package : 'Phx-Pj-Dom-Builder'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DomTextNode class >> new [ 
 
 	self error: 'use #new: instead'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DomTextNode class >> new: aString [
 
 	^ super new
@@ -21,19 +22,19 @@ DomTextNode class >> new: aString [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomTextNode >> streamHtmlOn: ws [
 
 	ws << text
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomTextNode >> text [
 
 	^ text
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomTextNode >> text: anObject [
 
 	text := anObject

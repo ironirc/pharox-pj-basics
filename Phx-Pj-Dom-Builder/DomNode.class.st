@@ -1,6 +1,6 @@
 Class {
-	#name : #DomNode,
-	#superclass : #Object,
+	#name : 'DomNode',
+	#superclass : 'Object',
 	#instVars : [
 		'attributes',
 		'classList',
@@ -9,16 +9,17 @@ Class {
 		'tagName',
 		'innerHTML'
 	],
-	#category : #'Phx-Pj-Dom-Builder'
+	#category : 'Phx-Pj-Dom-Builder',
+	#package : 'Phx-Pj-Dom-Builder'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DomNode class >> new [
 
 	self error: 'use #newNamed: instead'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DomNode class >> newNamed: aName [
 "
 self newNamed: 'div'
@@ -28,55 +29,55 @@ self newNamed: 'div'
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> appendChild: aChild [
 
 	children add: aChild
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> attributes [
 
 	^ attributes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> attributes: anObject [
 
 	attributes := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> children [
 
 	^ children
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> children: anObject [
 
 	children := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> classList [
 
 	^ classList
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> classList: anObject [
 
 	classList := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> getHtml [
 
 	^ String streamContents: [ :ws | self streamChildrenOn: ws ]
 ]
 
-{ #category : #'initialize - release' }
+{ #category : 'initialize - release' }
 DomNode >> initialize [
 
 	attributes := OrderedDictionary new.
@@ -85,37 +86,37 @@ DomNode >> initialize [
 	children := OrderedCollection new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> innerHTML [
 
 	^ innerHTML ifNil: [ '']
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> innerHTML: anObject [
 
 	innerHTML := anObject
 ]
 
-{ #category : #'initialize - release' }
+{ #category : 'initialize - release' }
 DomNode >> printOn: ws [
 
 	ws << '{' << tagName << '}'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> setAttribute: aKey to: aValue [
 
 	attributes at: aKey put: aValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> streamChildrenOn: ws [
 
 	self children do: [ :el | el streamHtmlOn: ws ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> streamHtmlOn: ws [
 
 	ws << '<' << tagName.
@@ -140,25 +141,25 @@ DomNode >> streamHtmlOn: ws [
 	ws << '</' << tagName << '>'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> styles [
 
 	^ styles
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> styles: anObject [
 
 	styles := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> tagName [
 
 	^ tagName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DomNode >> tagName: anObject [
 
 	tagName := anObject

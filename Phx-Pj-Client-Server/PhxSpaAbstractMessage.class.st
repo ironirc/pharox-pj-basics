@@ -1,16 +1,18 @@
 Class {
-	#name : #PhxSpaAbstractMessage,
-	#superclass : #PjDomController,
+	#name : 'PhxSpaAbstractMessage',
+	#superclass : 'PjDomController',
 	#instVars : [
 		'id'
 	],
 	#classVars : [
 		'currentId'
 	],
-	#category : #'Phx-Pj-Client-Server-shared'
+	#category : 'Phx-Pj-Client-Server-shared',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'shared'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaAbstractMessage class >> neoJsonMapping: mapper [
 	mapper
 		for: self
@@ -25,29 +27,29 @@ PhxSpaAbstractMessage class >> neoJsonMapping: mapper [
 			mapping encoder: [ :date | date yyyymmdd ] ]"
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhxSpaAbstractMessage class >> new [
 	^ super new
 		initializeId;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaAbstractMessage class >> nextMessageId [
 	currentId := currentId ifNil: [ 1 ] ifNotNil: [ :id | id + 1 ].
 	^ currentId
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxSpaAbstractMessage >> executeInResponseContext: rc [ 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhxSpaAbstractMessage >> expectsResponseFromClient [
 	^ true
 ]
 
-{ #category : #unused }
+{ #category : 'unused' }
 PhxSpaAbstractMessage >> getAccessTokenUnverified: jwtString [
 	"no senders"	
 
@@ -62,39 +64,39 @@ PhxSpaAbstractMessage >> getAccessTokenUnverified: jwtString [
 	^ ZTimestamp fromUnixTime: claims expirationTime
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaAbstractMessage >> id [
 	^ id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaAbstractMessage >> id: anObject [
 
 	id := anObject
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PhxSpaAbstractMessage >> initialize [
 	super initialize.
 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PhxSpaAbstractMessage >> initializeId [
 	id := PhxSpaAbstractMessage nextMessageId 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhxSpaAbstractMessage >> isError [
 	^false
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxSpaAbstractMessage >> respondForRequestContext: rc [
 	
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PhxSpaAbstractMessage >> wrapInEnvelope [
 	| env |
 	env := PhxEnvelope new.

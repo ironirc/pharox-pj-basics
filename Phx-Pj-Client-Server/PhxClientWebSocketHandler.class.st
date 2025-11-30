@@ -1,6 +1,6 @@
 Class {
-	#name : #PhxClientWebSocketHandler,
-	#superclass : #PjDomController,
+	#name : 'PhxClientWebSocketHandler',
+	#superclass : 'PjDomController',
 	#traits : 'PhxPjPromiseTrait + PhxPjLoggingTrait + PhxPubSubTrait',
 	#classTraits : 'PhxPjPromiseTrait classTrait + PhxPjLoggingTrait classTrait + PhxPubSubTrait classTrait',
 	#instVars : [
@@ -11,34 +11,36 @@ Class {
 		'client',
 		'timeoutMs'
 	],
-	#category : #'Phx-Pj-Client-Server-client-side'
+	#category : 'Phx-Pj-Client-Server-client-side',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'client-side'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 PhxClientWebSocketHandler class >> defaultTimeoutMs [  
 
 	^20000
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketHandler >> client [
 
 	^ client
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketHandler >> client: anObject [
 
 	client := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketHandler >> clientId [
 
 	^ self client ifNotNil: [ :c | c class clientId ]
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> enqueueEnvelope: env onResponseDo: contBlock [
 
 	| cont |
@@ -49,19 +51,18 @@ PhxClientWebSocketHandler >> enqueueEnvelope: env onResponseDo: contBlock [
 	continuations add: cont
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketHandler >> handleReceivedEnvelope: rcvdEnvelope msTimestamp: msTimestamp [
 
 	| envWithCont rc |
 	envWithCont := self takeEnvelopeWithContinuationFromQueue:
 		               rcvdEnvelope respToMsgId.
-
 	rc := PhxClientWebSocketRequestContext new.
 	rc receivedEnvelope: rcvdEnvelope.
-	rc roundTripInMs:
-		msTimestamp - envWithCont sentAtMsTimestamp.
+
 	rc wsHandler: self.
 	envWithCont ifNotNil: [
+		rc roundTripInMs: msTimestamp - envWithCont sentAtMsTimestamp.
 		rc sentEnvelope: envWithCont envelope.
 		"a prior sent envelope, being answered"
 		envWithCont executeFor: rc ].
@@ -69,7 +70,7 @@ PhxClientWebSocketHandler >> handleReceivedEnvelope: rcvdEnvelope msTimestamp: m
 	rcvdEnvelope msg executeInResponseContext: rc
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PhxClientWebSocketHandler >> initialize [
 
 	super initialize.
@@ -77,7 +78,13 @@ PhxClientWebSocketHandler >> initialize [
 	self initializePubSubTrait
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'logging traits' }
+PhxClientWebSocketHandler >> logSelfAndAll: args [
+
+	false ifTrue: [ self logAll: { self } , args ]
+]
+
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> onWebSocketClose: event [
 
 	self logSelfAndAll: { 
@@ -94,7 +101,7 @@ PhxClientWebSocketHandler >> onWebSocketClose: event [
 		ms: 2000 "]"
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> onWebSocketError: event [
 	self
 		logSelfAndAll:
@@ -102,7 +109,7 @@ PhxClientWebSocketHandler >> onWebSocketError: event [
 			event}
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketHandler >> onWebSocketMessage: event [
 
 	| rcvdEnvelope msTimestamp |
@@ -117,7 +124,7 @@ PhxClientWebSocketHandler >> onWebSocketMessage: event [
 	self handleReceivedEnvelope: rcvdEnvelope msTimestamp: msTimestamp
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> onWebSocketOpen: event [
 	self
 		logSelfAndAll:
@@ -126,7 +133,7 @@ PhxClientWebSocketHandler >> onWebSocketOpen: event [
 			'Websocket has been opened.'}.
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> promiseAccessToken [
 
 	^ self tokenProvider
@@ -134,7 +141,7 @@ PhxClientWebSocketHandler >> promiseAccessToken [
 		  ifNotNil: [ :tp | tp promiseAccessToken ]
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> promiseResponseFor: aMessage [
 
 	^ self
@@ -142,7 +149,7 @@ PhxClientWebSocketHandler >> promiseResponseFor: aMessage [
 		  timeout: (self timeoutMs ifNil: [ self class defaultTimeoutMs ])
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> promiseResponseFor: aMessage timeout: ms [
 
 	^ self promiseAccessToken then: [ :aJwt |
@@ -162,7 +169,7 @@ PhxClientWebSocketHandler >> promiseResponseFor: aMessage timeout: ms [
 			  withinMs: ms ]
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> sendMessageToServer: aMessage inResponseToEnvelope: incomingEnvelope [
 	"incomingEnvelope seldom needed. It would be the envelope of a request that came from server"
 
@@ -179,7 +186,7 @@ PhxClientWebSocketHandler >> sendMessageToServer: aMessage inResponseToEnvelope:
 		self sendStringThroughWebsocket: env asPhxJsonString ]
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> sendStringThroughWebsocket: aString [
 
 	webSocket readyState == globalThis WebSocket OPEN ifFalse: [
@@ -197,7 +204,7 @@ PhxClientWebSocketHandler >> sendStringThroughWebsocket: aString [
 	webSocket send: aString
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> setupConnectionWithServer [
 
 	self emitEvent: PhxPseWebSocketConnecting new.
@@ -221,7 +228,7 @@ PhxClientWebSocketHandler >> setupConnectionWithServer [
 		self emitEvent: (PhxPseWebSocketErrorOccurred newWith: event) ]
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> takeEnvelopeWithContinuationFromQueue: msgId [
 
 	| envWithCont |
@@ -234,37 +241,37 @@ PhxClientWebSocketHandler >> takeEnvelopeWithContinuationFromQueue: msgId [
 	^ envWithCont
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketHandler >> timeoutMs [
 
 	^ timeoutMs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketHandler >> timeoutMs: anObject [
 
 	timeoutMs := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketHandler >> tokenProvider [
 
 	^ tokenProvider
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketHandler >> tokenProvider: anObject [
 
 	tokenProvider := anObject
 ]
 
-{ #category : #'server messaging' }
+{ #category : 'server messaging' }
 PhxClientWebSocketHandler >> webSocketUrl [
 
 	^ webSocketUrl
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketHandler >> webSocketUrl: anObject [
 
 	webSocketUrl := anObject

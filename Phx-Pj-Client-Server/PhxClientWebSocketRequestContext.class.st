@@ -1,50 +1,52 @@
 Class {
-	#name : #PhxClientWebSocketRequestContext,
-	#superclass : #PjDomController,
+	#name : 'PhxClientWebSocketRequestContext',
+	#superclass : 'PjDomController',
 	#instVars : [
 		'sentEnvelope',
 		'receivedEnvelope',
 		'wsHandler',
 		'roundTripInMs'
 	],
-	#category : #'Phx-Pj-Client-Server-client-side'
+	#category : 'Phx-Pj-Client-Server-client-side',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'client-side'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketRequestContext >> client [
 
 	^self wsHandler client
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketRequestContext >> msg [
 	
 	^ self receivedEnvelope msg
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketRequestContext >> receivedEnvelope [
 	^ receivedEnvelope
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketRequestContext >> receivedEnvelope: anObject [
 	receivedEnvelope := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketRequestContext >> roundTripInMs [
 
 	^ roundTripInMs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketRequestContext >> roundTripInMs: anObject [
 
 	roundTripInMs := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketRequestContext >> sendResponseMessage: outgoingMessage [
 	"answer a request initiated by the server"
 
@@ -53,23 +55,23 @@ PhxClientWebSocketRequestContext >> sendResponseMessage: outgoingMessage [
 		inResponseToEnvelope: self receivedEnvelope
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketRequestContext >> sentEnvelope [
 	^ sentEnvelope
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketRequestContext >> sentEnvelope: anObject [
 	sentEnvelope := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketRequestContext >> wsHandler [
 
 	^ wsHandler
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxClientWebSocketRequestContext >> wsHandler: anObject [
 	wsHandler := anObject
 ]

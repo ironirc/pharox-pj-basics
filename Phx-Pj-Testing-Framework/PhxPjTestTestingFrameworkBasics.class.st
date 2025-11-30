@@ -1,10 +1,11 @@
 Class {
-	#name : #PhxPjTestTestingFrameworkBasics,
-	#superclass : #PhxPjAbstractTestCase,
-	#category : #'Phx-Pj-Testing-Framework'
+	#name : 'PhxPjTestTestingFrameworkBasics',
+	#superclass : 'PhxPjAbstractTestCase',
+	#category : 'Phx-Pj-Testing-Framework',
+	#package : 'Phx-Pj-Testing-Framework'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestTestingFrameworkBasics >> testAsyncError [
 
 	^ self promise: [ :resolve :reject |
@@ -13,7 +14,7 @@ PhxPjTestTestingFrameworkBasics >> testAsyncError [
 			  do: [ reject value: 'deliberatly rejected the promise' ] ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestTestingFrameworkBasics >> testAsyncTest [
 
 	^ self promise: [ :resolve :reject |
@@ -22,7 +23,7 @@ PhxPjTestTestingFrameworkBasics >> testAsyncTest [
 			  resolve value ] ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestTestingFrameworkBasics >> testAsyncTestTimeout [
 	"timeout for this specific method is set to 10ms (see timeoutMsForMethod:)"
 
@@ -32,25 +33,25 @@ PhxPjTestTestingFrameworkBasics >> testAsyncTestTimeout [
 			  resolve value ] ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestTestingFrameworkBasics >> testDeliberateFail [
 
 	self assert: 1 equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestTestingFrameworkBasics >> testExpectedErrorZeroDivide [
 
 	self should: [ 1 / 0 ] raise: Error
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhxPjTestTestingFrameworkBasics >> testSimpleAssertion [
 
 	self assert: 'ivo' equals: 'ivo'
 ]
 
-{ #category : #'accessing derived' }
+{ #category : 'accessing derived' }
 PhxPjTestTestingFrameworkBasics >> timeoutMsForMethod: aMethodName [
 
 	aMethodName = #testAsyncTestTimeout ifTrue: [ ^ 10 ].

@@ -1,10 +1,11 @@
 Class {
-	#name : #PhxPjTestReadStream,
-	#superclass : #PhxPjAbstractTestCase,
-	#category : #'Phx-Pj-Testing-Framework'
+	#name : 'PhxPjTestReadStream',
+	#superclass : 'PhxPjAbstractTestCase',
+	#category : 'Phx-Pj-Testing-Framework',
+	#package : 'Phx-Pj-Testing-Framework'
 }
 
-{ #category : #tests }
+{ #category : 'as yet unclassified' }
 PhxPjTestReadStream >> testReadStream [
 
 	| rs |

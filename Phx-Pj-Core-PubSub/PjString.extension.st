@@ -1,6 +1,6 @@
-Extension { #name : #PjString }
+Extension { #name : 'PjString' }
 
-{ #category : #'*Phx-Pj-Core-PubSub' }
+{ #category : '*Phx-Pj-Core-PubSub' }
 PjString >> asPhxPubSubSubscription [
 
 	^ PhxPubSubSubscriptionForString new

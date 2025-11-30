@@ -1,16 +1,17 @@
 Class {
-	#name : #PhxPjAsyncIterator,
-	#superclass : #PjDomController,
+	#name : 'PhxPjAsyncIterator',
+	#superclass : 'PjDomController',
 	#traits : 'PhxPjPromiseTrait',
 	#classTraits : 'PhxPjPromiseTrait classTrait',
 	#instVars : [
 		'readStream',
 		'block'
 	],
-	#category : #'Phx-Pj-Core-Support'
+	#category : 'Phx-Pj-Core-Support',
+	#package : 'Phx-Pj-Core-Support'
 }
 
-{ #category : #convenience }
+{ #category : 'convenience' }
 PhxPjAsyncIterator class >> on: collectionOrStream do: aBlock [
 	
 	^self new
@@ -19,19 +20,33 @@ PhxPjAsyncIterator class >> on: collectionOrStream do: aBlock [
 		promiseDoAll
 ]
 
-{ #category : #accessing }
+{ #category : 'convenience' }
+PhxPjAsyncIterator class >> reduce: collectionOrStream [
+
+	^ self reduce: collectionOrStream with: nil
+]
+
+{ #category : 'convenience' }
+PhxPjAsyncIterator class >> reduce: collectionOrStream with: arg [
+
+	^ self new
+		  readStream: collectionOrStream readStream;
+		  reduceWith: arg
+]
+
+{ #category : 'accessing' }
 PhxPjAsyncIterator >> block [
 
 	^ block
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjAsyncIterator >> block: anObject [
 
 	block := anObject
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxPjAsyncIterator >> promiseDoAll [
 
 	^ readStream atEnd
@@ -41,14 +56,24 @@ PhxPjAsyncIterator >> promiseDoAll [
 				  self promiseDoAll ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjAsyncIterator >> readStream [
 
 	^ readStream
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjAsyncIterator >> readStream: anObject [
 
 	readStream := anObject
+]
+
+{ #category : 'private' }
+PhxPjAsyncIterator >> reduceWith: accum [
+
+	^ readStream atEnd
+		  ifTrue: [ self promiseResolve: accum ]
+		  ifFalse: [
+			  (self promiseResolve: (readStream next cull: accum)) then: [
+				  :result | self reduceWith: result ] ]
 ]

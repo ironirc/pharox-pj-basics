@@ -1,31 +1,32 @@
 Class {
-	#name : #PhxPjTestResultFail,
-	#superclass : #PhxPjAbstractTestResult,
+	#name : 'PhxPjTestResultFail',
+	#superclass : 'PhxPjAbstractTestResult',
 	#instVars : [
 		'description'
 	],
-	#category : #'Phx-Pj-Testing-Framework'
+	#category : 'Phx-Pj-Testing-Framework',
+	#package : 'Phx-Pj-Testing-Framework'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjTestResultFail >> cssOn: eb [  
 
 	eb _class: 'test-case-fail'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjTestResultFail >> description [
 
 	^ description
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjTestResultFail >> description: anObject [
 
 	description := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjTestResultFail >> renderDetailsOn: eb [
 
 	eb << self description

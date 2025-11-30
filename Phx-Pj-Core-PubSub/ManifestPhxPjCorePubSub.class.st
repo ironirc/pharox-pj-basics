@@ -2,7 +2,9 @@
 Please describe the package using the class comment of the included manifest class. The manifest class also includes other additional metadata for the package. These meta data are used by other tools such as the SmalllintManifestChecker and the critics Browser
 "
 Class {
-	#name : #ManifestPhxPjCorePubSub,
-	#superclass : #PackageManifest,
-	#category : #'Phx-Pj-Core-PubSub-Manifest'
+	#name : 'ManifestPhxPjCorePubSub',
+	#superclass : 'PackageManifest',
+	#category : 'Phx-Pj-Core-PubSub-Manifest',
+	#package : 'Phx-Pj-Core-PubSub',
+	#tag : 'Manifest'
 }

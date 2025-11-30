@@ -1,46 +1,48 @@
 Class {
-	#name : #PhxServerWebSocketHandler,
-	#superclass : #Object,
+	#name : 'PhxServerWebSocketHandler',
+	#superclass : 'Object',
 	#instVars : [
 		'applicationClass',
-		'lock',
-		'webSocketsDict',
-		'context'
+		'context',
+		'webSocketSessionsDict',
+		'mutex'
 	],
-	#category : #'Phx-Pj-Client-Server-server-side'
+	#category : 'Phx-Pj-Client-Server-server-side',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'server-side'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> applicationClass [
 
 	^ applicationClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> applicationClass: anObject [
 
 	applicationClass := anObject
 ]
 
-{ #category : #'live code update broadcasting' }
+{ #category : 'live code update broadcasting' }
 PhxServerWebSocketHandler >> boadcastMessage: msg [
 	self
 		broadcastEnvelopeToAllRegisteredWebsockets: msg wrapInEnvelope
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhxServerWebSocketHandler >> broadcastEnvelopeToAllRegisteredWebsockets: anEnvelope [
 
-	webSocketsDict valuesDo: [ :wsi | 
+	webSocketSessionsDict valuesDo: [ :wsi | 
 		wsi webSocket isConnected ifTrue: [ 
 			[ wsi sendEnvelope: anEnvelope ]
 				on: Error
 				do: [ :ex | ex return ] ] ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhxServerWebSocketHandler >> closeAllWebsockets [
-	webSocketsDict keys copy
+	webSocketSessionsDict keys copy
 		do: [ :each | 
 			[ self unregister: each.
 			each close ]
@@ -48,19 +50,19 @@ PhxServerWebSocketHandler >> closeAllWebsockets [
 				do: [ :ex | ex return ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> context [
-	"is an PhxAppContext"
+	"something like SygContext"
 
 	^ context
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> context: anObject [
 	context := anObject
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxServerWebSocketHandler >> ensuredContext [
 
 	"is an PhxAppContext"
@@ -72,13 +74,14 @@ PhxServerWebSocketHandler >> ensuredContext [
 	^ self context
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> handleErrorsWhile: aBlock forWebSocketSession: webSocketSession incomingEnvelope: incomingEnvelope [
 
 	aBlock
 		on: Error
 		do: [ :ex |
 			| msg |
+			"self halt. During dev, it might be convenient to halt here" 
 			msg := PhxSpaStcRaiseErrorToast new. "probably better to just send an error message instead of specifically raising a toast?"
 			msg message:
 				'Server error while reading envelope: '
@@ -87,7 +90,7 @@ PhxServerWebSocketHandler >> handleErrorsWhile: aBlock forWebSocketSession: webS
 			self ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> handleMessage: rawSocketMessage forSocket: aWebSocket [
 
 	| env webSocketSession |
@@ -106,7 +109,7 @@ PhxServerWebSocketHandler >> handleMessage: rawSocketMessage forSocket: aWebSock
 		incomingEnvelope: env ] fork
 ]
 
-{ #category : #'live code update broadcasting' }
+{ #category : 'live code update broadcasting' }
 PhxServerWebSocketHandler >> handleSystemAnnouncement: ann [
 
 	self applicationClass
@@ -114,50 +117,38 @@ PhxServerWebSocketHandler >> handleSystemAnnouncement: ann [
 		withWebSocketMessageHandler: self
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PhxServerWebSocketHandler >> initialize [
 
-	webSocketsDict := IdentityDictionary new.
-	lock := Mutex new.
+	webSocketSessionsDict := IdentityDictionary new.
+	mutex := Mutex new.
 
 ]
 
-{ #category : #'live code update broadcasting' }
+{ #category : 'live code update broadcasting' }
 PhxServerWebSocketHandler >> isSubscribedToSystemAnnouncer [
 
 	^ SystemAnnouncer uniqueInstance hasSubscriber: self
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhxServerWebSocketHandler >> register: clientWebSocket [
 
 	Transcript
 		cr;
 		show: 'Registering websocket ' , self hash printString.
-	lock critical: [
-		| newWsi |
-		newWsi := PhxServerWebSocketSession new.
-		newWsi context: self context.
-		newWsi webSocket: clientWebSocket.
-		webSocketsDict at: clientWebSocket put: newWsi ]
+	mutex critical: [
+			| newWsSession |
+			newWsSession := PhxServerWebSocketSession new.
+			newWsSession context: self context.
+			newWsSession webSocket: clientWebSocket.
+			webSocketSessionsDict at: clientWebSocket put: newWsSession ]
 ]
 
-{ #category : #'obsolete - unused' }
-PhxServerWebSocketHandler >> replaceOldWebSocket: oldWebSocket with: newWebSocket [
-
-	webSocketsDict
-		at: oldWebSocket
-		ifPresent: [ :session | session webSocket: newWebSocket.
-			webSocketsDict at: newWebSocket put: session. 
-			
-			 ].
-	webSocketsDict removeKey: oldWebSocket ifAbsent: []
-]
-
-{ #category : #'ad hoc dev' }
+{ #category : 'ad hoc dev' }
 PhxServerWebSocketHandler >> reportWebSocketsToTranscript [
 	Transcript cr.
-	webSocketsDict values
+	webSocketSessionsDict values
 		do: [ :inf | 
 			inf
 				ifNil: [ Transcript show: 'Websocket without info?' ]
@@ -165,13 +156,13 @@ PhxServerWebSocketHandler >> reportWebSocketsToTranscript [
 		separatedBy: [ Transcript cr ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> sendEnvelope: anEnvelope viaSocket: aWebSocket [
 	anEnvelope senderId: self id.
 	aWebSocket sendMessage: anEnvelope asPhxJsonString
 ]
 
-{ #category : #'live code update broadcasting' }
+{ #category : 'live code update broadcasting' }
 PhxServerWebSocketHandler >> subscribeToSystemAnnouncer [
 	<script>
 	self unsubscribeFromSystemAnnouncer.
@@ -183,25 +174,25 @@ PhxServerWebSocketHandler >> subscribeToSystemAnnouncer [
 		to: self 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhxServerWebSocketHandler >> unregister: clientWebSocket [
 
-	lock critical: [ "webSocketsDict removeKey: clientWebSocket ifAbsent: [  ].""Give clients opportunity to recover the session"
+	mutex critical: [ "webSocketsDict removeKey: clientWebSocket ifAbsent: [  ].""Give clients opportunity to recover the session"
 		Transcript
 			cr;
 			show: 'Un-Registered websocket' ]
 ]
 
-{ #category : #'live code update broadcasting' }
+{ #category : 'live code update broadcasting' }
 PhxServerWebSocketHandler >> unsubscribeFromSystemAnnouncer [
 	<script>
 	SystemAnnouncer uniqueInstance unsubscribe: self.
 
 ]
 
-{ #category : #accessing }
+{ #category : 'zinc' }
 PhxServerWebSocketHandler >> value: aWebSocket [
-
+	"Called by Zinc during connection upgrade to Websocket"
 	[
 	self register: aWebSocket.
 	aWebSocket runWith: [ :aMessage |
@@ -212,9 +203,9 @@ PhxServerWebSocketHandler >> value: aWebSocket [
 			self unregister: aWebSocket ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> webSocketSessionForWebSocket: aWebSocket [
-
 	"('WebSocketHandler ' , self hash printString) crTrace."
-	^ webSocketsDict at: aWebSocket ifAbsent: [ nil ]
+
+	^ webSocketSessionsDict at: aWebSocket ifAbsent: [ nil ]
 ]

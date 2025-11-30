@@ -1,6 +1,6 @@
 Class {
-	#name : #PhxPjTestMethodRunner,
-	#superclass : #PjDomController,
+	#name : 'PhxPjTestMethodRunner',
+	#superclass : 'PjDomController',
 	#traits : 'PhxPjPromiseTrait + PhxPubSubTrait + PhxPjLoggingTrait',
 	#classTraits : 'PhxPjPromiseTrait classTrait + PhxPubSubTrait classTrait + PhxPjLoggingTrait classTrait',
 	#instVars : [
@@ -11,10 +11,11 @@ Class {
 		'isError',
 		'testCase'
 	],
-	#category : #'Phx-Pj-Testing-Framework'
+	#category : 'Phx-Pj-Testing-Framework',
+	#package : 'Phx-Pj-Testing-Framework'
 }
 
-{ #category : #'instance-creation' }
+{ #category : 'instance-creation' }
 PhxPjTestMethodRunner class >> newForTestCaseRunner: aTestCaseRunner methodName: aMethodName [
 
 	^ self new
@@ -23,7 +24,7 @@ PhxPjTestMethodRunner class >> newForTestCaseRunner: aTestCaseRunner methodName:
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhxPjTestMethodRunner >> initialize [
 
 	super initialize.
@@ -32,32 +33,38 @@ PhxPjTestMethodRunner >> initialize [
 	isError := false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjTestMethodRunner >> methodName [
 
 	^ methodName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjTestMethodRunner >> methodName: anObject [
 
 	methodName := anObject
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxPjTestMethodRunner >> methodNameSuffix: mn [
 
 	^ mn copyFrom: 5 to: mn size
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxPjTestMethodRunner >> now [
 
 	^ globalThis performance now
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PhxPjTestMethodRunner >> promiseRun [
+
+	| event |
+	event := PhxPjTestStartedOnMethod new.
+	event testCaseClass: self testCaseClass.
+	event methodName: methodName.
+	self emitEvent: event.
 
 	^ self runSafely finally: [
 		  isFailure | isError ifFalse: [
@@ -68,25 +75,25 @@ PhxPjTestMethodRunner >> promiseRun [
 					   yourself) ] ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxPjTestMethodRunner >> promiseSetup [
 
 	^ self promiseResolve: testCase setup
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxPjTestMethodRunner >> promiseTearDown [
 	^self promiseResolve: testCase tearDown
 
 	
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxPjTestMethodRunner >> runSafely [
 
 	self setStartTime.
 	^ self setup_run_tearDown catch: [ :ex |
-		console trace. 
+		"console trace. "
 		  self emitEvent: (PhxPjTestResultError new
 				   testCaseClass: self testCaseClass;
 				   methodName: self methodName;
@@ -96,19 +103,19 @@ PhxPjTestMethodRunner >> runSafely [
 		  isError := true ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxPjTestMethodRunner >> runUnprotected [
 
 	^ self promiseResolve: (testCase perform: self methodName)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxPjTestMethodRunner >> setStartTime [
 
 	startTime := self now
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxPjTestMethodRunner >> setup_run_tearDown [
 
 	testCase := self testCaseClass new.
@@ -127,31 +134,31 @@ PhxPjTestMethodRunner >> setup_run_tearDown [
 		  withinMs: self timeoutMs
 ]
 
-{ #category : #'accessing derived' }
+{ #category : 'accessing derived' }
 PhxPjTestMethodRunner >> testCaseClass [
 
 	^ self testCaseRunner testCaseClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjTestMethodRunner >> testCaseRunner [
 
 	^ testCaseRunner
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPjTestMethodRunner >> testCaseRunner: anObject [
 
 	testCaseRunner := anObject
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxPjTestMethodRunner >> timeSinceStart [
 
 	^ self now - startTime
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxPjTestMethodRunner >> timeoutMs [
 
 	^ testCase timeoutMsForMethod: self methodName

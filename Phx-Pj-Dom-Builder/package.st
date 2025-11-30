@@ -1,1 +1,1 @@
-Package { #name : #'Phx-Pj-Dom-Builder' }
+Package { #name : 'Phx-Pj-Dom-Builder' }
