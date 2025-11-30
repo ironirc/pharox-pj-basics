@@ -1,6 +1,6 @@
 Class {
 	#name : 'PhxPjTest_ObjectBuilder',
-	#superclass : 'AgxAbstractTestCase',
+	#superclass : 'PhxPjAbstractTestCase',
 	#category : 'Phx-Pj-Testing-Framework',
 	#package : 'Phx-Pj-Testing-Framework'
 }

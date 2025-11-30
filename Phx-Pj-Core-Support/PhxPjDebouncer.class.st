@@ -17,11 +17,24 @@ PhxPjDebouncer class >> ms: ms [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : 'api' }
 PhxPjDebouncer >> do: aBlock [
 
-	handle ifNotNil: [ PhxPjTimer clearInterval: handle ].
-	handle := PhxPjTimer afterMilliseconds: self ms do: aBlock
+	handle ifNotNil: [ PhxPjTimer clearTimeoutWithHandle: handle ].
+	handle := PhxPjTimer afterMilliseconds: self ms do: [
+		handle := nil.
+		aBlock value ]
+]
+
+{ #category : 'api' }
+PhxPjDebouncer >> doLeading: aBlock [
+
+	handle ifNil: [
+		aBlock value.
+		handle := PhxPjTimer afterMilliseconds: self ms do: [ handle := nil ].
+		^ self ].
+
+	^ self do: aBlock
 ]
 
 { #category : 'accessing' }
