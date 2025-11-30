@@ -1,35 +1,37 @@
 Class {
-	#name : #PhxSpaQrResult,
-	#superclass : #PhxSpaServerToClientMessage,
+	#name : 'PhxSpaQrResult',
+	#superclass : 'PhxSpaServerToClientMessage',
 	#instVars : [
 		'result',
 		'rawQueryTime'
 	],
-	#category : #'Phx-Pj-Client-Server-shared'
+	#category : 'Phx-Pj-Client-Server-shared',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'shared'
 }
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PhxSpaQrResult >> initialize [
 	super initialize. 
 	isSuccess := true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaQrResult >> rawQueryTime [
 	^ rawQueryTime
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaQrResult >> rawQueryTime: anObject [
 	rawQueryTime := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaQrResult >> result [
 	^ result
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaQrResult >> result: anObject [
 	result := anObject
 ]

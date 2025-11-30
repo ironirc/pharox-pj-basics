@@ -1,62 +1,64 @@
 Class {
-	#name : #PhxSpaResponse,
-	#superclass : #PhxSpaAbstractMessage,
+	#name : 'PhxSpaResponse',
+	#superclass : 'PhxSpaAbstractMessage',
 	#instVars : [
 		'isSuccess',
 		'type',
 		'message'
 	],
-	#category : #'Phx-Pj-Client-Server-shared'
+	#category : 'Phx-Pj-Client-Server-shared',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'shared'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhxSpaResponse >> expectsResponseFromClient [ 
 	^false
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PhxSpaResponse >> initialize [
 	isSuccess := false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaResponse >> isError [
 	^ self type == #error
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaResponse >> isSuccess [
 	^ self type == #success
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaResponse >> isSuccess: aBoolean [
 	self flag: 'should be removed'.
 	aBoolean ifTrue: [ self type: #success ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaResponse >> isWarning [
 	^ self type == #warning
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaResponse >> message [
 	^ message
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaResponse >> message: anObject [
 	message := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaResponse >> type [
 
 	^ type
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxSpaResponse >> type: anObject [
 
 	type := anObject

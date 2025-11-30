@@ -1,10 +1,12 @@
 Class {
-	#name : #PhxSpaStcUpdateEntireComponentView,
-	#superclass : #PhxSpaServerToClientMessage,
-	#category : #'Phx-Pj-Client-Server-shared'
+	#name : 'PhxSpaStcUpdateEntireComponentView',
+	#superclass : 'PhxSpaServerToClientMessage',
+	#category : 'Phx-Pj-Client-Server-shared',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'shared'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 PhxSpaStcUpdateEntireComponentView >> executeInResponseContext: rc [
 
 	rc client allChildrenDo: [ :c | c isVueDirty: true ].

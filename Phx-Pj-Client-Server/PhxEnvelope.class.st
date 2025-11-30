@@ -1,6 +1,6 @@
 Class {
-	#name : #PhxEnvelope,
-	#superclass : #Object,
+	#name : 'PhxEnvelope',
+	#superclass : 'Object',
 	#instVars : [
 		'senderId',
 		'time',
@@ -8,10 +8,12 @@ Class {
 		'respToMsgId',
 		'jwt'
 	],
-	#category : #'Phx-Pj-Client-Server-shared'
+	#category : 'Phx-Pj-Client-Server-shared',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'shared'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelope class >> neoJsonMapping: mapper [
 	mapper
 		for: self
@@ -27,14 +29,14 @@ PhxEnvelope class >> neoJsonMapping: mapper [
  
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhxEnvelope >> initialize [
 	super initialize.
 	senderId := 'not initialized'.
 	time := DateAndTime now
 ]
 
-{ #category : #json }
+{ #category : 'json' }
 PhxEnvelope >> jsonWriteOn: s [
 	<pharoJsSkip>
 	| jso |
@@ -42,53 +44,53 @@ PhxEnvelope >> jsonWriteOn: s [
 	jso jsonWriteOn: s
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelope >> jwt [
 	^ jwt
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelope >> jwt: anObject [
 	jwt := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelope >> msg [
 	^ msg
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelope >> msg: anObject [
 	msg := anObject.
 	"msgType := anObject class name."
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelope >> respToMsgId [
 	^ respToMsgId
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelope >> respToMsgId: anObject [
 	respToMsgId := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelope >> senderId [
 	^ senderId
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelope >> senderId: anObject [
 	senderId := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelope >> time [
 	^ time
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxEnvelope >> time: anObject [
 	time := anObject
 ]

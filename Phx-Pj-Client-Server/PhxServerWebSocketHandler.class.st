@@ -1,34 +1,36 @@
 Class {
-	#name : #PhxServerWebSocketHandler,
-	#superclass : #Object,
+	#name : 'PhxServerWebSocketHandler',
+	#superclass : 'Object',
 	#instVars : [
 		'applicationClass',
 		'lock',
 		'webSocketsDict',
 		'context'
 	],
-	#category : #'Phx-Pj-Client-Server-server-side'
+	#category : 'Phx-Pj-Client-Server-server-side',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'server-side'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> applicationClass [
 
 	^ applicationClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> applicationClass: anObject [
 
 	applicationClass := anObject
 ]
 
-{ #category : #'live code update broadcasting' }
+{ #category : 'live code update broadcasting' }
 PhxServerWebSocketHandler >> boadcastMessage: msg [
 	self
 		broadcastEnvelopeToAllRegisteredWebsockets: msg wrapInEnvelope
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhxServerWebSocketHandler >> broadcastEnvelopeToAllRegisteredWebsockets: anEnvelope [
 
 	webSocketsDict valuesDo: [ :wsi | 
@@ -38,7 +40,7 @@ PhxServerWebSocketHandler >> broadcastEnvelopeToAllRegisteredWebsockets: anEnvel
 				do: [ :ex | ex return ] ] ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhxServerWebSocketHandler >> closeAllWebsockets [
 	webSocketsDict keys copy
 		do: [ :each | 
@@ -48,19 +50,19 @@ PhxServerWebSocketHandler >> closeAllWebsockets [
 				do: [ :ex | ex return ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> context [
 	"is an PhxAppContext"
 
 	^ context
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> context: anObject [
 	context := anObject
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhxServerWebSocketHandler >> ensuredContext [
 
 	"is an PhxAppContext"
@@ -72,7 +74,7 @@ PhxServerWebSocketHandler >> ensuredContext [
 	^ self context
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> handleErrorsWhile: aBlock forWebSocketSession: webSocketSession incomingEnvelope: incomingEnvelope [
 
 	aBlock
@@ -87,7 +89,7 @@ PhxServerWebSocketHandler >> handleErrorsWhile: aBlock forWebSocketSession: webS
 			self ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> handleMessage: rawSocketMessage forSocket: aWebSocket [
 
 	| env webSocketSession |
@@ -106,7 +108,7 @@ PhxServerWebSocketHandler >> handleMessage: rawSocketMessage forSocket: aWebSock
 		incomingEnvelope: env ] fork
 ]
 
-{ #category : #'live code update broadcasting' }
+{ #category : 'live code update broadcasting' }
 PhxServerWebSocketHandler >> handleSystemAnnouncement: ann [
 
 	self applicationClass
@@ -114,7 +116,7 @@ PhxServerWebSocketHandler >> handleSystemAnnouncement: ann [
 		withWebSocketMessageHandler: self
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PhxServerWebSocketHandler >> initialize [
 
 	webSocketsDict := IdentityDictionary new.
@@ -122,13 +124,13 @@ PhxServerWebSocketHandler >> initialize [
 
 ]
 
-{ #category : #'live code update broadcasting' }
+{ #category : 'live code update broadcasting' }
 PhxServerWebSocketHandler >> isSubscribedToSystemAnnouncer [
 
 	^ SystemAnnouncer uniqueInstance hasSubscriber: self
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhxServerWebSocketHandler >> register: clientWebSocket [
 
 	Transcript
@@ -142,7 +144,7 @@ PhxServerWebSocketHandler >> register: clientWebSocket [
 		webSocketsDict at: clientWebSocket put: newWsi ]
 ]
 
-{ #category : #'obsolete - unused' }
+{ #category : 'obsolete - unused' }
 PhxServerWebSocketHandler >> replaceOldWebSocket: oldWebSocket with: newWebSocket [
 
 	webSocketsDict
@@ -154,7 +156,7 @@ PhxServerWebSocketHandler >> replaceOldWebSocket: oldWebSocket with: newWebSocke
 	webSocketsDict removeKey: oldWebSocket ifAbsent: []
 ]
 
-{ #category : #'ad hoc dev' }
+{ #category : 'ad hoc dev' }
 PhxServerWebSocketHandler >> reportWebSocketsToTranscript [
 	Transcript cr.
 	webSocketsDict values
@@ -165,13 +167,13 @@ PhxServerWebSocketHandler >> reportWebSocketsToTranscript [
 		separatedBy: [ Transcript cr ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> sendEnvelope: anEnvelope viaSocket: aWebSocket [
 	anEnvelope senderId: self id.
 	aWebSocket sendMessage: anEnvelope asPhxJsonString
 ]
 
-{ #category : #'live code update broadcasting' }
+{ #category : 'live code update broadcasting' }
 PhxServerWebSocketHandler >> subscribeToSystemAnnouncer [
 	<script>
 	self unsubscribeFromSystemAnnouncer.
@@ -183,7 +185,7 @@ PhxServerWebSocketHandler >> subscribeToSystemAnnouncer [
 		to: self 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhxServerWebSocketHandler >> unregister: clientWebSocket [
 
 	lock critical: [ "webSocketsDict removeKey: clientWebSocket ifAbsent: [  ].""Give clients opportunity to recover the session"
@@ -192,14 +194,14 @@ PhxServerWebSocketHandler >> unregister: clientWebSocket [
 			show: 'Un-Registered websocket' ]
 ]
 
-{ #category : #'live code update broadcasting' }
+{ #category : 'live code update broadcasting' }
 PhxServerWebSocketHandler >> unsubscribeFromSystemAnnouncer [
 	<script>
 	SystemAnnouncer uniqueInstance unsubscribe: self.
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> value: aWebSocket [
 
 	[
@@ -212,7 +214,7 @@ PhxServerWebSocketHandler >> value: aWebSocket [
 			self unregister: aWebSocket ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxServerWebSocketHandler >> webSocketSessionForWebSocket: aWebSocket [
 
 	"('WebSocketHandler ' , self hash printString) crTrace."

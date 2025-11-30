@@ -1,13 +1,15 @@
 Class {
-	#name : #PhxPseWebSocketEvent,
-	#superclass : #PhxPubSubEvent,
+	#name : 'PhxPseWebSocketEvent',
+	#superclass : 'PhxPubSubEvent',
 	#instVars : [
 		'payload'
 	],
-	#category : #'Phx-Pj-Client-Server-client-side'
+	#category : 'Phx-Pj-Client-Server-client-side',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'client-side'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhxPseWebSocketEvent class >> newWith: aPayload [
 
 	^ self new
@@ -15,13 +17,13 @@ PhxPseWebSocketEvent class >> newWith: aPayload [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPseWebSocketEvent >> payload [
 
 	^ payload
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhxPseWebSocketEvent >> payload: anObject [
 
 	payload := anObject

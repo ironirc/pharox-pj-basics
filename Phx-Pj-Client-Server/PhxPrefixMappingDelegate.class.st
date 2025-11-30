@@ -1,10 +1,12 @@
 Class {
-	#name : #PhxPrefixMappingDelegate,
-	#superclass : #ZnPrefixMappingDelegate,
-	#category : #'Phx-Pj-Client-Server-shared'
+	#name : 'PhxPrefixMappingDelegate',
+	#superclass : 'ZnPrefixMappingDelegate',
+	#category : 'Phx-Pj-Client-Server-shared',
+	#package : 'Phx-Pj-Client-Server',
+	#tag : 'shared'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 PhxPrefixMappingDelegate >> handleRequest: request [
 
 	| handler relativeRequest |
