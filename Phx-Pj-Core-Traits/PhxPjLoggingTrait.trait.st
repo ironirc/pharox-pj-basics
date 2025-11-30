@@ -1,42 +1,43 @@
 Trait {
-	#name : #PhxPjLoggingTrait,
-	#category : #'Phx-Pj-Core-Traits'
+	#name : 'PhxPjLoggingTrait',
+	#category : 'Phx-Pj-Core-Traits',
+	#package : 'Phx-Pj-Core-Traits'
 }
 
-{ #category : #'logging traits' }
+{ #category : 'logging traits' }
 PhxPjLoggingTrait >> console [
 
 	<javascript: 'return console'>
 	
 ]
 
-{ #category : #'logging traits' }
+{ #category : 'logging traits' }
 PhxPjLoggingTrait >> log: anObject [
 
 	self logAll: { anObject }.
 	^anObject
 ]
 
-{ #category : #'logging traits' }
+{ #category : 'logging traits' }
 PhxPjLoggingTrait >> logAll: args [
 
 	<javascript: 'console.log(...args)'>
 ]
 
-{ #category : #'logging traits' }
+{ #category : 'logging traits' }
 PhxPjLoggingTrait >> logSelfAndAll: args [
 
 	self logAll: { self } , args
 ]
 
-{ #category : #'logging traits' }
+{ #category : 'logging traits' }
 PhxPjLoggingTrait >> now [
 
 	<javascript: 'return window.performance.now()'>
 	
 ]
 
-{ #category : #'logging traits' }
+{ #category : 'logging traits' }
 PhxPjLoggingTrait >> profile: aBlock labeled: aLabel [
 
 	self console profile: aLabel.
@@ -44,7 +45,7 @@ PhxPjLoggingTrait >> profile: aBlock labeled: aLabel [
 	self console profileEnd: aLabel
 ]
 
-{ #category : #'logging traits' }
+{ #category : 'logging traits' }
 PhxPjLoggingTrait >> timeToRun: aBlock labeled: label [
 
 	| start |

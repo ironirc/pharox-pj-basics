@@ -1,12 +1,13 @@
 Class {
-	#name : #PhxPjPromiseProblemDemo,
-	#superclass : #PjDomController,
+	#name : 'PhxPjPromiseProblemDemo',
+	#superclass : 'PjDomController',
 	#traits : 'PhxPjPromiseTrait',
 	#classTraits : 'PhxPjPromiseTrait classTrait',
-	#category : #'Phx-Pj-Core-Traits'
+	#category : 'Phx-Pj-Core-Traits',
+	#package : 'Phx-Pj-Core-Traits'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhxPjPromiseProblemDemo >> demonstrationOfUndesiredBehaviourWhenSendingBothThenAndCatchToSamePromise [
 	"This demonstrates usage of #then: and #catch: leading to uninteded behaviour"
 	| prom |

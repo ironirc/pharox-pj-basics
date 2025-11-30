@@ -1,30 +1,31 @@
 Trait {
-	#name : #PhxPjPromiseTrait,
-	#category : #'Phx-Pj-Core-Traits'
+	#name : 'PhxPjPromiseTrait',
+	#category : 'Phx-Pj-Core-Traits',
+	#package : 'Phx-Pj-Core-Traits'
 }
 
-{ #category : #services }
+{ #category : 'services' }
 PhxPjPromiseTrait classSide >> promise: aBlock [
 	<javascript: 'return new Promise(aBlock)'>
 ]
 
-{ #category : #services }
+{ #category : 'services' }
 PhxPjPromiseTrait classSide >> promiseAll: anArray [
 	<javascript: 'return Promise.all(anArray)'>
 
 ]
 
-{ #category : #services }
+{ #category : 'services' }
 PhxPjPromiseTrait classSide >> promiseResolve: aValue [
 	<javascript: 'return Promise.resolve(aValue)'>
 ]
 
-{ #category : #'promise traits' }
+{ #category : 'promise traits' }
 PhxPjPromiseTrait >> promise: aBlock [
 	<javascript: 'return new Promise(aBlock)'>
 ]
 
-{ #category : #'promise traits' }
+{ #category : 'promise traits' }
 PhxPjPromiseTrait >> promise: aBlock withinMs: ms [
 
 	^ self promise: [ :resolve :reject |
@@ -38,23 +39,23 @@ PhxPjPromiseTrait >> promise: aBlock withinMs: ms [
 			  PhxPjTimer clearTimeoutWithHandle: timeoutId ] ]
 ]
 
-{ #category : #'promise traits' }
+{ #category : 'promise traits' }
 PhxPjPromiseTrait >> promiseAll: anArray [
 	<javascript: 'return Promise.all(anArray)'>
 
 ]
 
-{ #category : #'promise traits' }
+{ #category : 'promise traits' }
 PhxPjPromiseTrait >> promiseRace: blocks [
 	<javascript: 'return Promise.race(blocks)'>
 ]
 
-{ #category : #'promise traits' }
+{ #category : 'promise traits' }
 PhxPjPromiseTrait >> promiseReject: aValue [
 	<javascript: 'return Promise.reject(aValue)'>
 ]
 
-{ #category : #'promise traits' }
+{ #category : 'promise traits' }
 PhxPjPromiseTrait >> promiseResolve: aValue [
 	<javascript: 'return Promise.resolve(aValue)'>
 ]
