@@ -66,10 +66,17 @@ PhxPjAbstractTestCase >> methodNamesOfTests [
 
 { #category : 'accessing method names' }
 PhxPjAbstractTestCase >> methodNamesRaw [
+	
+	| selectors |
+	selectors := Object js_getOwnPropertyNames:
+		             (Object js_getPrototypeOf: self).
+	"we need to revert the transformation of _ into _$
+	because during perform: the _ gets transformed once more to _$,
+	ending up with double transformation _$$
+	also see: #makePharoJsSelector:"
+	^selectors collect: [ :selector |
+		(selector js_split: '_$') js_join: '_' ].
 
-	^ (Object js_getOwnPropertyNames: (Object js_getPrototypeOf: self))
-	
-	
 ]
 
 { #category : 'initialize' }
