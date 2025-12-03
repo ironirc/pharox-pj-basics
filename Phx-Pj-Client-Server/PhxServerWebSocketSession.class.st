@@ -168,23 +168,26 @@ PhxServerWebSocketSession >> sendEnvelope: anEnvelope [
 
 	anEnvelope msg expectsResponseFromClient
 		ifTrue: [
-			| sentEnv |
-			sentEnv := PhxEnvelopeWaitingForResponse new.
-			sentEnv sentEnvelope: anEnvelope.
-			sentEnvelopesWaitingForResponse add: sentEnv.
-			[ "('Sending ' , anEnvelope msg class name ) crTrace. "
-			self webSocket sendMessage: anEnvelope asPhxJsonString ] fork.
-			"'waiting for response...' crTrace. "
-			monitor critical: [
-				monitor
-					waitUntil: [ sentEnv responseEnvelope notNil ]
-					maxMilliseconds: 500 "check every 1000 ms. Does not raise time out error (still to be implemented)!!!" ].
-			sentEnv responseEnvelope
-				ifNil: [
-					self error: 'timeout while waiting for response'.
-					^ nil ]
-				ifNotNil: [ :recvdEnv | ^ recvdEnv ] ]
-		ifFalse: [ self webSocket sendMessage: anEnvelope asPhxJsonString ].
+				| sentEnv |
+				sentEnv := PhxEnvelopeWaitingForResponse new.
+				sentEnv sentEnvelope: anEnvelope.
+				sentEnvelopesWaitingForResponse add: sentEnv.
+				[
+					"('Sending request' , anEnvelope msg class name) crTrace."
+					self sendRawMessageOverSocket: anEnvelope asPhxJsonString ] fork.
+				"'waiting for response...' crTrace. "
+				monitor critical: [
+						monitor
+							waitUntil: [ sentEnv responseEnvelope notNil ]
+							maxMilliseconds: 500 "check every 1000 ms. Does not raise time out error (still to be implemented)!!!" ].
+				sentEnv responseEnvelope
+					ifNil: [
+							self error: 'timeout while waiting for response'.
+							^ nil ]
+					ifNotNil: [ :recvdEnv | ^ recvdEnv ] ]
+		ifFalse: [
+				"('Sending response' , anEnvelope msg class name) crTrace."
+				self sendRawMessageOverSocket: anEnvelope asPhxJsonString ].
 	^ nil
 ]
 
@@ -207,6 +210,30 @@ PhxServerWebSocketSession >> sendMessage: outgoingMessage inResponseToIncoming: 
 	^ self
 		  sendEnvelope: outgoingMessage wrapInEnvelope
 		  inResponseToIncoming: anIncomingEnvelope
+]
+
+{ #category : 'public' }
+PhxServerWebSocketSession >> sendRawMessageChunkedOverSocket_NotUsed: stringOrByteArray [
+
+	| rs frames |
+	rs := stringOrByteArray readStream.
+	frames := OrderedCollection new.
+	[
+		| chunk |
+		chunk := rs next: 65536.
+		frames add: chunk.
+		rs atEnd ] whileFalse.
+	self webSocket sendTextFrames: frames
+]
+
+{ #category : 'public' }
+PhxServerWebSocketSession >> sendRawMessageOverSocket: stringOrByteArray [
+
+	self webSocket sendMessage: stringOrByteArray.
+	stringOrByteArray size <= 65536 ifTrue: [ ^ self ].
+	"following hack needed on Mac. After sending large message on Mac, incoming messages have to wait on some sort of timeout"
+	self webSocket stream isDataAvailable ifTrue: [
+		self webSocket stream peek ]
 ]
 
 { #category : 'accessing' }

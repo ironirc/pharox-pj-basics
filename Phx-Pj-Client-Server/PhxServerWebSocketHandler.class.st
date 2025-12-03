@@ -42,10 +42,12 @@ PhxServerWebSocketHandler >> broadcastEnvelopeToAllRegisteredWebsockets: anEnvel
 
 { #category : 'actions' }
 PhxServerWebSocketHandler >> closeAllWebsockets [
-	webSocketSessionsDict keys copy
-		do: [ :each | 
-			[ self unregister: each.
-			each close ]
+
+	webSocketSessionsDict ifNil: [ ^ self ].
+	webSocketSessionsDict keys copy do: [ :each |
+			[
+				self unregister: each.
+				each close ]
 				on: Error
 				do: [ :ex | ex return ] ]
 ]
@@ -156,12 +158,6 @@ PhxServerWebSocketHandler >> reportWebSocketsToTranscript [
 		separatedBy: [ Transcript cr ]
 ]
 
-{ #category : 'accessing' }
-PhxServerWebSocketHandler >> sendEnvelope: anEnvelope viaSocket: aWebSocket [
-	anEnvelope senderId: self id.
-	aWebSocket sendMessage: anEnvelope asPhxJsonString
-]
-
 { #category : 'live code update broadcasting' }
 PhxServerWebSocketHandler >> subscribeToSystemAnnouncer [
 	<script>
@@ -193,14 +189,15 @@ PhxServerWebSocketHandler >> unsubscribeFromSystemAnnouncer [
 { #category : 'zinc' }
 PhxServerWebSocketHandler >> value: aWebSocket [
 	"Called by Zinc during connection upgrade to Websocket"
+
 	[
-	self register: aWebSocket.
-	aWebSocket runWith: [ :aMessage |
-		self handleMessage: aMessage forSocket: aWebSocket ] ]
+		self register: aWebSocket.
+		aWebSocket runWith: [ :aMessage |
+			self handleMessage: aMessage forSocket: aWebSocket ] ]
 		on: Error
 		do: [ :ex |
-			('Websocket error: ' , ex messageText) crTrace.
-			self unregister: aWebSocket ]
+				('Websocket error: ' , ex messageText) crTrace.
+				self unregister: aWebSocket ]
 ]
 
 { #category : 'accessing' }
