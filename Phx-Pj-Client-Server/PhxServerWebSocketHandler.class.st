@@ -72,7 +72,7 @@ PhxServerWebSocketHandler >> ensuredContext [
 
 	"(self context isNil or: [ self context isAlive not ]) ifTrue: [ 
 		self context: self applicationClass newAppContext ]."
-	self context ensureSoundAndAlive. 
+	self context ensureSaneAndAlive. 
 	^ self context
 ]
 
