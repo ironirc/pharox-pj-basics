@@ -3,7 +3,10 @@ Class {
 	#superclass : 'PhxSpaServerToClientMessage',
 	#instVars : [
 		'result',
-		'rawQueryTime'
+		'rawQueryTime',
+		'page',
+		'pageSize',
+		'totalRows'
 	],
 	#category : 'Phx-Pj-Client-Server-shared',
 	#package : 'Phx-Pj-Client-Server',
@@ -14,6 +17,30 @@ Class {
 PhxSpaQrResult >> initialize [
 	super initialize. 
 	isSuccess := true
+]
+
+{ #category : 'accessing' }
+PhxSpaQrResult >> page [
+
+	^ page
+]
+
+{ #category : 'accessing' }
+PhxSpaQrResult >> page: anObject [
+
+	page := anObject
+]
+
+{ #category : 'accessing' }
+PhxSpaQrResult >> pageSize [
+
+	^ pageSize
+]
+
+{ #category : 'accessing' }
+PhxSpaQrResult >> pageSize: anObject [
+
+	pageSize := anObject
 ]
 
 { #category : 'accessing' }
@@ -34,4 +61,16 @@ PhxSpaQrResult >> result [
 { #category : 'accessing' }
 PhxSpaQrResult >> result: anObject [
 	result := anObject
+]
+
+{ #category : 'accessing' }
+PhxSpaQrResult >> totalRows [
+
+	^ totalRows
+]
+
+{ #category : 'accessing' }
+PhxSpaQrResult >> totalRows: anObject [
+
+	totalRows := anObject
 ]

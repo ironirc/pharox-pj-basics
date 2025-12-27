@@ -29,9 +29,9 @@ PhxPubSubSubscriptionForEventClass >> eventClass: anObject [
 { #category : 'accessing' }
 PhxPubSubSubscriptionForEventClass >> handleEvent: anEvent with: nilArg [
 
+	(self canHandleEvent: anEvent) ifFalse: [ ^ self ].
 	nilArg ifNotNil: [
 		self error: 'no argument expected when the event is een object' ].
-	(self canHandleEvent: anEvent) ifFalse: [ ^ self ].
 	"PhxSpaConsole logAll: { 
 			self class name.
 			'handleEvent:'.
