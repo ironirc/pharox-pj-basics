@@ -229,11 +229,12 @@ PhxServerWebSocketSession >> sendRawMessageChunkedOverSocket_NotUsed: stringOrBy
 { #category : 'public' }
 PhxServerWebSocketSession >> sendRawMessageOverSocket: stringOrByteArray [
 
-	self webSocket sendMessage: stringOrByteArray.
-	stringOrByteArray size <= 65536 ifTrue: [ ^ self ].
-	"following hack needed on Mac. After sending large message on Mac, incoming messages have to wait on some sort of timeout"
-	self webSocket stream isDataAvailable ifTrue: [
-		self webSocket stream peek ]
+	monitor critical: [
+		self webSocket sendMessage: stringOrByteArray.
+		stringOrByteArray size <= 65536 ifTrue: [ ^ self ].
+		"following hack needed on Mac. After sending large message on Mac, incoming messages have to wait on some sort of timeout"
+		self webSocket stream isDataAvailable ifTrue: [
+			self webSocket stream peek ] ]
 ]
 
 { #category : 'accessing' }
