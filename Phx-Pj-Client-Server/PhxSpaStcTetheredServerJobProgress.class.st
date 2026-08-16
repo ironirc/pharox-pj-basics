@@ -7,7 +7,10 @@ Class {
 		'isError',
 		'subject',
 		'details',
-		'percent'
+		'percent',
+		'taskId',
+		'parentTaskId',
+		'rootJobId'
 	],
 	#category : 'Phx-Pj-Client-Server-shared',
 	#package : 'Phx-Pj-Client-Server',
@@ -16,7 +19,7 @@ Class {
 
 { #category : 'retaining' }
 PhxSpaStcTetheredServerJobProgress >> correlationId [
-	^ self jobId
+	^ rootJobId ifNil: [ jobId ]
 ]
 
 { #category : 'accessing' }
@@ -72,6 +75,16 @@ PhxSpaStcTetheredServerJobProgress >> jobId: anObject [
 ]
 
 { #category : 'accessing' }
+PhxSpaStcTetheredServerJobProgress >> parentTaskId [
+	^ parentTaskId
+]
+
+{ #category : 'accessing' }
+PhxSpaStcTetheredServerJobProgress >> parentTaskId: anObject [
+	parentTaskId := anObject
+]
+
+{ #category : 'accessing' }
 PhxSpaStcTetheredServerJobProgress >> percent [
 	^ percent
 ]
@@ -79,6 +92,16 @@ PhxSpaStcTetheredServerJobProgress >> percent [
 { #category : 'accessing' }
 PhxSpaStcTetheredServerJobProgress >> percent: anObject [
 	percent := anObject
+]
+
+{ #category : 'accessing' }
+PhxSpaStcTetheredServerJobProgress >> rootJobId [
+	^ rootJobId
+]
+
+{ #category : 'accessing' }
+PhxSpaStcTetheredServerJobProgress >> rootJobId: anObject [
+	rootJobId := anObject
 ]
 
 { #category : 'accessing' }
@@ -99,4 +122,14 @@ PhxSpaStcTetheredServerJobProgress >> subject [
 { #category : 'accessing' }
 PhxSpaStcTetheredServerJobProgress >> subject: anObject [
 	subject := anObject
+]
+
+{ #category : 'accessing' }
+PhxSpaStcTetheredServerJobProgress >> taskId [
+	^ taskId
+]
+
+{ #category : 'accessing' }
+PhxSpaStcTetheredServerJobProgress >> taskId: anObject [
+	taskId := anObject
 ]
