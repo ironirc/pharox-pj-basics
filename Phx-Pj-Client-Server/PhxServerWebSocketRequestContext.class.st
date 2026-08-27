@@ -5,21 +5,33 @@ Class {
 		'handler',
 		'incomingEnvelope',
 		'jwtClaims',
-		'webSocketSession'
+		'webSocketSession',
+		'appContext'
 	],
 	#category : 'Phx-Pj-Client-Server-server-side',
 	#package : 'Phx-Pj-Client-Server',
 	#tag : 'server-side'
 }
 
+{ #category : 'accessing' }
+PhxServerWebSocketRequestContext >> appContext [
+	^ appContext
+]
+
+{ #category : 'accessing' }
+PhxServerWebSocketRequestContext >> appContext: anObject [
+	appContext := anObject
+]
+
 { #category : 'services' }
 PhxServerWebSocketRequestContext >> doWithMainGlorpSession: aBlock [
 
-	self handler ensuredContext doWithMainGlorpSession: aBlock
+	self ensuredContext doWithMainGlorpSession: aBlock
 ]
 
 { #category : 'accessing' }
 PhxServerWebSocketRequestContext >> ensuredContext [
+	appContext ifNotNil: [ ^ appContext ].
 	^ self handler ensuredContext
 ]
 

@@ -72,8 +72,10 @@ PhxServerWebSocketSession >> handleIncomingEnvelope: env fromHandler: wsh [
 	rc handler: wsh.
 	rc incomingEnvelope: env.
 	rc jwtClaims: (self checkAccessTokenOfEnvelope: env).
-	wsh context ifNotNil: [ :c | c prepareForNewRequest ].
-	rc handleIncomingMessage: env msg
+	wsh appContextPool withContextDo: [ :ctx |
+		ctx ensureSaneAndAlive.
+		rc appContext: ctx.
+		ctx useAsCurrentDuring: [ rc handleIncomingMessage: env msg ] ]
 ]
 
 { #category : 'initialize-release' }

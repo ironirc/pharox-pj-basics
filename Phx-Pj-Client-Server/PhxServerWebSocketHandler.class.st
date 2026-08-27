@@ -5,12 +5,23 @@ Class {
 		'applicationClass',
 		'context',
 		'webSocketSessionsDict',
-		'mutex'
+		'mutex',
+		'appContextPool'
 	],
 	#category : 'Phx-Pj-Client-Server-server-side',
 	#package : 'Phx-Pj-Client-Server',
 	#tag : 'server-side'
 }
+
+{ #category : 'accessing' }
+PhxServerWebSocketHandler >> appContextPool [
+	^ appContextPool
+]
+
+{ #category : 'accessing' }
+PhxServerWebSocketHandler >> appContextPool: anObject [
+	appContextPool := anObject
+]
 
 { #category : 'accessing' }
 PhxServerWebSocketHandler >> applicationClass [
