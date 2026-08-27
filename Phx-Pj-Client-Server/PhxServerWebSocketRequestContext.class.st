@@ -35,7 +35,7 @@ PhxServerWebSocketRequestContext >> ensuredContext [
 	^ self handler ensuredContext
 ]
 
-{ #category : 'services' }
+{ #category : 'handling' }
 PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
 	('Received ' , msg class name ) crTrace. 
 	[
@@ -50,7 +50,7 @@ PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
 		do: [ :ex |
 			('handleIncomingMessage: error => ' , ex description) crTrace. 
 			self sendError: ex description.
-			self halt. "convenient to halt here while developing"
+			"Do not halt: the request-session pool slot is held until this handler returns."
 			ex return ]
 ]
 
