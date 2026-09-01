@@ -94,12 +94,17 @@ PhxServerWebSocketHandler >> handleErrorsWhile: aBlock forWebSocketSession: webS
 		on: Error
 		do: [ :ex |
 			| msg |
-			"self halt. During dev, it might be convenient to halt here" 
-			msg := PhxSpaStcRaiseErrorToast new. "probably better to just send an error message instead of specifically raising a toast?"
-			msg message:
-				'Server error while reading envelope: '
-				, ex messageText doubleQuoted.
-			webSocketSession sendEnvelope: msg wrapInEnvelope inResponseToIncoming: incomingEnvelope.
+			"self halt. During dev, it might be convenient to halt here"
+			webSocketSession isConnected ifTrue: [
+				msg := PhxSpaStcRaiseErrorToast new. "probably better to just send an error message instead of specifically raising a toast?"
+				msg message:
+					'Server error while reading envelope: '
+					, ex messageText doubleQuoted.
+				[ webSocketSession
+					sendEnvelope: msg wrapInEnvelope
+					inResponseToIncoming: incomingEnvelope ]
+					on: Error
+					do: [ :sendEx | sendEx return ] ].
 			self ]
 ]
 

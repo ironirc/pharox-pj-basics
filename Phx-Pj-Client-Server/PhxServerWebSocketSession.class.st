@@ -165,8 +165,9 @@ PhxServerWebSocketSession >> reportToTranscript [
 PhxServerWebSocketSession >> sendEnvelope: anEnvelope [
 
 	anEnvelope senderId: 'server'. "might need refining"
-	self webSocket isConnected ifFalse: [
-		^ self error: 'websocket not connected' ].
+	self isConnected ifFalse: [
+		'websocket not connected' crTrace.
+		^ nil ].
 
 	anEnvelope msg expectsResponseFromClient
 		ifTrue: [
