@@ -37,21 +37,23 @@ PhxServerWebSocketRequestContext >> ensuredContext [
 
 { #category : 'handling' }
 PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
-	('Received ' , msg class name ) crTrace. 
+
+	('Received ' , msg class name) crTrace.
 	[
-	msg respondForRequestContext: self.
-	"('PhxServerWebSocketRequestContext>>#handleIncomingMessage: - Post respondForRequestContext: ' , msg class name) crTrace."
-	"debugString := String
+		msg respondForRequestContext: self
+		"('PhxServerWebSocketRequestContext>>#handleIncomingMessage: - Post respondForRequestContext: ' , msg class name) crTrace."
+		"debugString := String
 		streamContents: [ :ws | 
 			ws << 'SS-MessageHandler: received envelope with message of type '
 				<< env msg class name ].
 	aWebSocket sendMessage: debugString asJsonString." ]
 		on: Error
 		do: [ :ex |
-			('handleIncomingMessage: error => ' , ex description) crTrace. 
-			self sendError: ex description.
-			"Do not halt: the request-session pool slot is held until this handler returns."
-			ex return ]
+				"self halt."
+				('handleIncomingMessage: error => ' , ex description) crTrace.
+				self sendError: ex description.
+				"Do not halt: the request-session pool slot is held until this handler returns."
+				ex return ]
 ]
 
 { #category : 'accessing' }
