@@ -8,10 +8,29 @@ Class {
 		'webSocketSession',
 		'appContext'
 	],
+	#classVars : [
+		'HaltOnIncomingMessageError'
+	],
 	#category : 'Phx-Pj-Client-Server-server-side',
 	#package : 'Phx-Pj-Client-Server',
 	#tag : 'server-side'
 }
+
+{ #category : 'debugging' }
+PhxServerWebSocketRequestContext class >> haltOnIncomingMessageError [
+	"Opt-in: when true, halt in handleIncomingMessage: on Error. Default false.
+	Holds the request-session pool slot until the debugger continues — see PHX_SPA_REQUEST_SESSION_POOL.md.
+	Playground / Phx world menu: haltOnIncomingMessageError: true / false."
+
+	^ HaltOnIncomingMessageError ifNil: [ false ]
+]
+
+{ #category : 'debugging' }
+PhxServerWebSocketRequestContext class >> haltOnIncomingMessageError: aBoolean [
+	"Playground: PhxServerWebSocketRequestContext haltOnIncomingMessageError: true."
+
+	HaltOnIncomingMessageError := aBoolean
+]
 
 { #category : 'accessing' }
 PhxServerWebSocketRequestContext >> appContext [
@@ -35,7 +54,7 @@ PhxServerWebSocketRequestContext >> ensuredContext [
 	^ self handler ensuredContext
 ]
 
-{ #category : 'handling' }
+{ #category : 'actions' }
 PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
 
 	('Received ' , msg class name) crTrace.
@@ -49,10 +68,10 @@ PhxServerWebSocketRequestContext >> handleIncomingMessage: msg [
 	aWebSocket sendMessage: debugString asJsonString." ]
 		on: Error
 		do: [ :ex |
-				"self halt."
+				self class haltOnIncomingMessageError ifTrue: [ self halt ].
 				('handleIncomingMessage: error => ' , ex description) crTrace.
 				self sendError: ex description.
-				"Do not halt: the request-session pool slot is held until this handler returns."
+				"Do not leave halt on: the request-session pool slot is held until this handler returns. Toggle via Phx world menu / haltOnIncomingMessageError:."
 				ex return ]
 ]
 
