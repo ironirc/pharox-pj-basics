@@ -56,6 +56,12 @@ PhxPjIncrementalExporterWithCache >> initialScript [
 ]
 
 { #category : 'public' }
+PhxPjIncrementalExporterWithCache >> invalidateAtKey: aKey [
+	aKey ifNil: [ ^ self ].
+	self cache removeKey: aKey ifAbsent: [  ]
+]
+
+{ #category : 'public' }
 PhxPjIncrementalExporterWithCache >> jsAtKey: aKey classes: classes [
 
 	^ self jsAtKey: aKey ifAbsentPut: [ self jsForClasses: classes ]
