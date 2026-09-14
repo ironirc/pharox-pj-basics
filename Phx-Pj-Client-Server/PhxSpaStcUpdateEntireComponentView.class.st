@@ -9,7 +9,7 @@ Class {
 { #category : 'private' }
 PhxSpaStcUpdateEntireComponentView >> executeInResponseContext: rc [
 
-	rc client allChildrenDo: [ :c | c isVueDirty: true ].
+	rc client markTreeVueDirtyForHotCodeSwap.
 	rc client root forceRebuild.
 "	console log: 'initializeAllCss' on: 	rc client root class."
 	rc client root class initializeAllCss
