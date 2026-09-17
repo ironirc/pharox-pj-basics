@@ -64,3 +64,8 @@ PhxPubSubTrait >> reEmitAllEventsOn: anObject [
 			 object: anObject;
 			 yourself)
 ]
+
+{ #category : 'public' }
+PhxPubSubTrait >> removeSubscriptionsForSubscriber: aSubscriber [
+	psSubscriptions removeAllSuchThat: [ :sub | sub subscriber = aSubscriber ]
+]
